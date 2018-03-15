@@ -24,7 +24,7 @@
 
 #include "dmos.h"
 #include "dmlist.h"
-#include "dmany.hpp"
+#include "dmany.h"
 
 #define TVN_BITS 6
 #define TVR_BITS 8
