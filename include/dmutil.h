@@ -7,8 +7,6 @@
 #define __DMUTIL_H_INCLUDE__
 
 #include "dmos.h"
-#include "safeformatex.h"
-#include "integer_to_string.hpp"
 // tolua_begin
 
 #ifdef WIN32

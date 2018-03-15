@@ -7,7 +7,7 @@
 #define __DMTIMERSINK_H_INCLUDE__
 
 #include "dmos.h"
-#include "list.h"
+#include "dmlist.h"
 #include "dmany.hpp"
 
 #define TVN_BITS 6
