@@ -46,7 +46,7 @@ public:
 
     bool SetTimer(unsigned long long qwIDEvent, unsigned long long qwElapse);
 
-    bool SetTimer(unsigned long long qwIDEvent, unsigned long long qwElapse, dm::any& oAny, bool bExact = false);
+    bool SetTimer(unsigned long long qwIDEvent, unsigned long long qwElapse, const dm::any& oAny, bool bExact = false);
 
     void KillTimer(unsigned long long qwIDEvent);
 
