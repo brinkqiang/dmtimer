@@ -39,20 +39,7 @@ class CMain :
         eTimerTime_STOP = 10000,
     }ETimerTime;
 
-    typedef struct tagAnyThing 
-    {
-        tagAnyThing()
-        {
-            nID = 0;
-        }
 
-        ~tagAnyThing()
-        {
-            nID = 0;
-        }
-        int nID;
-        std::string strData;
-    }SAnyThing;
 public:
 
     virtual void ThrdProc()
@@ -65,7 +52,7 @@ public:
             }
         }
 
-        SetTimer(eTimerID_UUID, eTimerTime_UUID);
+        SetTimer(eTimerID_UUID, eTimerTime_UUID, dm::any(std::string("hello world")));
 
         SleepMs(300);
 
@@ -73,7 +60,11 @@ public:
 
 		// test interface
         uint64_t qwElapse = GetTimerElapse(eTimerID_UUID);
+        std::cout << "test GetTimerElapse: " << qwElapse << std::endl;
+
         uint64_t qwRemain = GetTimerRemain(eTimerID_UUID);
+        std::cout << "test GetTimerElapse: " << qwRemain << std::endl;
+
         CDMTimerElement* poElement = GetTimerElement(eTimerID_UUID);
 
         bool bBusy = false;
@@ -116,7 +107,7 @@ public:
         {
             case eTimerID_UUID:
                 {
-                    std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount() << std::endl;
+                    std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount() << " " << dm::any_cast<std::string>(oAny) << std::endl;
                 }
                 break;
             case eTimerID_STOP:
