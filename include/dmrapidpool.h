@@ -31,7 +31,7 @@
 #include <new>
 
 template<class T, int S>
-class CRapidPool
+class CDMRapidPool
 {
 public:
     typedef T OBJTYPE;
@@ -46,7 +46,7 @@ public:
 
     static const int SIZE = S;
 
-    CRapidPool(unsigned short wIndex = 0)
+    CDMRapidPool(unsigned short wIndex = 0)
         : m_wIndex(wIndex), m_wFirstFlag(0), m_nFreeCount(0)
     {
         for (int i=0; i<SIZE; ++i)
@@ -59,7 +59,7 @@ public:
         m_nFreeCount = SIZE;
     }
 
-    ~CRapidPool()
+    ~CDMRapidPool()
     {
         assert(IsFull());
     }
@@ -123,7 +123,7 @@ class CDynamicRapidPool
 {
 public:
     typedef CDynamicRapidPool<T, S, I>  CThisPool;
-    typedef CRapidPool<T, S>            CBaseRapidPool;
+    typedef CDMRapidPool<T, S>            CBaseRapidPool;
     typedef typename CBaseRapidPool::OBJTYPE     OBJTYPE;
     typedef typename CBaseRapidPool::SRapidData SRapidData;
     static const int SIZE = S;

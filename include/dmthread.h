@@ -24,32 +24,32 @@
 
 #include "dmos.h"
 
-class IThread
+class IDMThread
 {
 public:
-    virtual ~IThread(){}
+    virtual ~IDMThread(){}
     virtual void ThrdProc() = 0;
     virtual void Terminate() = 0;
 };
 
-class IThreadCtrl
+class IDMThreadCtrl
 {
 public:
-    virtual ~IThreadCtrl(){}
+    virtual ~IDMThreadCtrl(){}
     virtual void Resume() = 0;
     virtual void Suspend() = 0;
     virtual void Stop() = 0;
     virtual bool Kill(unsigned int dwExitCode) = 0;
     virtual bool WaitFor(unsigned int dwWaitTime = -1) = 0;
     virtual unsigned int GetThreadID() = 0;
-    virtual IThread* GetThread() = 0;
+    virtual IDMThread* GetThread() = 0;
     virtual void Release() = 0;
 };
 
-class CThreadCtrl : public IThreadCtrl
+class CDMThreadCtrl : public IDMThreadCtrl
 {
 public:
-    CThreadCtrl()
+    CDMThreadCtrl()
     {
 #ifdef WIN32
         m_bIsStop       = true;
@@ -65,7 +65,7 @@ public:
 #endif
     }
 
-    virtual ~CThreadCtrl()
+    virtual ~CDMThreadCtrl()
     {
 
     }
@@ -163,7 +163,7 @@ public:
 
     }
 
-    virtual IThread* GetThread(void)
+    virtual IDMThread* GetThread(void)
     {
         return m_poThread;
     }
@@ -175,13 +175,13 @@ public:
 #endif
         {
 #ifdef WIN32
-            CThreadCtrl *poCtrl = (CThreadCtrl *)arg;
+            CDMThreadCtrl *poCtrl = (CDMThreadCtrl *)arg;
             poCtrl->m_bIsStop = false;
             poCtrl->m_poThread->ThrdProc();
 
             return 0;
 #else
-            CThreadCtrl* poCtrl = (CThreadCtrl *)arg;
+            CDMThreadCtrl* poCtrl = (CDMThreadCtrl *)arg;
             pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, 0);
             pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, 0);
 
@@ -209,7 +209,7 @@ public:
 #endif
         }
 
-    bool Start(IThread* poThread, bool bNeedWaitFor = true, bool bSuspend = false)
+    bool Start(IDMThread* poThread, bool bNeedWaitFor = true, bool bSuspend = false)
     {
 #ifdef WIN32
         m_bNeedWaitFor = bNeedWaitFor;
@@ -249,18 +249,18 @@ protected:
     bool            m_bNeedWaitFor;
     HANDLE          m_hThread;
     unsigned int    m_dwThreadID;
-    IThread*        m_poThread;
+    IDMThread*        m_poThread;
 #else
     volatile bool   m_bIsStop;
     pthread_t       m_ID;
-    IThread*        m_poThread;
+    IDMThread*        m_poThread;
     bool            m_bNeedWaitFor;
 #endif
 };
 
-inline IThreadCtrl* CreateThreadCtrl()
+inline IDMThreadCtrl* CreateThreadCtrl()
 {
-    return new CThreadCtrl;
+    return new CDMThreadCtrl;
 }
 
 #endif // __DMTHREAD_H_INCLUDE__

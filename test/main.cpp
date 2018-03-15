@@ -14,8 +14,8 @@ public:
 
 class CMain :
     public IDMConsoleSink,
-    public IThread,
-    public CThreadCtrl,
+    public IDMThread,
+    public CDMThreadCtrl,
     public CDMTimerNode,
     public TSingleton<CMain>
 {
