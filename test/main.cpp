@@ -44,6 +44,8 @@ public:
 
     virtual void ThrdProc()
     {
+        std::cout << "test start" << std::endl;
+
         for (int i=0; i < eMAX_PLAYER; ++i)
         {
             for (int j=1; j <= eMAX_PLAYER_EVENT; ++j)
