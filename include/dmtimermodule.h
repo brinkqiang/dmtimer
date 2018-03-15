@@ -70,10 +70,10 @@ private:
 };
 
 
-class CDMTimerModule : public TSafeSingleton<CDMTimerModule>
+class CDMTimerModule : public CDMSafeSingleton<CDMTimerModule>
 {
 public:
-    friend class TSafeSingleton<CDMTimerModule>;
+    friend class CDMSafeSingleton<CDMTimerModule>;
 
     enum
     {
