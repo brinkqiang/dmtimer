@@ -79,7 +79,7 @@ bool CDMTimerNode::SetTimer(unsigned long long qwIDEvent, unsigned long long qwE
 }
 
 bool CDMTimerNode::SetTimer(unsigned long long qwIDEvent,
-        unsigned long long qwElapse, dm::any &oAny,
+        unsigned long long qwElapse, const dm::any &oAny,
         bool bExact) {
     CDMTimerElement *poNewTimer = CDMTimerModule::Instance()->FetchElement();
 
