@@ -61,6 +61,16 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
+namespace stdext
+{
+
+}
+
+namespace std
+{
+    using namespace stdext;
+}
+
 #define VSNPRINTF _vsnprintf
 #define SleepMs(x) Sleep(x)
 #ifndef INFINITE
