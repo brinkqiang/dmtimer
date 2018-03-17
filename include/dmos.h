@@ -19,7 +19,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
 #ifndef __DMOS_H_INCLUDE__
 #define __DMOS_H_INCLUDE__
 
@@ -110,6 +109,8 @@ namespace std
 #include <ncurses.h>
 #include <signal.h>
 #include <netdb.h>
+#include <limits.h>
+#include <unistd.h>
 
 #ifndef MAX_PATH
 #define MAX_PATH    PATH_MAX
