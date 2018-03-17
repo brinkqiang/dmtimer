@@ -105,7 +105,6 @@ namespace std
 #include <arpa/inet.h>
 #include <pthread.h>
 
-#include <unistd.h>
 #include <ncurses.h>
 #include <signal.h>
 #include <netdb.h>
