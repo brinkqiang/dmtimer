@@ -1,6 +1,6 @@
 
-#ifndef __LIST_H_INCLUDE__
-#define __LIST_H_INCLUDE__
+#ifndef __DMLIST_H_INCLUDE__
+#define __DMLIST_H_INCLUDE__
 
 /*
  * Simple doubly linked list implementation.
@@ -695,5 +695,5 @@ static inline void hlist_move_list(struct hlist_head *old,
                 ({ tpos = hlist_entry(pos, typeof(*tpos), member); 1;}); \
                 pos = n)
 
-#endif // __LIST_H_INCLUDE__
+#endif // __DMLIST_H_INCLUDE__
 
