@@ -7,4 +7,4 @@ Copyright (c) 2013-2018 brinkqiang (brink.qiang@gmail.com)
 C++ high performance timer
 
 ## Thanks
-hejiaqi
+pudding_186@163.com
