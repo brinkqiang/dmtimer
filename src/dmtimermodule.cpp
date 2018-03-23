@@ -15,9 +15,9 @@ CDMTimerModule::~CDMTimerModule()
 
 void CDMTimerModule::AddTimerElement(CDMTimerElement* pElement)
 {
-    unsigned long long qwExpires = pElement->m_qwNextTime;
+    uint64_t qwExpires = pElement->m_qwNextTime;
 
-    unsigned long long idx = static_cast<unsigned long long>(qwExpires - m_qwLastTime);
+    uint64_t idx = static_cast<uint64_t>(qwExpires - m_qwLastTime);
     struct list_head* vec = NULL;
 
     if (idx < TVR_SIZE)
@@ -223,7 +223,7 @@ int CDMTimerModule::Run()
     return nEvents;
 }
 
-unsigned long long CDMTimerModule::GetCurTime()
+uint64_t CDMTimerModule::GetCurTime()
 {
     return m_qwCurTime;
 }
@@ -238,7 +238,7 @@ unsigned long long CDMTimerModule::GetCurTime()
 
 
 typedef union {
-    unsigned long long ft_scalar;
+    uint64_t ft_scalar;
     FILETIME ft_struct;
 } FT;
 
@@ -273,7 +273,7 @@ int gettimeofday(struct timeval *tv, struct timezone *tz)
 
 #endif
 
-unsigned long long CDMTimerModule::GetBootTime()
+uint64_t CDMTimerModule::GetBootTime()
 {
     unsigned int dwCurTime = GetTickCount32();
     unsigned int dwPassedTime = dwCurTime - m_dwTickTime;

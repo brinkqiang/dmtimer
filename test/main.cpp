@@ -9,7 +9,7 @@
 class CPlayer : public CDMTimerNode
 {
 public:
-    virtual void OnTimer(unsigned long long qwIDEvent);
+    virtual void OnTimer(uint64_t qwIDEvent);
 };
 
 class CMain :
@@ -65,7 +65,7 @@ public:
         std::cout << "test GetTimerElapse: " << qwElapse << std::endl;
 
         uint64_t qwRemain = GetTimerRemain(eTimerID_UUID);
-        std::cout << "test GetTimerElapse: " << qwRemain << std::endl;
+        std::cout << "test GetTimerRemain: " << qwRemain << std::endl;
 
         CDMTimerElement* poElement = GetTimerElement(eTimerID_UUID);
 
@@ -103,7 +103,7 @@ public:
         Stop();
     }
 
-    virtual void OnTimer(unsigned long long qwIDEvent, dm::any& oAny)
+    virtual void OnTimer(uint64_t qwIDEvent, dm::any& oAny)
     {
         switch (qwIDEvent)
         {
@@ -150,7 +150,7 @@ private:
     uint64_t  m_qwOnTimerCount;
 };
 
-void CPlayer::OnTimer(unsigned long long qwIDEvent)
+void CPlayer::OnTimer(uint64_t qwIDEvent)
 {
     CMain::Instance()->AddOnTimerCount();
 }

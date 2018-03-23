@@ -22,6 +22,7 @@
 #ifndef __DMTIMERSINK_H_INCLUDE__
 #define __DMTIMERSINK_H_INCLUDE__
 
+#include "dmtypes.h"
 #include "dmos.h"
 #include "dmlist.h"
 #include "dmany.h"
@@ -50,8 +51,8 @@ class ITimerSink
 {
 public:
     virtual ~ITimerSink() = 0;
-    virtual void OnTimer(unsigned long long qwIDEvent) = 0;
-    virtual void OnTimer(unsigned long long qwIDEvent, dm::any& oAny){ OnTimer(qwIDEvent); }
+    virtual void OnTimer(uint64_t qwIDEvent) = 0;
+    virtual void OnTimer(uint64_t qwIDEvent, dm::any& oAny){ OnTimer(qwIDEvent); }
 };
 
 inline ITimerSink::~ITimerSink()
@@ -85,9 +86,9 @@ public:
 public:
     struct list_head    m_stEntry;
 
-    unsigned long long  m_qwNextTime;
-    unsigned long long  m_qwElapse;
-    unsigned long long  m_qwID;
+    uint64_t  m_qwNextTime;
+    uint64_t  m_qwElapse;
+    uint64_t  m_qwID;
 
     ITimerSink*         m_poTimerSink;
 
