@@ -9,7 +9,7 @@
 class CPlayer : public CDMTimerNode
 {
 public:
-    virtual void OnTimer(unsigned long long qwIDEvent);
+    virtual void OnTimer(uint64_t qwIDEvent);
 };
 
 class CMain :
@@ -103,7 +103,7 @@ public:
         Stop();
     }
 
-    virtual void OnTimer(unsigned long long qwIDEvent, dm::any& oAny)
+    virtual void OnTimer(uint64_t qwIDEvent, dm::any& oAny)
     {
         switch (qwIDEvent)
         {
@@ -150,7 +150,7 @@ private:
     uint64_t  m_qwOnTimerCount;
 };
 
-void CPlayer::OnTimer(unsigned long long qwIDEvent)
+void CPlayer::OnTimer(uint64_t qwIDEvent)
 {
     CMain::Instance()->AddOnTimerCount();
 }

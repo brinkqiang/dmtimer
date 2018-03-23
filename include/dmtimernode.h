@@ -31,7 +31,7 @@ class CDMTimerNode :
     public ITimerSink
 {
 public:
-    typedef std::map<unsigned long long, CDMTimerElement*> TimerElementMap;
+    typedef std::map<uint64_t, CDMTimerElement*> TimerElementMap;
     typedef TimerElementMap::iterator TimerElementMapIt;
     typedef TimerElementMap::const_iterator TimerElementMapCIt;
 public:
@@ -44,21 +44,21 @@ public:
     void Reset();
     void CopyFrom( const CDMTimerNode &oNode );
 
-    bool SetTimer(unsigned long long qwIDEvent, unsigned long long qwElapse);
+    bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse);
 
-    bool SetTimer(unsigned long long qwIDEvent, unsigned long long qwElapse, const dm::any& oAny, bool bExact = false);
+    bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, const dm::any& oAny, bool bExact = false);
 
-    void KillTimer(unsigned long long qwIDEvent);
+    void KillTimer(uint64_t qwIDEvent);
 
     void KillTimer();
 
-    unsigned long long GetTimerElapse(unsigned long long qwIDEvent);
-    unsigned long long GetTimerRemain(unsigned long long qwIDEvent);
+    uint64_t GetTimerElapse(uint64_t qwIDEvent);
+    uint64_t GetTimerRemain(uint64_t qwIDEvent);
 
-    CDMTimerElement* GetTimerElement(unsigned long long qwIDEvent);
+    CDMTimerElement* GetTimerElement(uint64_t qwIDEvent);
 
-    virtual void OnTimer(unsigned long long qwIDEvent);
-    virtual void OnTimer(unsigned long long qwIDEvent, dm::any& oAny);
+    virtual void OnTimer(uint64_t qwIDEvent);
+    virtual void OnTimer(uint64_t qwIDEvent, dm::any& oAny);
 private:
     TimerElementMap m_oTimerElementMap;
 };

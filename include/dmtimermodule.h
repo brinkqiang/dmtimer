@@ -91,7 +91,7 @@ public:
     void UnInit();
     int Run();
 
-    unsigned long long GetCurTime();
+    uint64_t GetCurTime();
 
     CDMTimerElement* FetchElement();
     void ReleaseElement(CDMTimerElement* pElement);
@@ -99,7 +99,7 @@ public:
     void AddTimerElement(CDMTimerElement* pElement);
     void RemoveTimerElement(CDMTimerElement* pElement);
 public:
-    unsigned long long GetBootTime();
+    uint64_t GetBootTime();
 
 private:
     void    __ReleaseElement(struct list_head *head);
@@ -110,11 +110,11 @@ private:
 private:
     CDynamicRapidPool<CDMTimerElement, eMAX_POOL_S, eMAX_POOL_I>  m_oTimerElementPool;
 
-    unsigned long long m_qwLastTime;
-    unsigned long long m_qwCurTime;
+    uint64_t m_qwLastTime;
+    uint64_t m_qwCurTime;
 
     unsigned int m_dwTickTime;
-    unsigned long long m_qwTickCount;
+    uint64_t m_qwTickCount;
     TVec_Root   m_tv1;
     TVec        m_tv2;
     TVec        m_tv3;
