@@ -9,7 +9,7 @@
 class CPlayer : public CDMTimerNode
 {
 public:
-    virtual void OnTimer(uint64_t qwIDEvent);
+    virtual void OnTimer( uint64_t qwIDEvent );
 };
 
 class CMain :
@@ -31,13 +31,13 @@ class CMain :
     {
         eTimerID_UUID = 0,
         eTimerID_STOP,
-    }ETimerID;
+    } ETimerID;
 
     typedef enum
     {
         eTimerTime_UUID = 1000,
         eTimerTime_STOP = 10000,
-    }ETimerTime;
+    } ETimerTime;
 
 
 public:
@@ -46,51 +46,46 @@ public:
     {
         std::cout << "test start" << std::endl;
 
-        for (int i=0; i < eMAX_PLAYER; ++i)
+        for ( int i = 0; i < eMAX_PLAYER; ++i )
         {
-            for (int j=1; j <= eMAX_PLAYER_EVENT; ++j)
+            for ( int j = 1; j <= eMAX_PLAYER_EVENT; ++j )
             {
-                m_oPlayers[i].SetTimer(j, 100);
+                m_oPlayers[i].SetTimer( j, 100 );
             }
         }
 
-        SetTimer(eTimerID_UUID, eTimerTime_UUID, dm::any(std::string("hello world")));
-
-        SleepMs(300);
-
+        SetTimer( eTimerID_UUID, eTimerTime_UUID, dm::any( std::string( "hello world" ) ) );
+        SleepMs( 300 );
         CDMTimerModule::Instance()->Run();
-
         // test interface
-        uint64_t qwElapse = GetTimerElapse(eTimerID_UUID);
+        uint64_t qwElapse = GetTimerElapse( eTimerID_UUID );
         std::cout << "test GetTimerElapse: " << qwElapse << std::endl;
-
-        uint64_t qwRemain = GetTimerRemain(eTimerID_UUID);
+        uint64_t qwRemain = GetTimerRemain( eTimerID_UUID );
         std::cout << "test GetTimerRemain: " << qwRemain << std::endl;
-
-        CDMTimerElement* poElement = GetTimerElement(eTimerID_UUID);
-
+        CDMTimerElement* poElement = GetTimerElement( eTimerID_UUID );
         bool bBusy = false;
 
-        while(!m_bStop)
+        while ( !m_bStop )
         {
             bBusy = false;
-            if (CDMTimerModule::Instance()->Run())
+
+            if ( CDMTimerModule::Instance()->Run() )
             {
                 bBusy = true;
             }
 
-            if (__Run())
+            if ( __Run() )
             {
                 bBusy = true;
             }
 
-            if (!bBusy)
+            if ( !bBusy )
             {
-                SleepMs(1);
+                SleepMs( 1 );
             }
         }
-        std::cout << "test stop" << std::endl;
 
+        std::cout << "test stop" << std::endl;
     }
 
     virtual void Terminate()
@@ -103,38 +98,45 @@ public:
         Stop();
     }
 
-    virtual void OnTimer(uint64_t qwIDEvent, dm::any& oAny)
+    virtual void OnTimer( uint64_t qwIDEvent, dm::any& oAny )
     {
-        switch (qwIDEvent)
+        switch ( qwIDEvent )
         {
-            case eTimerID_UUID:
-                {
-                    std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount() << " " << dm::any_cast<std::string>(oAny) << std::endl;
-                }
-                break;
-            case eTimerID_STOP:
-                {
-                    std::cout << DMFormatDateTime() << std::endl;
-                    Stop();
-                }
-                break;
-            default:
-                break;
+        case eTimerID_UUID:
+        {
+            std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount() << " " << dm::any_cast<std::string>( oAny ) << std::endl;
+        }
+        break;
+
+        case eTimerID_STOP:
+        {
+            std::cout << DMFormatDateTime() << std::endl;
+            Stop();
+        }
+        break;
+
+        default:
+            break;
         }
     }
 
-    void AddOnTimerCount(){ ++m_qwOnTimerCount;}
-    uint64_t GetOnTimerCount(){ return m_qwOnTimerCount;}
+    void AddOnTimerCount()
+    {
+        ++m_qwOnTimerCount;
+    }
+    uint64_t GetOnTimerCount()
+    {
+        return m_qwOnTimerCount;
+    }
 private:
     CMain()
-        : m_bStop(false), m_qwOnTimerCount(0)
+        : m_bStop( false ), m_qwOnTimerCount( 0 )
     {
-        HDMConsoleMgr::Instance()->SetHandlerHook(this);
+        HDMConsoleMgr::Instance()->SetHandlerHook( this );
     }
 
     virtual ~CMain()
     {
-
     }
 
 private:
@@ -150,14 +152,14 @@ private:
     uint64_t  m_qwOnTimerCount;
 };
 
-void CPlayer::OnTimer(uint64_t qwIDEvent)
+void CPlayer::OnTimer( uint64_t qwIDEvent )
 {
     CMain::Instance()->AddOnTimerCount();
 }
 
-int main(int argc, char* argv[])
+int main( int argc, char* argv[] )
 {
-    CMain::Instance()->Start(CMain::Instance(), true);
+    CMain::Instance()->Start( CMain::Instance(), true );
     CMain::Instance()->WaitFor();
     return 0;
 }

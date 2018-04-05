@@ -1,16 +1,16 @@
 
 // Copyright (c) 2018 brinkqiang
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,7 +33,7 @@ struct timezone
     int  tz_dsttime;     /* type of dst correction */
 };
 
-static inline int gettimeofday(struct ::timeval *tv, struct timezone *tz);
+static inline int gettimeofday( struct ::timeval* tv, struct timezone* tz );
 #endif
 
 static inline unsigned int GetTickCount32()
@@ -42,8 +42,8 @@ static inline unsigned int GetTickCount32()
     return ::GetTickCount();
 #else
     struct timespec ts = {0};
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-    return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
+    clock_gettime( CLOCK_MONOTONIC, &ts );
+    return ( ts.tv_sec * 1000 + ts.tv_nsec / 1000000 );
 #endif
 }
 
@@ -94,19 +94,19 @@ public:
     uint64_t GetCurTime();
 
     CDMTimerElement* FetchElement();
-    void ReleaseElement(CDMTimerElement* pElement);
+    void ReleaseElement( CDMTimerElement* pElement );
 
-    void AddTimerElement(CDMTimerElement* pElement);
-    void RemoveTimerElement(CDMTimerElement* pElement);
+    void AddTimerElement( CDMTimerElement* pElement );
+    void RemoveTimerElement( CDMTimerElement* pElement );
 public:
     uint64_t GetBootTime();
 
 private:
-    void    __ReleaseElement(struct list_head *head);
-    int     __Cascade(TVec* tv, int idx);
-    bool    __TimerPending(CDMTimerElement* pElement);
+    void    __ReleaseElement( struct list_head* head );
+    int     __Cascade( TVec* tv, int idx );
+    bool    __TimerPending( CDMTimerElement* pElement );
 
-    CDMTimerElement* __GetTimerInfoByEntry(list_head* head);
+    CDMTimerElement* __GetTimerInfoByEntry( list_head* head );
 private:
     CDynamicRapidPool<CDMTimerElement, eMAX_POOL_S, eMAX_POOL_I>  m_oTimerElementPool;
 
