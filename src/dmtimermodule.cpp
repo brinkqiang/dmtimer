@@ -3,52 +3,42 @@
 #endif
 #include "dmtimermodule.h"
 
-CDMTimerModule::CDMTimerModule()
-{
+CDMTimerModule::CDMTimerModule() {
     Init();
 }
 
-CDMTimerModule::~CDMTimerModule()
-{
+CDMTimerModule::~CDMTimerModule() {
     UnInit();
 }
 
-void CDMTimerModule::AddTimerElement( CDMTimerElement* pElement )
-{
+void CDMTimerModule::AddTimerElement( CDMTimerElement* pElement ) {
     uint64_t qwExpires = pElement->m_qwNextTime;
     uint64_t idx = static_cast<uint64_t>( qwExpires - m_qwLastTime );
     struct list_head* vec = NULL;
 
-    if ( idx < TVR_SIZE )
-    {
+    if ( idx < TVR_SIZE ) {
         int i = qwExpires & TVR_MASK;
         vec = m_tv1.vec + i;
     }
-    else if ( idx < ( 1 << ( TVR_BITS + TVN_BITS ) ) )
-    {
+    else if ( idx < ( 1 << ( TVR_BITS + TVN_BITS ) ) ) {
         int i = ( qwExpires >> TVR_BITS ) & TVN_MASK;
         vec = m_tv2.vec + i;
     }
-    else if ( idx < ( 1 << ( TVR_BITS + 2 * TVN_BITS ) ) )
-    {
+    else if ( idx < ( 1 << ( TVR_BITS + 2 * TVN_BITS ) ) ) {
         int i = ( qwExpires >> ( TVR_BITS + TVN_BITS ) ) & TVN_MASK;
         vec = m_tv3.vec + i;
     }
-    else if ( idx < ( 1 << ( TVR_BITS + 3 * TVN_BITS ) ) )
-    {
+    else if ( idx < ( 1 << ( TVR_BITS + 3 * TVN_BITS ) ) ) {
         int i = ( qwExpires >> ( TVR_BITS + 2 * TVN_BITS ) ) & TVN_MASK;
         vec = m_tv4.vec + i;
     }
-    else if ( ( signed long long )idx < 0 )
-    {
+    else if ( ( signed long long )idx < 0 ) {
         vec = m_tv1.vec + ( m_qwLastTime & TVR_MASK );
     }
-    else
-    {
+    else {
         int i;
 
-        if ( idx > 0xffffffffUL )
-        {
+        if ( idx > 0xffffffffUL ) {
             idx = 0xffffffffUL;
             qwExpires = idx + m_qwLastTime;
         }
@@ -60,23 +50,20 @@ void CDMTimerModule::AddTimerElement( CDMTimerElement* pElement )
     list_add_tail( &pElement->m_stEntry, vec );
 }
 
-void CDMTimerModule::__ReleaseElement( struct list_head* head )
-{
+void CDMTimerModule::__ReleaseElement( struct list_head* head ) {
     CDMTimerElement* timer = NULL;
     struct list_head work_list;
     struct list_head* temp = &work_list;
     list_replace_init( head, &work_list );
 
-    while ( !list_empty( temp ) )
-    {
+    while ( !list_empty( temp ) ) {
         timer = __GetTimerInfoByEntry( temp->next );
         RemoveTimerElement( timer );
         ReleaseElement( timer );
     }
 }
 
-int CDMTimerModule::__Cascade( TVec* tv, int idx )
-{
+int CDMTimerModule::__Cascade( TVec* tv, int idx ) {
     CDMTimerElement* pTimer = NULL;
     CDMTimerElement* pTemp = NULL;
     struct list_head tv_list;
@@ -86,23 +73,19 @@ int CDMTimerModule::__Cascade( TVec* tv, int idx )
             pTemp = __GetTimerInfoByEntry( pTimer->m_stEntry.next );
             &pTimer->m_stEntry != ( &tv_list );
             pTimer = pTemp,
-            pTemp = __GetTimerInfoByEntry( pTemp->m_stEntry.next ) )
-    {
+            pTemp = __GetTimerInfoByEntry( pTemp->m_stEntry.next ) ) {
         AddTimerElement( pTimer );
     }
 
     return idx;
 }
 
-bool CDMTimerModule::__TimerPending( CDMTimerElement* pElement )
-{
+bool CDMTimerModule::__TimerPending( CDMTimerElement* pElement ) {
     return NULL != pElement->m_stEntry.next;
 }
 
-void CDMTimerModule::RemoveTimerElement( CDMTimerElement* pElement )
-{
-    if ( __TimerPending( pElement ) )
-    {
+void CDMTimerModule::RemoveTimerElement( CDMTimerElement* pElement ) {
+    if ( __TimerPending( pElement ) ) {
         list_del( &pElement->m_stEntry );
         pElement->m_stEntry.next = NULL;
         pElement->m_stEntry.prev = NULL;
@@ -112,21 +95,19 @@ void CDMTimerModule::RemoveTimerElement( CDMTimerElement* pElement )
     DMASSERT( 0 );
 }
 
-CDMTimerElement* CDMTimerModule::__GetTimerInfoByEntry( struct list_head* head )
-{
+CDMTimerElement* CDMTimerModule::__GetTimerInfoByEntry( struct list_head*
+        head ) {
     const struct list_head* ptr = head;
-    return ( CDMTimerElement* )( ( char* )ptr - offsetof( CDMTimerElement, m_stEntry ) );
+    return ( CDMTimerElement* )( ( char* )ptr - offsetof( CDMTimerElement,
+                                 m_stEntry ) );
 }
 
-void CDMTimerModule::Init()
-{
-    for ( int j = 0; j < TVR_SIZE; ++j )
-    {
+void CDMTimerModule::Init() {
+    for ( int j = 0; j < TVR_SIZE; ++j ) {
         INIT_LIST_HEAD( m_tv1.vec + j );
     }
 
-    for ( int i = 0; i < TVN_SIZE; ++i )
-    {
+    for ( int i = 0; i < TVN_SIZE; ++i ) {
         INIT_LIST_HEAD( m_tv2.vec + i );
         INIT_LIST_HEAD( m_tv3.vec + i );
         INIT_LIST_HEAD( m_tv4.vec + i );
@@ -139,30 +120,25 @@ void CDMTimerModule::Init()
     m_qwCurTime =  GetBootTime();
 }
 
-void CDMTimerModule::UnInit()
-{
-    for ( int j = 0; j < TVN_SIZE; ++j )
-    {
+void CDMTimerModule::UnInit() {
+    for ( int j = 0; j < TVN_SIZE; ++j ) {
         __ReleaseElement( m_tv5.vec + j );
         __ReleaseElement( m_tv4.vec + j );
         __ReleaseElement( m_tv3.vec + j );
         __ReleaseElement( m_tv2.vec + j );
     }
 
-    for ( int i = 0; i < TVR_SIZE; ++i )
-    {
+    for ( int i = 0; i < TVR_SIZE; ++i ) {
         __ReleaseElement( m_tv1.vec + i );
     }
 }
 
-int CDMTimerModule::Run()
-{
+int CDMTimerModule::Run() {
     int nEvents = 0;
     m_qwCurTime =  GetBootTime();
     CDMTimerElement* timer = NULL;
 
-    while ( TIME_NOT_EQ( m_qwCurTime, m_qwLastTime ) )
-    {
+    while ( TIME_NOT_EQ( m_qwCurTime, m_qwLastTime ) ) {
         struct list_head work_list;
         struct list_head* temp = &work_list;
         int index = m_qwLastTime & TVR_MASK;
@@ -170,20 +146,17 @@ int CDMTimerModule::Run()
         if ( !index
                 && ( !__Cascade( &m_tv2, INDEX( m_qwLastTime, 0 ) ) )
                 && ( !__Cascade( &m_tv3, INDEX( m_qwLastTime, 1 ) ) )
-                && ( !__Cascade( &m_tv4, INDEX( m_qwLastTime, 2 ) ) ) )
-        {
+                && ( !__Cascade( &m_tv4, INDEX( m_qwLastTime, 2 ) ) ) ) {
             __Cascade( &m_tv5, INDEX( m_qwLastTime, 3 ) );
         }
 
         list_replace_init( m_tv1.vec + index, &work_list );
 
-        while ( !list_empty( temp ) )
-        {
+        while ( !list_empty( temp ) ) {
             timer = __GetTimerInfoByEntry( temp->next );
             RemoveTimerElement( timer );
 
-            if ( timer->m_bErased )
-            {
+            if ( timer->m_bErased ) {
                 ReleaseElement( timer );
                 continue;
             }
@@ -191,16 +164,14 @@ int CDMTimerModule::Run()
             timer->m_poTimerSink->OnTimer( timer->m_qwID, timer->m_oAny );
             ++nEvents;
 
-            if ( timer->m_bErased )
-            {
+            if ( timer->m_bErased ) {
                 ReleaseElement( timer );
                 continue;
             }
 
             timer->m_qwNextTime += timer->m_qwElapse;
 
-            if ( !timer->m_bExact && m_qwCurTime >= timer->m_qwNextTime )
-            {
+            if ( !timer->m_bExact && m_qwCurTime >= timer->m_qwNextTime ) {
                 timer->m_qwNextTime = m_qwCurTime + timer->m_qwElapse;
             }
 
@@ -213,8 +184,7 @@ int CDMTimerModule::Run()
     return nEvents;
 }
 
-uint64_t CDMTimerModule::GetCurTime()
-{
+uint64_t CDMTimerModule::GetCurTime() {
     return m_qwCurTime;
 }
 
@@ -227,19 +197,16 @@ uint64_t CDMTimerModule::GetCurTime()
 #endif
 
 
-typedef union
-{
+typedef union {
     uint64_t ft_scalar;
     FILETIME ft_struct;
 } FT;
 
-int gettimeofday( struct timeval* tv, struct timezone* tz )
-{
+int gettimeofday( struct timeval* tv, struct timezone* tz ) {
     FT ft;
     static int tzflag = 0;
 
-    if ( NULL != tv )
-    {
+    if ( NULL != tv ) {
         GetSystemTimeAsFileTime( &ft.ft_struct );
         ft.ft_scalar /= 10;
         ft.ft_scalar -= DELTA_EPOCH_IN_MICROSECS;
@@ -247,10 +214,8 @@ int gettimeofday( struct timeval* tv, struct timezone* tz )
         tv->tv_usec = ( long )( ft.ft_scalar % 1000000UL );
     }
 
-    if ( NULL != tz )
-    {
-        if ( !tzflag )
-        {
+    if ( NULL != tz ) {
+        if ( !tzflag ) {
             _tzset();
             tzflag++;
         }
@@ -264,8 +229,7 @@ int gettimeofday( struct timeval* tv, struct timezone* tz )
 
 #endif
 
-uint64_t CDMTimerModule::GetBootTime()
-{
+uint64_t CDMTimerModule::GetBootTime() {
     unsigned int dwCurTime = GetTickCount32();
     unsigned int dwPassedTime = dwCurTime - m_dwTickTime;
     m_dwTickTime = dwCurTime;
@@ -273,12 +237,10 @@ uint64_t CDMTimerModule::GetBootTime()
     return m_qwTickCount;
 }
 
-CDMTimerElement* CDMTimerModule::FetchElement()
-{
+CDMTimerElement* CDMTimerModule::FetchElement() {
     return m_oTimerElementPool.FetchObj();
 }
 
-void CDMTimerModule::ReleaseElement( CDMTimerElement* pElement )
-{
+void CDMTimerModule::ReleaseElement( CDMTimerElement* pElement ) {
     m_oTimerElementPool.ReleaseObj( pElement );
 }

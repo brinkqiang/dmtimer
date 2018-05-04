@@ -28,38 +28,32 @@
 #include <algorithm>
 
 template<typename T>
-class TSingleton
-{
-private:
+class TSingleton {
+  private:
     typedef T  SingletonObj;
-public:
-    static SingletonObj* Instance()
-    {
+  public:
+    static SingletonObj* Instance() {
         static SingletonObj s_oT;
         return &s_oT;
     }
 };
 
 template<typename T>
-class CDMSafeSingleton
-{
-private:
+class CDMSafeSingleton {
+  private:
     typedef T  SingletonObj;
-public:
-    class  TSafeCreator
-    {
-    public:
-        TSafeCreator()
-        {
+  public:
+    class  TSafeCreator {
+      public:
+        TSafeCreator() {
             CDMSafeSingleton<SingletonObj>::Instance();
         }
         inline void Do() {}
     };
 
     static TSafeCreator s_oCreator;
-public:
-    static SingletonObj* Instance()
-    {
+  public:
+    static SingletonObj* Instance() {
         static SingletonObj s_oT;
         s_oCreator.Do();
         return &s_oT;
@@ -70,9 +64,8 @@ public:
 template <class T> typename
 CDMSafeSingleton<T>::TSafeCreator CDMSafeSingleton<T>::s_oCreator;
 
-class IDMSafeSingleton
-{
-public:
+class IDMSafeSingleton {
+  public:
     virtual ~IDMSafeSingleton() = 0;
     virtual bool Init() = 0;
     virtual bool UnInit() = 0;
@@ -82,80 +75,67 @@ public:
 inline IDMSafeSingleton::~IDMSafeSingleton() {}
 
 template<typename T>
-class CDMSingleton : public IDMSafeSingleton
-{
-public:
+class CDMSingleton : public IDMSafeSingleton {
+  public:
     typedef T  SingletonObj;
 
     CDMSingleton() {}
     virtual ~CDMSingleton() {}
 
-public:
-    static bool Create()
-    {
-        if ( NULL == m_poInstance )
-        {
+  public:
+    static bool Create() {
+        if ( NULL == m_poInstance ) {
             m_poInstance = new SingletonObj();
         }
 
         return NULL != m_poInstance;
     }
 
-    static void Destroy()
-    {
+    static void Destroy() {
         delete m_poInstance;
         m_poInstance = NULL;
     }
 
-    static T* Instance()
-    {
+    static T* Instance() {
         return m_poInstance;
     }
 
-    virtual bool Init()
-    {
+    virtual bool Init() {
         return true;
     }
-    virtual bool UnInit()
-    {
+    virtual bool UnInit() {
         return true;
     }
 
-    virtual void Release()
-    {
+    virtual void Release() {
         Destroy();
     }
-private:
+  private:
     static SingletonObj* m_poInstance;
 };
 
 template<typename T>
 T* CDMSingleton<T>::m_poInstance = NULL;
 
-class CDMSingletonFrame
-{
-public:
+class CDMSingletonFrame {
+  public:
     typedef std::vector<IDMSafeSingleton*> VecSafeSafeSingleton;
     typedef VecSafeSafeSingleton::iterator VecSafeSafeSingletonIt;
     typedef VecSafeSafeSingleton::reverse_iterator VecSafeSafeSingletonRIt;
-public:
+  public:
     CDMSingletonFrame() {}
-    virtual ~CDMSingletonFrame()
-    {
+    virtual ~CDMSingletonFrame() {
         Release();
     }
 
     template<typename T>
-    void AddSingleton()
-    {
-        if ( !T::Create() )
-        {
+    void AddSingleton() {
+        if ( !T::Create() ) {
             assert( 0 );
             return;
         }
 
-        if ( std::count( m_vecList.begin(), m_vecList.end(), T::Instance() ) )
-        {
+        if ( std::count( m_vecList.begin(), m_vecList.end(), T::Instance() ) ) {
             assert( 0 );
             return;
         }
@@ -163,45 +143,39 @@ public:
         m_vecList.push_back( T::Instance() );
     }
 
-    static CDMSingletonFrame* Instance()
-    {
+    static CDMSingletonFrame* Instance() {
         static CDMSingletonFrame s_oFrame;
         return &s_oFrame;
     }
 
-    void Init()
-    {
-        for ( VecSafeSafeSingletonIt It = m_vecList.begin(); It != m_vecList.end(); ++It )
-        {
-            if ( !( *It )->Init() )
-            {
+    void Init() {
+        for ( VecSafeSafeSingletonIt It = m_vecList.begin(); It != m_vecList.end();
+                ++It ) {
+            if ( !( *It )->Init() ) {
                 assert( 0 );
             }
         }
     }
 
-    void UnInit()
-    {
-        for ( VecSafeSafeSingletonRIt It = m_vecList.rbegin(); It != m_vecList.rend(); ++It )
-        {
-            if ( !( *It )->UnInit() )
-            {
+    void UnInit() {
+        for ( VecSafeSafeSingletonRIt It = m_vecList.rbegin(); It != m_vecList.rend();
+                ++It ) {
+            if ( !( *It )->UnInit() ) {
                 assert( 0 );
             }
         }
     }
 
-    void Release()
-    {
-        for ( VecSafeSafeSingletonRIt It = m_vecList.rbegin(); It != m_vecList.rend(); ++It )
-        {
+    void Release() {
+        for ( VecSafeSafeSingletonRIt It = m_vecList.rbegin(); It != m_vecList.rend();
+                ++It ) {
             ( *It )->Release();
         }
 
         m_vecList.clear();
     }
 
-private:
+  private:
     std::vector<IDMSafeSingleton*> m_vecList;
 };
 

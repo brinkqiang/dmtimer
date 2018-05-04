@@ -37,45 +37,36 @@
 #define TIME_NOT_EQ(x, y) ((x) != (y))
 #define INDEX(t, N) ((t >> (TVR_BITS + (N) * TVN_BITS)) & TVN_MASK)
 
-typedef struct tvec
-{
+typedef struct tvec {
     struct list_head vec[TVN_SIZE];
 } TVec;
 
-typedef struct tvec_root
-{
+typedef struct tvec_root {
     struct list_head vec[TVR_SIZE];
 } TVec_Root;
 
-class ITimerSink
-{
-public:
+class ITimerSink {
+  public:
     virtual ~ITimerSink() = 0;
     virtual void OnTimer( uint64_t qwIDEvent ) = 0;
-    virtual void OnTimer( uint64_t qwIDEvent, dm::any& oAny )
-    {
+    virtual void OnTimer( uint64_t qwIDEvent, dm::any& oAny ) {
         OnTimer( qwIDEvent );
     }
 };
 
-inline ITimerSink::~ITimerSink()
-{
+inline ITimerSink::~ITimerSink() {
 }
 
-class CDMTimerElement
-{
-public:
-    CDMTimerElement()
-    {
+class CDMTimerElement {
+  public:
+    CDMTimerElement() {
         Reset();
     }
-    ~CDMTimerElement()
-    {
+    ~CDMTimerElement() {
         Reset();
     }
 
-    inline void Reset()
-    {
+    inline void Reset() {
         m_stEntry.next = NULL;
         m_stEntry.prev = NULL;
         m_qwNextTime = 0;
@@ -86,12 +77,11 @@ public:
         m_bExact = false;
     }
 
-    inline void Kill()
-    {
+    inline void Kill() {
         m_bErased = true;
     }
 
-public:
+  public:
     struct list_head    m_stEntry;
 
     uint64_t  m_qwNextTime;

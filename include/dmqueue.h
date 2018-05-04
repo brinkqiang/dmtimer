@@ -25,63 +25,53 @@
 
 #include <stddef.h>
 
-class CDMQueue
-{
-public:
+class CDMQueue {
+  public:
     CDMQueue( void )
-        : m_pArray( NULL ), m_nHead( 0 ), m_nTail( 0 ), m_nSize( 0 )
-    {
+        : m_pArray( NULL ), m_nHead( 0 ), m_nTail( 0 ), m_nSize( 0 ) {
     }
 
-    ~CDMQueue( void )
-    {
+    ~CDMQueue( void ) {
         delete []m_pArray;
         m_nHead = 0;
         m_nTail = 0;
         m_nSize = 0;
     }
 
-    bool Init( int nSize )
-    {
+    bool Init( int nSize ) {
         m_nSize = nSize + 1;
         m_pArray = new void* [m_nSize]();
         return true;
     }
 
-    bool PushBack( void* ptr )
-    {
+    bool PushBack( void* ptr ) {
         int nDist = m_nTail + m_nSize - m_nHead;
         int nUsed = nDist >= m_nSize ? ( nDist - m_nSize ) : nDist;
 
-        if ( nUsed >= m_nSize - 1 )
-        {
+        if ( nUsed >= m_nSize - 1 ) {
             return false;
         }
 
         m_pArray[m_nTail] = ptr;
 
-        if ( ++m_nTail >= m_nSize )
-        {
+        if ( ++m_nTail >= m_nSize ) {
             m_nTail = 0;
         }
 
         return true;
     }
 
-    void* PopFront()
-    {
+    void* PopFront() {
         int nDist = m_nTail + m_nSize - m_nHead;
         int nUsed = nDist >= m_nSize ? ( nDist - m_nSize ) : nDist;
 
-        if ( 0 == nUsed )
-        {
+        if ( 0 == nUsed ) {
             return NULL;
         }
 
         void* ptr = m_pArray[m_nHead];
 
-        if ( ++m_nHead >= m_nSize )
-        {
+        if ( ++m_nHead >= m_nSize ) {
             m_nHead = 0;
         }
 
@@ -89,7 +79,7 @@ public:
     }
 
 
-protected:
+  protected:
     void**  m_pArray;
     int   m_nHead;
     int   m_nTail;

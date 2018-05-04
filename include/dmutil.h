@@ -26,47 +26,40 @@
 // tolua_begin
 
 #ifdef WIN32
-static inline struct tm* localtime_r( const time_t* timep, struct tm* result )
-{
+static inline struct tm* localtime_r( const time_t* timep, struct tm* result ) {
     localtime_s( result, timep );
     return result;
 }
-static inline struct tm* gmtime_r( const time_t* timep, struct tm* result )
-{
+static inline struct tm* gmtime_r( const time_t* timep, struct tm* result ) {
     gmtime_s( result, timep );
     return result;
 }
 #endif
 
-static inline std::string DMFormatIP( unsigned int dwIP )
-{
+static inline std::string DMFormatIP( unsigned int dwIP ) {
     sockaddr_in s;
     s.sin_family = AF_INET;
     s.sin_addr.s_addr = dwIP;
     return inet_ntoa( s.sin_addr );
 }
 
-static inline unsigned int DMFormatIP( const std::string& strIp )
-{
+static inline unsigned int DMFormatIP( const std::string& strIp ) {
     return inet_addr( strIp.c_str() );
 }
 
-static inline unsigned short DMFormatPort( const std::string& strPort )
-{
+static inline unsigned short DMFormatPort( const std::string& strPort ) {
     return htons( atoi( strPort.c_str() ) );
 }
 
-static inline unsigned short DMFormatPort( unsigned short wPort )
-{
+static inline unsigned short DMFormatPort( unsigned short wPort ) {
     return htons( wPort );
 }
 
-static inline std::string DMFormatDateTime( time_t tVal = time( 0 ), const char* pFormat = "%Y-%m-%d %H:%M:%S" )
-{
+static inline std::string DMFormatDateTime( time_t tVal = time( 0 ),
+        const char* pFormat = "%Y-%m-%d %H:%M:%S" ) {
     struct tm Tm = {0};
 
-    if ( localtime_r( &tVal, &Tm ) )
-    {
+    if ( localtime_r( &tVal, &Tm ) ) {
         char szBuf[128];
         strftime( szBuf, sizeof( szBuf ), pFormat, &Tm );
         return szBuf;
@@ -75,13 +68,13 @@ static inline std::string DMFormatDateTime( time_t tVal = time( 0 ), const char*
     return "";
 }
 
-static inline time_t DMFormatDateTime( const std::string& strTime,  const char* pFormat =  "%d-%d-%d %d:%d:%d" )
-{
+static inline time_t DMFormatDateTime( const std::string& strTime,
+                                       const char* pFormat =  "%d-%d-%d %d:%d:%d" ) {
     time_t ret = 0;
     struct tm tmMake = {0};
 
-    if ( 6 == sscanf( strTime.c_str(), pFormat, &tmMake.tm_year, &tmMake.tm_mon, &tmMake.tm_mday, &tmMake.tm_hour, &tmMake.tm_min, &tmMake.tm_sec ) )
-    {
+    if ( 6 == sscanf( strTime.c_str(), pFormat, &tmMake.tm_year, &tmMake.tm_mon,
+                      &tmMake.tm_mday, &tmMake.tm_hour, &tmMake.tm_min, &tmMake.tm_sec ) ) {
         tmMake.tm_year -= 1900;
         tmMake.tm_mon -= 1;
         ret = mktime( &tmMake );
@@ -90,14 +83,12 @@ static inline time_t DMFormatDateTime( const std::string& strTime,  const char* 
     return ret;
 }
 
-static std::string DMGetRootPath()
-{
+static std::string DMGetRootPath() {
 #ifdef WIN32
     static char szPath[MAX_PATH];
     static bool bFirstTime = true;
 
-    if ( bFirstTime )
-    {
+    if ( bFirstTime ) {
         bFirstTime = false;
         GetModuleFileNameA( 0, szPath, sizeof( szPath ) );
         char* p = strrchr( szPath, '\\' );
@@ -109,13 +100,11 @@ static std::string DMGetRootPath()
     static char szPath[MAX_PATH];
     static bool bFirstTime = true;
 
-    if ( bFirstTime )
-    {
+    if ( bFirstTime ) {
         bFirstTime = false;
         int nRet = readlink( "/proc/self/exe", szPath, MAX_PATH );
 
-        if ( nRet < 0 || nRet >= MAX_PATH )
-        {
+        if ( nRet < 0 || nRet >= MAX_PATH ) {
             return "./";
         }
 

@@ -27,8 +27,7 @@
 #include "dmtimernode.h"
 
 #ifdef WIN32
-struct timezone
-{
+struct timezone {
     int  tz_minuteswest; /* minutes W of Greenwich */
     int  tz_dsttime;     /* type of dst correction */
 };
@@ -36,8 +35,7 @@ struct timezone
 static inline int gettimeofday( struct ::timeval* tv, struct timezone* tz );
 #endif
 
-static inline unsigned int GetTickCount32()
-{
+static inline unsigned int GetTickCount32() {
 #ifdef WIN32
     return ::GetTickCount();
 #else
@@ -47,42 +45,36 @@ static inline unsigned int GetTickCount32()
 #endif
 }
 
-class CDMTimeElapse
-{
-public:
-    CDMTimeElapse()
-    {
+class CDMTimeElapse {
+  public:
+    CDMTimeElapse() {
         Start();
     }
 
-    inline void Start()
-    {
+    inline void Start() {
         m_dwStart = GetTickCount32();
     }
 
-    inline unsigned int End()
-    {
+    inline unsigned int End() {
         return GetTickCount32() - m_dwStart;
     }
 
-private:
+  private:
     unsigned int m_dwStart;
 };
 
 
-class CDMTimerModule : public CDMSafeSingleton<CDMTimerModule>
-{
-public:
+class CDMTimerModule : public CDMSafeSingleton<CDMTimerModule> {
+  public:
     friend class CDMSafeSingleton<CDMTimerModule>;
 
-    enum
-    {
+    enum {
         eMAX_POOL_S = 50000,
         eMAX_POOL_I = 1000,
         eMAX_TIME_COUNT = eMAX_POOL_S * eMAX_POOL_I,
     };
 
-public:
+  public:
     CDMTimerModule();
 
     virtual ~CDMTimerModule();
@@ -98,17 +90,18 @@ public:
 
     void AddTimerElement( CDMTimerElement* pElement );
     void RemoveTimerElement( CDMTimerElement* pElement );
-public:
+  public:
     uint64_t GetBootTime();
 
-private:
+  private:
     void    __ReleaseElement( struct list_head* head );
     int     __Cascade( TVec* tv, int idx );
     bool    __TimerPending( CDMTimerElement* pElement );
 
     CDMTimerElement* __GetTimerInfoByEntry( list_head* head );
-private:
-    CDynamicRapidPool<CDMTimerElement, eMAX_POOL_S, eMAX_POOL_I>  m_oTimerElementPool;
+  private:
+    CDynamicRapidPool<CDMTimerElement, eMAX_POOL_S, eMAX_POOL_I>
+    m_oTimerElementPool;
 
     uint64_t m_qwLastTime;
     uint64_t m_qwCurTime;

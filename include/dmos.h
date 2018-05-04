@@ -60,13 +60,11 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-namespace stdext
-{
+namespace stdext {
 
 }
 
-namespace std
-{
+namespace std {
 using namespace stdext;
 }
 

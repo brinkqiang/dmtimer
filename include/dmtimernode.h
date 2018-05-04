@@ -28,13 +28,12 @@
 #include <map>
 
 class CDMTimerNode :
-    public ITimerSink
-{
-public:
+    public ITimerSink {
+  public:
     typedef std::map<uint64_t, CDMTimerElement*> TimerElementMap;
     typedef TimerElementMap::iterator TimerElementMapIt;
     typedef TimerElementMap::const_iterator TimerElementMapCIt;
-public:
+  public:
     CDMTimerNode();
     virtual ~CDMTimerNode();
 
@@ -46,7 +45,8 @@ public:
 
     bool SetTimer( uint64_t qwIDEvent, uint64_t qwElapse );
 
-    bool SetTimer( uint64_t qwIDEvent, uint64_t qwElapse, const dm::any& oAny, bool bExact = false );
+    bool SetTimer( uint64_t qwIDEvent, uint64_t qwElapse, const dm::any& oAny,
+                   bool bExact = false );
 
     void KillTimer( uint64_t qwIDEvent );
 
@@ -59,7 +59,7 @@ public:
 
     virtual void OnTimer( uint64_t qwIDEvent );
     virtual void OnTimer( uint64_t qwIDEvent, dm::any& oAny );
-private:
+  private:
     TimerElementMap m_oTimerElementMap;
 };
 

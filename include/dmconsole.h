@@ -25,58 +25,49 @@
 #include "dmos.h"
 #include "dmsingleton.h"
 
-class IDMConsoleSink
-{
-public:
+class IDMConsoleSink {
+  public:
     virtual ~IDMConsoleSink() {};
 
     virtual void OnCloseEvent() {};
 };
 
-class HDMConsoleMgr : public TSingleton<HDMConsoleMgr>
-{
+class HDMConsoleMgr : public TSingleton<HDMConsoleMgr> {
     friend class TSingleton<HDMConsoleMgr>;
-public:
-    void SetHandlerHook( IDMConsoleSink* pSink )
-    {
+  public:
+    void SetHandlerHook( IDMConsoleSink* pSink ) {
         m_pConsoleSink = pSink;
 #ifdef WIN32
 
-        if ( 0 == SetConsoleCtrlHandler( ( PHANDLER_ROUTINE )&HDMConsoleMgr::OnConsoleEvent, true ) )
-        {
+        if ( 0 == SetConsoleCtrlHandler( ( PHANDLER_ROUTINE )
+                                         &HDMConsoleMgr::OnConsoleEvent, true ) ) {
             DMASSERT( 0 );
         }
 
 #else
         m_phSigHandler = signal( SIGINT, &HDMConsoleMgr::OnConsoleEvent );
 
-        if ( SIG_ERR == m_phSigHandler )
-        {
+        if ( SIG_ERR == m_phSigHandler ) {
             DMASSERT( 0 );
         }
 
 #endif
     }
 
-    void OnCloseEvent()
-    {
-        if ( m_bOnce && m_pConsoleSink )
-        {
+    void OnCloseEvent() {
+        if ( m_bOnce && m_pConsoleSink ) {
             m_bOnce = false;
             m_pConsoleSink->OnCloseEvent();
         }
     }
 
 #ifdef WIN32
-    static BOOL WINAPI OnConsoleEvent( UINT32 dwEventType )
-    {
-        switch ( dwEventType )
-        {
+    static BOOL WINAPI OnConsoleEvent( UINT32 dwEventType ) {
+        switch ( dwEventType ) {
         case CTRL_C_EVENT:
         case CTRL_CLOSE_EVENT:
         case CTRL_LOGOFF_EVENT:
-        case CTRL_SHUTDOWN_EVENT:
-        {
+        case CTRL_SHUTDOWN_EVENT: {
             HDMConsoleMgr::Instance()->OnCloseEvent();
         }
         break;
@@ -89,12 +80,9 @@ public:
         return TRUE;
     }
 #else
-    static void OnConsoleEvent( int nEventType )
-    {
-        switch ( nEventType )
-        {
-        case SIGINT:
-        {
+    static void OnConsoleEvent( int nEventType ) {
+        switch ( nEventType ) {
+        case SIGINT: {
             HDMConsoleMgr::Instance()->OnCloseEvent();
         }
         break;
@@ -104,13 +92,12 @@ public:
             break;
         }
     }
-private:
+  private:
     sighandler_t m_phSigHandler;
 #endif
 
-public:
-    HDMConsoleMgr()
-    {
+  public:
+    HDMConsoleMgr() {
 #ifdef WIN32
         m_pConsoleSink = NULL;
         m_bOnce = true;
@@ -121,11 +108,10 @@ public:
 #endif
     }
 
-    ~HDMConsoleMgr()
-    {
+    ~HDMConsoleMgr() {
     }
 
-private:
+  private:
     IDMConsoleSink*   m_pConsoleSink;
     bool            m_bOnce;
 };
