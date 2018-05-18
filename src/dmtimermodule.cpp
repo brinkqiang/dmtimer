@@ -1,6 +1,4 @@
-#ifdef WIN32
-#define _CRT_SECURE_NO_WARNINGS
-#endif
+
 #include "dmtimermodule.h"
 
 CDMTimerModule::CDMTimerModule() {
