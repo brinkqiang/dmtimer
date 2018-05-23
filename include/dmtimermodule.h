@@ -25,7 +25,6 @@
 #include "dmsingleton.h"
 #include "dmrapidpool.h"
 #include "dmtimernode.h"
-
 #ifdef WIN32
 struct timezone {
     int  tz_minuteswest; /* minutes W of Greenwich */
@@ -106,8 +105,9 @@ class CDMTimerModule : public CDMSafeSingleton<CDMTimerModule> {
     uint64_t m_qwLastTime;
     uint64_t m_qwCurTime;
 
-    unsigned int m_dwTickTime;
-    uint64_t m_qwTickCount;
+    unsigned int m_dwTickCount;
+    uint64_t m_qwTotalTickCount;
+
     TVec_Root   m_tv1;
     TVec        m_tv2;
     TVec        m_tv3;

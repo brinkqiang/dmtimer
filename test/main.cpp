@@ -46,8 +46,7 @@ class CMain :
             }
         }
 
-        SetTimer( eTimerID_UUID, eTimerTime_UUID,
-                  dm::any( std::string( "hello world" ) ) );
+        SetTimer( eTimerID_UUID, eTimerTime_UUID, dm::any( std::string( "hello world" ) ) );
         SleepMs( 300 );
         CDMTimerModule::Instance()->Run();
         // test interface
