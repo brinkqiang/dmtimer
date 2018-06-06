@@ -1,6 +1,47 @@
+# Build matrix / environment variable are explained on:
+# http://about.travis-ci.org/docs/user/build-configuration/
+# This file can be validated on: http://lint.travis-ci.org/
+
+sudo: false
+dist: trusty
 language: cpp
+
 compiler:
-	- gcc
-	- clang
-# Change this to your needs
-script: mkdir build && cd build && cmake ..
+  - gcc
+  - clang
+os:
+  - linux
+# - osx
+
+env:
+  - BUILD_TYPE=Debug
+# - BUILD_TYPE=RelWithDebInfo
+
+addons:
+  apt:
+    # List of whitelisted in travis packages for ubuntu-trusty can be found here:
+    #   https://github.com/travis-ci/apt-package-whitelist/blob/master/ubuntu-trusty
+    # List of whitelisted in travis apt-sources:
+    #   https://github.com/travis-ci/apt-source-whitelist/blob/master/ubuntu.json
+    sources:
+
+    packages:
+    - cmake
+#   - gcc-7
+#   - g++-7
+#   - clang-5.0
+
+
+install:
+- cmake --version
+
+before_script:
+- mkdir -p build && cd build
+- cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+- cmake --build .
+- cd ..
+
+script:
+- "if [ -f bin/dmtimertest ] ; then bin/dmtimertest ; fi"
+
+

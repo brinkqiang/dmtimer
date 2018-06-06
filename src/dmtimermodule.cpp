@@ -186,14 +186,9 @@ uint64_t CDMTimerModule::GetCurTime() {
     return m_qwCurTime;
 }
 
-#ifdef WIN32
+#ifdef _MSC_VER
 
-#if defined(_MSC_VER) || defined(_MSC_EXTENSIONS)
 #define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
-#else
-#define DELTA_EPOCH_IN_MICROSECS  11644473600000000ULL
-#endif
-
 
 typedef union {
     uint64_t ft_scalar;

@@ -37,6 +37,9 @@
 #define TIME_NOT_EQ(x, y) ((x) != (y))
 #define INDEX(t, N) ((t >> (TVR_BITS + (N) * TVN_BITS)) & TVN_MASK)
 
+#define DM_MAGIC_USED       (0xcc)
+#define DM_MAGIC_UNUSED     (0xcd)
+
 typedef struct tvec {
     struct list_head vec[TVN_SIZE];
 } TVec;
@@ -90,9 +93,10 @@ class CDMTimerElement {
 
     ITimerSink*         m_poTimerSink;
 
+    dm::any             m_oAny;
+
     bool                m_bErased;
     bool                m_bExact;
-    dm::any             m_oAny;
 };
 
 #endif // __DMTIMERSINK_H_INCLUDE__

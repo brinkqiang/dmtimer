@@ -25,22 +25,23 @@
 #include "dmsingleton.h"
 #include "dmrapidpool.h"
 #include "dmtimernode.h"
-#ifdef WIN32
+
+#ifdef _MSC_VER
 struct timezone {
     int  tz_minuteswest; /* minutes W of Greenwich */
     int  tz_dsttime;     /* type of dst correction */
 };
 
-static inline int gettimeofday( struct ::timeval* tv, struct timezone* tz );
+static inline int gettimeofday(struct ::timeval* tv, struct timezone* tz);
 #endif
 
 static inline unsigned int GetTickCount32() {
-#ifdef WIN32
+#ifdef _MSC_VER
     return ::GetTickCount();
 #else
-    struct timespec ts = {0};
-    clock_gettime( CLOCK_MONOTONIC, &ts );
-    return ( ts.tv_sec * 1000 + ts.tv_nsec / 1000000 );
+    struct timespec ts = { 0 };
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 #endif
 }
 
