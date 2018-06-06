@@ -31,7 +31,7 @@ class CMain :
 
     typedef enum {
         eTimerTime_UUID = 1000,
-        eTimerTime_STOP = 10000,
+        eTimerTime_STOP = 30000,
     } ETimerTime;
 
 
@@ -49,6 +49,8 @@ class CMain :
         SetTimer( eTimerID_UUID, eTimerTime_UUID, dm::any( std::string( "hello world" ) ) );
         SleepMs( 300 );
         CDMTimerModule::Instance()->Run();
+
+        SetTimer(eTimerID_STOP, eTimerTime_STOP);
         // test interface
         uint64_t qwElapse = GetTimerElapse( eTimerID_UUID );
         std::cout << "test GetTimerElapse: " << qwElapse << std::endl;
@@ -93,7 +95,7 @@ class CMain :
         break;
 
         case eTimerID_STOP: {
-            std::cout << DMFormatDateTime() << std::endl;
+            std::cout << DMFormatDateTime() << " test stopping..." << std::endl;
             Stop();
         }
         break;
