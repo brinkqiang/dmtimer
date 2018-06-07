@@ -36,9 +36,10 @@ before_build:
 - cmake -H. -Bbuild/vs -G "Visual Studio %VS_VERSION%" -DCMAKE_GENERATOR_PLATFORM=%VS_PLATFORM%
 
 build:
-  project: build\vs\%APPVEYOR_REPO_NAME%.sln
+  project: build\vs\dmtimer.sln
   parallel: true
   verbosity: minimal
 
 test_script:
+- echo %APPVEYOR_REPO_NAME%
  # - cd Build\VS && if %CONFIGURATION%==Debug (ctest --verbose -E perftest --build-config %CONFIGURATION%) else (ctest --verbose --build-config %CONFIGURATION%)
