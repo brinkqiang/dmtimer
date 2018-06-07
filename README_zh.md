@@ -17,7 +17,7 @@ Copyright (c) 2013-2018 brinkqiang (brink.qiang@gmail.com)
 C++ high performance timer
 
 ## Contacts
-![Join the chat at https://gitter.im/brinkqiang/dmtimer](https://badges.gitter.im/brinkqiang/dmtimer/Lobby.svg)
+[![Join the chat](https://badges.gitter.im/brinkqiang/dmtimer/Lobby.svg)](https://gitter.im/brinkqiang/dmtimer)
 
 ## Thanks
 pudding_186@163.com
