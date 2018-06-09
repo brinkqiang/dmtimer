@@ -41,7 +41,8 @@ build:
   verbosity: minimal
 
 test_script:
+# Environment variables https://www.appveyor.com/docs/environment-variables/
 - echo %APPVEYOR_REPO_NAME%
 - echo %APPVEYOR_PROJECT_NAME%
 - echo %APPVEYOR_ACCOUNT_NAME%
- # - cd Build\VS && if %CONFIGURATION%==Debug (ctest --verbose -E perftest --build-config %CONFIGURATION%) else (ctest --verbose --build-config %CONFIGURATION%)
+
