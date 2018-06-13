@@ -78,11 +78,11 @@
 
 // Presence of C++ library features:
 
-#if any_COMPILER_GNUC_VERSION
-# define any_HAVE_TR1_TYPE_TRAITS  1
-# define any_HAVE_TR1_ADD_CONST  1
-# define any_HAVE_TR1_REMOVE_REFERENCE  1
-#endif
+//#if any_COMPILER_GNUC_VERSION
+//# define any_HAVE_TR1_TYPE_TRAITS  1
+//# define any_HAVE_TR1_ADD_CONST  1
+//# define any_HAVE_TR1_REMOVE_REFERENCE  1
+//#endif
 
 #if any_CPP11_OR_GREATER || any_COMPILER_MSVC_VERSION >= 9
 # define any_HAVE_TYPE_TRAITS  1
