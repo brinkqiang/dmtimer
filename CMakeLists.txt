@@ -116,3 +116,5 @@ ELSE(UNIX)
 
     TARGET_LINK_LIBRARIES(dmtimertest rt pthread dmtimer)
 ENDIF ()
+
+MESSAGE(STATUS ${CMAKE_CXX_FLAGS})
