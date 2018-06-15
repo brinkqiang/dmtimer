@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 PROJECT(dmtimer)
 
-SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
-
 IF (WIN32)  
     MESSAGE(STATUS "Now is windows")  
 ELSEIF (APPLE)  
@@ -117,4 +115,7 @@ ELSE(UNIX)
     TARGET_LINK_LIBRARIES(dmtimertest pthread dmtimer)
 ENDIF ()
 
+SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
+
 MESSAGE(STATUS ${CMAKE_CXX_FLAGS})
+
