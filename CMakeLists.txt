@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 PROJECT(dmtimer)
 
-ADD_DEFINITIONS(-std=c++11)
+ADD_COMPILE_OPTIONS(-std=c++11)
 
 IF (WIN32)  
     MESSAGE(STATUS "Now is windows")  
