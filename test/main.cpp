@@ -13,7 +13,7 @@ class CPlayer : public CDMTimerNode {
 
 class CMain :
     public IDMConsoleSink,
-    public IDMThread,
+	public IDMThread,
     public CDMThreadCtrl,
     public CDMTimerNode,
     public TSingleton<CMain> {
@@ -31,9 +31,8 @@ class CMain :
 
     typedef enum {
         eTimerTime_UUID = 1000,
-        eTimerTime_STOP = 30000,
+        eTimerTime_STOP = 10000,
     } ETimerTime;
-
 
   public:
 
@@ -118,6 +117,7 @@ class CMain :
     }
 
     virtual ~CMain() {
+
     }
 
   private:
@@ -136,8 +136,9 @@ void CPlayer::OnTimer( uint64_t qwIDEvent ) {
     CMain::Instance()->AddOnTimerCount();
 }
 
-int main( int argc, char* argv[] ) {
-    CMain::Instance()->Start( CMain::Instance(), true );
+int main( int argc, char* argv[] )
+{
+    CMain::Instance()->Start( CMain::Instance());
     CMain::Instance()->WaitFor();
     return 0;
 }

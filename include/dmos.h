@@ -41,6 +41,8 @@
 #include <time.h>
 #include <assert.h>
 
+#include <csignal>
+
 #include <string>
 #include <vector>
 #include <queue>
@@ -85,6 +87,8 @@ using namespace stdext;
 #include <string.h>
 #include <time.h>
 #include <assert.h>
+
+#include <csignal>
 
 #include <string>
 #include <vector>

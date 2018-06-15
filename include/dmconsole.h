@@ -34,24 +34,17 @@ class IDMConsoleSink {
 
 class HDMConsoleMgr : public TSingleton<HDMConsoleMgr> {
     friend class TSingleton<HDMConsoleMgr>;
+
+	typedef void(*consolehandler_t)(int);
   public:
     void SetHandlerHook( IDMConsoleSink* pSink ) {
         m_pConsoleSink = pSink;
-#ifdef WIN32
 
-        if ( 0 == SetConsoleCtrlHandler( ( PHANDLER_ROUTINE )
-                                         &HDMConsoleMgr::OnConsoleEvent, true ) ) {
+		m_phHandler = signal( SIGINT, &HDMConsoleMgr::OnConsoleEvent );
+
+		if ( SIG_ERR == m_phHandler ) {
             DMASSERT( 0 );
         }
-
-#else
-        m_phSigHandler = signal( SIGINT, &HDMConsoleMgr::OnConsoleEvent );
-
-        if ( SIG_ERR == m_phSigHandler ) {
-            DMASSERT( 0 );
-        }
-
-#endif
     }
 
     void OnCloseEvent() {
@@ -61,28 +54,16 @@ class HDMConsoleMgr : public TSingleton<HDMConsoleMgr> {
         }
     }
 
-#ifdef WIN32
-    static BOOL WINAPI OnConsoleEvent( UINT32 dwEventType ) {
-        switch ( dwEventType ) {
-        case CTRL_C_EVENT:
-        case CTRL_CLOSE_EVENT:
-        case CTRL_LOGOFF_EVENT:
-        case CTRL_SHUTDOWN_EVENT: {
-            HDMConsoleMgr::Instance()->OnCloseEvent();
-        }
-        break;
-
-        default:
-            DMASSERT( 0 );
-            break;
-        }
-
-        return TRUE;
-    }
-#else
     static void OnConsoleEvent( int nEventType ) {
         switch ( nEventType ) {
-        case SIGINT: {
+        case SIGINT: 
+		case SIGILL:
+		case SIGFPE:
+		case SIGSEGV:
+		case SIGTERM:
+		case SIGBREAK:
+		case SIGABRT:
+		{
             HDMConsoleMgr::Instance()->OnCloseEvent();
         }
         break;
@@ -93,19 +74,14 @@ class HDMConsoleMgr : public TSingleton<HDMConsoleMgr> {
         }
     }
   private:
-    sighandler_t m_phSigHandler;
-#endif
+
+	consolehandler_t m_phHandler;
+
 
   public:
     HDMConsoleMgr() {
-#ifdef WIN32
         m_pConsoleSink = NULL;
         m_bOnce = true;
-#else
-        m_phSigHandler = NULL;
-        m_pConsoleSink = NULL;
-        m_bOnce = true;
-#endif
     }
 
     ~HDMConsoleMgr() {

@@ -24,224 +24,113 @@
 
 #include "dmos.h"
 
+#include <thread>
+#include <memory>
+
 class IDMThread {
-  public:
-    virtual ~IDMThread() {}
-    virtual void ThrdProc() = 0;
-    virtual void Terminate() = 0;
+public:
+	virtual ~IDMThread() {}
+	virtual void ThrdProc() = 0;
+	virtual void Terminate() = 0;
 };
 
 class IDMThreadCtrl {
-  public:
-    virtual ~IDMThreadCtrl() {}
-    virtual void Resume() = 0;
-    virtual void Suspend() = 0;
-    virtual void Stop() = 0;
-    virtual bool Kill( unsigned int dwExitCode ) = 0;
-    virtual bool WaitFor( unsigned int dwWaitTime = -1 ) = 0;
-    virtual unsigned int GetThreadID() = 0;
-    virtual IDMThread* GetThread() = 0;
-    virtual void Release() = 0;
+public:
+	virtual ~IDMThreadCtrl() {}
+	virtual void Resume() = 0;
+	virtual void Suspend() = 0;
+	virtual void Stop() = 0;
+	virtual bool Kill(unsigned int dwExitCode) = 0;
+	virtual bool WaitFor() = 0;
+	virtual std::thread::id GetThreadID() = 0;
+	virtual IDMThread* GetThread() = 0;
+	virtual void Release() = 0;
 };
 
-class CDMThreadCtrl : public IDMThreadCtrl {
-  public:
-    CDMThreadCtrl() {
-#ifdef WIN32
-        m_bIsStop       = true;
-        m_bNeedWaitFor  = true;
-        m_hThread       = INVALID_HANDLE_VALUE;
-        m_dwThreadID    = -1;
-        m_poThread      = NULL;
-#else
-        m_bIsStop       = true;
-        m_bNeedWaitFor  = true;
-        m_ID            = 0;
-        m_poThread      = NULL;
-#endif
-    }
+class CDMThreadCtrl : public IDMThreadCtrl{
+public:
+	CDMThreadCtrl()
+	{
+		m_bIsStop = true;
+		m_bNeedWaitFor = true;
+		m_poThread = NULL;
+	}
 
-    virtual ~CDMThreadCtrl() {
-    }
+	virtual ~CDMThreadCtrl() {
+	}
 
-  public:
-    virtual void Resume( void ) {
-#ifdef WIN32
-        ResumeThread( m_hThread );
-#else
-        DMASSERT( 0 );
-#endif
-    }
+public:
+	virtual void Resume(void) {
 
-    virtual void Suspend() {
-#ifdef WIN32
-        SuspendThread( m_hThread );
-#else
-        DMASSERT( 0 );
-#endif
-    }
+	}
 
-    virtual void Stop( void ) {
-#ifdef WIN32
-        m_poThread->Terminate();
-#else
-        m_poThread->Terminate();
-#endif
-    }
+	virtual void Suspend() {
 
-    virtual bool Kill( unsigned int dwExitCode ) {
-#ifdef WIN32
+	}
 
-        if ( INVALID_HANDLE_VALUE == m_hThread ) {
-            return false;
-        }
+	virtual void Stop(void) {
+		m_poThread->Terminate();
+	}
 
-        if ( !TerminateThread( m_hThread, dwExitCode ) ) {
-            return false;
-        }
+	virtual bool Kill(unsigned int dwExitCode) {
+		return true;
+	}
 
-        CloseHandle( m_hThread );
-        m_hThread = INVALID_HANDLE_VALUE;
-        return true;
-#else
-        pthread_cancel( m_ID );
-        return true;
-#endif
-    }
+	virtual bool WaitFor() {
+		if (m_oThread->joinable())
+		{
+			m_oThread->join();
+		}
+		return true;
+	}
 
-    virtual bool WaitFor( unsigned int dwWaitTime = INFINITE ) {
-#ifdef WIN32
+	virtual void Release(void) {
+		delete this;
+	}
 
-        if ( !m_bNeedWaitFor || INVALID_HANDLE_VALUE == m_hThread ) {
-            return false;
-        }
+	virtual std::thread::id GetThreadID(void) {
+		return m_oThread->get_id();
+	}
 
-        unsigned int dwRet = WaitForSingleObject( m_hThread, dwWaitTime );
-        CloseHandle( m_hThread );
-        m_hThread = INVALID_HANDLE_VALUE;
-        m_bIsStop = true;
+	virtual IDMThread* GetThread(void) {
+		return m_poThread;
+	}
 
-        if ( WAIT_OBJECT_0 == dwRet ) {
-            return true;
-        }
+	static void* StaticThreadFunc(void* arg)
+	{
+		CDMThreadCtrl* poCtrl = (CDMThreadCtrl*)arg;
+		poCtrl->m_bIsStop = false;
 
-        return false;
-#else
+		poCtrl->m_poThread->ThrdProc();
+		return 0;
+	}
 
-        if ( false == m_bNeedWaitFor ) {
-            return false;
-        }
+	bool Start(IDMThread* poThread, bool bNeedWaitFor = true)
+	{
+		m_poThread = poThread;
 
-        m_bIsStop = true;
-        pthread_join( m_ID, NULL );
-        m_ID = -1;
-        return true;
-#endif
-    }
+		m_bNeedWaitFor = bNeedWaitFor;
 
-    virtual void Release( void ) {
-        delete this;
-    }
+		std::unique_ptr<std::thread> oThread(new std::thread(StaticThreadFunc, this));
 
-    virtual unsigned int GetThreadID( void ) {
-#ifdef WIN32
-        return m_dwThreadID;
-#else
-        return ( unsigned int )m_ID;
-#endif
-    }
+		m_oThread = std::move(oThread);
 
-    virtual IDMThread* GetThread( void ) {
-        return m_poThread;
-    }
+		if (!bNeedWaitFor)
+		{
+			m_oThread->detach();
+		}
+		return true;
+	}
 
-#ifdef WIN32
-    static unsigned int __stdcall StaticThreadFunc( void* arg )
-#else
-    static void* StaticThreadFunc( void* arg )
-#endif
-    {
-#ifdef WIN32
-        CDMThreadCtrl* poCtrl = ( CDMThreadCtrl* )arg;
-        poCtrl->m_bIsStop = false;
-        poCtrl->m_poThread->ThrdProc();
-        return 0;
-#else
-        CDMThreadCtrl* poCtrl = ( CDMThreadCtrl* )arg;
-        pthread_setcancelstate( PTHREAD_CANCEL_ENABLE, 0 );
-        pthread_setcanceltype( PTHREAD_CANCEL_ASYNCHRONOUS, 0 );
-        sigset_t new_set, old_set;
-        sigemptyset( &new_set );
-        sigemptyset( &old_set );
-        sigaddset( &new_set, SIGHUP );
-        sigaddset( &new_set, SIGINT );
-        sigaddset( &new_set, SIGQUIT );
-        sigaddset( &new_set, SIGTERM );
-        sigaddset( &new_set, SIGUSR1 );
-        sigaddset( &new_set, SIGUSR2 );
-        sigaddset( &new_set, SIGPIPE );
-        pthread_sigmask( SIG_BLOCK, &new_set, &old_set );
-
-        if ( !poCtrl->m_bNeedWaitFor ) {
-            pthread_detach( pthread_self() );
-        }
-
-        poCtrl->m_bIsStop = false;
-        poCtrl->m_poThread->ThrdProc();
-        return NULL;
-#endif
-    }
-
-    bool Start( IDMThread* poThread, bool bNeedWaitFor = true,
-                bool bSuspend = false ) {
-#ifdef WIN32
-        m_bNeedWaitFor = bNeedWaitFor;
-        m_poThread = poThread;
-
-        if ( bSuspend ) {
-            m_hThread = ( HANDLE )_beginthreadex( 0, 0, StaticThreadFunc, this,
-                                                  CREATE_SUSPENDED, &m_dwThreadID );
-        }
-        else {
-            m_hThread = ( HANDLE )_beginthreadex( 0, 0, StaticThreadFunc, this, 0,
-                                                  &m_dwThreadID );
-        }
-
-        if ( INVALID_HANDLE_VALUE == m_hThread ) {
-            return false;
-        }
-
-        return true;
-#else
-        m_bNeedWaitFor = bNeedWaitFor;
-        m_poThread = poThread;
-
-        if ( 0 != pthread_create( &m_ID, NULL, ( void* ( * )( void* ) )StaticThreadFunc,
-                                  this ) ) {
-            return false;
-        }
-
-        return true;
-#endif
-    }
-
-  protected:
-#ifdef WIN32
-    volatile bool   m_bIsStop;
-    bool            m_bNeedWaitFor;
-    HANDLE          m_hThread;
-    unsigned int    m_dwThreadID;
-    IDMThread*        m_poThread;
-#else
-    volatile bool   m_bIsStop;
-    pthread_t       m_ID;
-    IDMThread*        m_poThread;
-    bool            m_bNeedWaitFor;
-#endif
+protected:
+	volatile bool   m_bIsStop;
+	volatile bool	m_bNeedWaitFor;
+	std::unique_ptr<std::thread> m_oThread;
+	IDMThread*      m_poThread;
 };
 
 inline IDMThreadCtrl* CreateThreadCtrl() {
-    return new CDMThreadCtrl;
+	return new CDMThreadCtrl;
 }
 
 #endif // __DMTHREAD_H_INCLUDE__
