@@ -81,7 +81,7 @@ ELSEIF (APPLE)
     ADD_EXECUTABLE(dmtimertest ${TEST_SOURCES})
 
     TARGET_LINK_LIBRARIES(dmtimertest pthread dmtimer)
-ELSEIF (UNIX)
+ELSE(UNIX)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
@@ -114,5 +114,5 @@ ELSEIF (UNIX)
 
     ADD_EXECUTABLE(dmtimertest ${TEST_SOURCES})
 
-    TARGET_LINK_LIBRARIES(dmtimertest pthread dmtimer)
+    TARGET_LINK_LIBRARIES(dmtimertest rt pthread dmtimer)
 ENDIF ()
