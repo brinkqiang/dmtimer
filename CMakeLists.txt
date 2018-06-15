@@ -3,12 +3,18 @@ PROJECT(dmtimer)
 
 IF (WIN32)  
     MESSAGE(STATUS "Now is windows")  
+
+    SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
+
 ELSEIF (APPLE)  
     MESSAGE(STATUS "Now is Apple systems.")  
     ADD_DEFINITIONS(-DDMTIMER_USE_MACOSX)
+
+    SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 ELSEIF (UNIX)  
     MESSAGE(STATUS "Now is UNIX-like OS's. Including Apple os x and CygWin")  
     ADD_DEFINITIONS(-DDMTIMER_USE_LINUX)
+    SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11" )
 ENDIF ()
 
 IF (WIN32)
@@ -114,8 +120,6 @@ ELSE(UNIX)
 
     TARGET_LINK_LIBRARIES(dmtimertest pthread dmtimer)
 ENDIF ()
-
-SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 
 MESSAGE(STATUS ${CMAKE_CXX_FLAGS})
 
