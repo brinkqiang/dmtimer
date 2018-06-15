@@ -57,12 +57,11 @@ class HDMConsoleMgr : public TSingleton<HDMConsoleMgr> {
     static void OnConsoleEvent( int nEventType ) {
         switch ( nEventType ) {
         case SIGINT: 
-		case SIGILL:
-		case SIGFPE:
-		case SIGSEGV:
-		case SIGTERM:
-		case SIGBREAK:
-		case SIGABRT:
+        case SIGILL:
+        case SIGFPE:
+        case SIGSEGV:
+        case SIGTERM:
+        case SIGABRT:
 		{
             HDMConsoleMgr::Instance()->OnCloseEvent();
         }
