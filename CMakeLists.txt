@@ -114,7 +114,7 @@ ELSE(UNIX)
 
     ADD_EXECUTABLE(dmtimertest ${TEST_SOURCES})
 
-    TARGET_LINK_LIBRARIES(dmtimertest rt pthread dmtimer)
+    TARGET_LINK_LIBRARIES(dmtimertest pthread dmtimer)
 ENDIF ()
 
 MESSAGE(STATUS ${CMAKE_CXX_FLAGS})
