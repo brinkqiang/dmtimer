@@ -11,7 +11,7 @@ compiler:
   - clang
 os:
   - linux
-#  - osx
+  - osx
 
 env:
   - BUILD_TYPE=Debug
