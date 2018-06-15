@@ -46,7 +46,7 @@ IF (WIN32)
 
     ADD_EXECUTABLE(dmtimertest ${DMTIMERTEST_SOURCES})
 
-    TARGET_LINK_LIBRARIES(dmtimertest pthread dmtimer)
+    TARGET_LINK_LIBRARIES(dmtimertest dmtimer)
 ELSEIF (APPLE)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -114,5 +114,5 @@ ELSEIF (UNIX)
 
     ADD_EXECUTABLE(dmtimertest ${TEST_SOURCES})
 
-    TARGET_LINK_LIBRARIES(dmtimertest rt dmtimer)
+    TARGET_LINK_LIBRARIES(dmtimertest pthread dmtimer)
 ENDIF ()
