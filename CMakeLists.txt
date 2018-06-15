@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 PROJECT(dmtimer)
 
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
 IF (WIN32)  
     MESSAGE(STATUS "Now is windows")  
 
