@@ -12,11 +12,12 @@ ELSEIF (APPLE)
     MESSAGE(STATUS "Now is Apple systems.")  
     ADD_DEFINITIONS(-DDMTIMER_USE_MACOSX)
 
-    SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
+    SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread" )
 ELSEIF (UNIX)  
     MESSAGE(STATUS "Now is UNIX-like OS's. Including Apple os x and CygWin")  
     ADD_DEFINITIONS(-DDMTIMER_USE_LINUX)
-    SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11" )
+
+    SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread" )
 ENDIF ()
 
 IF (WIN32)
@@ -76,7 +77,7 @@ ELSEIF (APPLE)
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 
     ADD_LIBRARY(dmtimer ${DMTIMER_SOURCES})
-    TARGET_LINK_LIBRARIES(dmtimer pthread)
+    TARGET_LINK_LIBRARIES(dmtimer)
 
     FILE(GLOB_RECURSE TEST_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp
@@ -111,7 +112,7 @@ ELSE(UNIX)
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 
     ADD_LIBRARY(dmtimer ${DMTIMER_SOURCES})
-    TARGET_LINK_LIBRARIES(dmtimer pthread)
+    TARGET_LINK_LIBRARIES(dmtimer)
 
     FILE(GLOB_RECURSE TEST_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp
