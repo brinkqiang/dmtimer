@@ -35,14 +35,14 @@ class IDMConsoleSink {
 class HDMConsoleMgr : public TSingleton<HDMConsoleMgr> {
     friend class TSingleton<HDMConsoleMgr>;
 
-	typedef void(*consolehandler_t)(int);
+    typedef void(*consolehandler_t)(int);
   public:
     void SetHandlerHook( IDMConsoleSink* pSink ) {
         m_pConsoleSink = pSink;
 
-		m_phHandler = signal( SIGINT, &HDMConsoleMgr::OnConsoleEvent );
+        m_phHandler = signal( SIGINT, &HDMConsoleMgr::OnConsoleEvent );
 
-		if ( SIG_ERR == m_phHandler ) {
+        if ( SIG_ERR == m_phHandler ) {
             DMASSERT( 0 );
         }
     }
@@ -56,13 +56,12 @@ class HDMConsoleMgr : public TSingleton<HDMConsoleMgr> {
 
     static void OnConsoleEvent( int nEventType ) {
         switch ( nEventType ) {
-        case SIGINT: 
+        case SIGINT:
         case SIGILL:
         case SIGFPE:
         case SIGSEGV:
         case SIGTERM:
-        case SIGABRT:
-		{
+        case SIGABRT: {
             HDMConsoleMgr::Instance()->OnCloseEvent();
         }
         break;
@@ -74,7 +73,7 @@ class HDMConsoleMgr : public TSingleton<HDMConsoleMgr> {
     }
   private:
 
-	consolehandler_t m_phHandler;
+    consolehandler_t m_phHandler;
 
 
   public:

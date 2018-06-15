@@ -28,109 +28,106 @@
 #include <memory>
 
 class IDMThread {
-public:
-	virtual ~IDMThread() {}
-	virtual void ThrdProc() = 0;
-	virtual void Terminate() = 0;
+  public:
+    virtual ~IDMThread() {}
+    virtual void ThrdProc() = 0;
+    virtual void Terminate() = 0;
 };
 
 class IDMThreadCtrl {
-public:
-	virtual ~IDMThreadCtrl() {}
-	virtual void Resume() = 0;
-	virtual void Suspend() = 0;
-	virtual void Stop() = 0;
-	virtual bool Kill(unsigned int dwExitCode) = 0;
-	virtual bool WaitFor() = 0;
-	virtual std::thread::id GetThreadID() = 0;
-	virtual IDMThread* GetThread() = 0;
-	virtual void Release() = 0;
+  public:
+    virtual ~IDMThreadCtrl() {}
+    virtual void Resume() = 0;
+    virtual void Suspend() = 0;
+    virtual void Stop() = 0;
+    virtual bool Kill(unsigned int dwExitCode) = 0;
+    virtual bool WaitFor() = 0;
+    virtual std::thread::id GetThreadID() = 0;
+    virtual IDMThread* GetThread() = 0;
+    virtual void Release() = 0;
 };
 
-class CDMThreadCtrl : public IDMThreadCtrl{
-public:
-	CDMThreadCtrl()
-	{
-		m_bIsStop = true;
-		m_bNeedWaitFor = true;
-		m_poThread = NULL;
-	}
+class CDMThreadCtrl : public IDMThreadCtrl {
+  public:
+    CDMThreadCtrl() {
+        m_bIsStop = true;
+        m_bNeedWaitFor = true;
+        m_poThread = NULL;
+    }
 
-	virtual ~CDMThreadCtrl() {
-	}
+    virtual ~CDMThreadCtrl() {
+    }
 
-public:
-	virtual void Resume(void) {
+  public:
+    virtual void Resume(void) {
 
-	}
+    }
 
-	virtual void Suspend() {
+    virtual void Suspend() {
 
-	}
+    }
 
-	virtual void Stop(void) {
-		m_poThread->Terminate();
-	}
+    virtual void Stop(void) {
+        m_poThread->Terminate();
+    }
 
-	virtual bool Kill(unsigned int dwExitCode) {
-		return true;
-	}
+    virtual bool Kill(unsigned int dwExitCode) {
+        return true;
+    }
 
-	virtual bool WaitFor() {
-		if (m_oThread->joinable())
-		{
-			m_oThread->join();
-		}
-		return true;
-	}
+    virtual bool WaitFor() {
+        if (m_oThread->joinable()) {
+            m_oThread->join();
+        }
 
-	virtual void Release(void) {
-		delete this;
-	}
+        return true;
+    }
 
-	virtual std::thread::id GetThreadID(void) {
-		return m_oThread->get_id();
-	}
+    virtual void Release(void) {
+        delete this;
+    }
 
-	virtual IDMThread* GetThread(void) {
-		return m_poThread;
-	}
+    virtual std::thread::id GetThreadID(void) {
+        return m_oThread->get_id();
+    }
 
-	static void* StaticThreadFunc(void* arg)
-	{
-		CDMThreadCtrl* poCtrl = (CDMThreadCtrl*)arg;
-		poCtrl->m_bIsStop = false;
+    virtual IDMThread* GetThread(void) {
+        return m_poThread;
+    }
 
-		poCtrl->m_poThread->ThrdProc();
-		return 0;
-	}
+    static void* StaticThreadFunc(void* arg) {
+        CDMThreadCtrl* poCtrl = (CDMThreadCtrl*)arg;
+        poCtrl->m_bIsStop = false;
 
-	bool Start(IDMThread* poThread, bool bNeedWaitFor = true)
-	{
-		m_poThread = poThread;
+        poCtrl->m_poThread->ThrdProc();
+        return 0;
+    }
 
-		m_bNeedWaitFor = bNeedWaitFor;
+    bool Start(IDMThread* poThread, bool bNeedWaitFor = true) {
+        m_poThread = poThread;
 
-		std::unique_ptr<std::thread> oThread(new std::thread(StaticThreadFunc, this));
+        m_bNeedWaitFor = bNeedWaitFor;
 
-		m_oThread = std::move(oThread);
+        std::unique_ptr<std::thread> oThread(new std::thread(StaticThreadFunc, this));
 
-		if (!bNeedWaitFor)
-		{
-			m_oThread->detach();
-		}
-		return true;
-	}
+        m_oThread = std::move(oThread);
 
-protected:
-	volatile bool   m_bIsStop;
-	volatile bool	m_bNeedWaitFor;
-	std::unique_ptr<std::thread> m_oThread;
-	IDMThread*      m_poThread;
+        if (!bNeedWaitFor) {
+            m_oThread->detach();
+        }
+
+        return true;
+    }
+
+  protected:
+    volatile bool   m_bIsStop;
+    volatile bool   m_bNeedWaitFor;
+    std::unique_ptr<std::thread> m_oThread;
+    IDMThread*      m_poThread;
 };
 
 inline IDMThreadCtrl* CreateThreadCtrl() {
-	return new CDMThreadCtrl;
+    return new CDMThreadCtrl;
 }
 
 #endif // __DMTHREAD_H_INCLUDE__
