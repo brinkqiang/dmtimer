@@ -60,7 +60,7 @@ deploy:
   provider: releases
   api_key:
     secure: $GITHUB_ACCESS_TOKEN
-  file: bin/*
+  file: bin/dmtimertest
   skip_cleanup: true
   on:
     tags: false
