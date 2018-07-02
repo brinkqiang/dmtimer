@@ -46,4 +46,12 @@ script:
 - echo $TRAVIS_REPO_SLUG
 - "if [ -f bin/dmtimertest ] ; then bin/dmtimertest ; fi"
 
-
+deploy:
+  provider: releases
+  api_key:
+    secure: $GITHUB_ACCESS_TOKEN
+  file: bin/dmtimertest
+  skip_cleanup: true
+  on:
+    tags: false
+    all_branches: true
