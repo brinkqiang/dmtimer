@@ -52,19 +52,21 @@ after_success:
 after_failure:
 - echo failure
 
-#before_deploy:
-#- git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
-#- echo deploy start
+before_deploy:
+- git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+- echo deploy start
 
-#deploy:
-#  provider: releases
-#  api_key:
-#    secure: $GITHUB_ACCESS_TOKEN
-#  file: bin/dmtimertest
-#  skip_cleanup: true
-#  on:
-#    tags: false
-#    all_branches: true
+deploy:
+  provider: releases
+  api_key:
+    secure: $GITHUB_ACCESS_TOKEN
+  file: bin/dmtimertest
+  skip_cleanup: true
+  on:
+    branch: master
+    tags: false
+    all_branches: true
+    condition: $TRAVIS_OS_NAME == "linux" && $TRAVIS_COMMIT_MESSAGE == "BUILD" && $BUILD_TYPE == "RelWithDebInfo"
 
-#after_deploy:
-#- echo deploy end
+after_deploy:
+- echo deploy end
