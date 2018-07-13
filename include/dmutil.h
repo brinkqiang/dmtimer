@@ -23,6 +23,11 @@
 #define __DMUTIL_H_INCLUDE__
 
 #include "dmos.h"
+
+#ifdef __APPLE__
+#include <mach-o/dyld.h>
+#endif
+
 // tolua_begin
 
 #ifdef WIN32
