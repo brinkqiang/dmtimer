@@ -85,34 +85,51 @@ static inline time_t DMFormatDateTime( const std::string& strTime,
 
 static std::string DMGetRootPath() {
 #ifdef WIN32
-    static char szPath[MAX_PATH];
-    static bool bFirstTime = true;
+    static char path[MAX_PATH];
+    static bool first_time = true;
 
-    if ( bFirstTime ) {
-        bFirstTime = false;
-        GetModuleFileNameA( 0, szPath, sizeof( szPath ) );
-        char* p = strrchr( szPath, '\\' );
-        *( p + 1 ) = '\0';
+    if (first_time) {
+        first_time = false;
+        GetModuleFileNameA(0, path, sizeof(path));
+        char* p = strrchr(path, '\\');
+        *(p) = '\0';
     }
 
-    return szPath;
-#else
-    static char szPath[MAX_PATH];
-    static bool bFirstTime = true;
+    return path;
+#elif __APPLE__
+    static char path[MAX_PATH];
+    static bool first_time = true;
 
-    if ( bFirstTime ) {
-        bFirstTime = false;
-        int nRet = readlink( "/proc/self/exe", szPath, MAX_PATH );
+    if (first_time) {
+        uint32_t size = sizeof(path);
+        int nRet = _NSGetExecutablePath(path, &size);
 
-        if ( nRet < 0 || nRet >= MAX_PATH ) {
+        if (nRet != 0) {
             return "./";
         }
 
-        char* p = strrchr( szPath, '/' );
-        *( p + 1 ) = '\0';
+        char* p = strrchr(path, '/');
+        *(p) = '\0';
     }
 
-    return szPath;
+    return path;
+#else
+    static char path[MAX_PATH];
+    static bool first_time = true;
+
+    if (first_time) {
+        first_time = false;
+        int nRet = readlink("/proc/self/exe", path, MAX_PATH);
+
+        if (nRet < 0 || nRet >= MAX_PATH) {
+            return "./";
+        }
+
+        char* p = strrchr(path, '/');
+        *(p) = '\0';
+    }
+
+    return path;
 #endif
 }
 
