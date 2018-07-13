@@ -28,6 +28,7 @@ ENDIF ()
 IF (WIN32)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/include)
+    INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer)
 
     LINK_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/lib/${DMOS_NAME})
 
@@ -35,11 +36,11 @@ IF (WIN32)
     SET(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/${DMOS_NAME})
 
     FILE(GLOB_RECURSE DMTIMER_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.cc
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.cc
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.h
 
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc
@@ -62,6 +63,7 @@ IF (WIN32)
 ELSEIF (APPLE)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/include)
+    INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer)
 
     LINK_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/lib/${DMOS_NAME})
 
@@ -69,11 +71,11 @@ ELSEIF (APPLE)
     SET(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/${DMOS_NAME})
 
     FILE(GLOB_RECURSE DMTIMER_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.cc
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.cc
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.h
 
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc
@@ -97,6 +99,7 @@ ELSEIF (APPLE)
 ELSEIF(UNIX)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/)
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/include)
+    INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer)
 
     LINK_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/lib/${DMOS_NAME})
 
@@ -104,11 +107,11 @@ ELSEIF(UNIX)
     SET(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/${DMOS_NAME})
 
     FILE(GLOB_RECURSE DMTIMER_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.cc
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.cc
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer/*.h
 
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc
