@@ -111,7 +111,6 @@ using namespace stdext;
 #include <arpa/inet.h>
 #include <pthread.h>
 
-#include <ncurses.h>
 #include <signal.h>
 #include <netdb.h>
 #include <limits.h>
