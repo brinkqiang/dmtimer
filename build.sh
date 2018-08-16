@@ -3,5 +3,5 @@ rm -rf build
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=relwithdebinfo ..
-make -j
+make -j1
 cd ..
