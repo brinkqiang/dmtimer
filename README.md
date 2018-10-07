@@ -17,7 +17,7 @@ Copyright (c) 2013-2018 brinkqiang (brink.qiang@gmail.com)
 
 ## Intro
 C++ high performance timer
-```
+```cpp
 
 #include "dmutil.h"
 #include "dmtimermodule.h"
