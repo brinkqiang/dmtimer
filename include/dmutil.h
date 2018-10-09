@@ -88,16 +88,127 @@ static inline time_t DMFormatDateTime( const std::string& strTime,
     return ret;
 }
 
+static bool DMDirectoryExist( const char* dir_name ) {
+#ifdef WIN32
+    int ret = GetFileAttributesA( dir_name );
+
+    if ( ret == -1 ) {
+        return false;
+    }
+
+    return !!( FILE_ATTRIBUTE_DIRECTORY & ret );
+#else
+    struct stat fileStat;
+    int ret = stat( dir_name, &fileStat );
+
+    if ( ret == 0 ) {
+        return S_ISDIR( fileStat.st_mode );
+    }
+
+    return false;
+#endif
+}
+
+static inline bool DMDirectoryCreate( const char* dir_name, bool force ) {
+
+#ifdef WIN32
+    int ret = mkdir( dir_name );
+#else
+    int ret = mkdir( dir_name, S_IRWXU | S_IRWXG | S_IXOTH);
+#endif
+
+    if ( !force ) {
+        if ( 0 != ret ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    if ( 0 != ret ) {
+        if ( force ) {
+            char path[MAX_PATH];
+            char* pos = path;
+            strncpy( path, dir_name, sizeof( path ) );
+            char* end = path + strlen( path );
+
+            while ( *pos != '\0' ) {
+                if ( PATH_IS_DELIMITER( *pos ) ) {
+                    *pos = '\0';
+                }
+
+                ++pos;
+            }
+
+            pos = path;
+            bool bfirst = true;
+
+            while ( pos < end ) {
+                if ( bfirst ) {
+                    bool isdrive = false;
+                    char* p = pos;
+
+                    while ( *p != '\0' ) {
+                        if ( *p == ':' ) {
+                            isdrive = true;
+                        }
+
+                        ++p;
+                    }
+
+                    if ( isdrive ) {
+                        pos = path + strlen( path );
+                        *pos = PATH_DELIMITER;
+                        bfirst = false;
+                        continue;
+                    }
+
+                    if (strlen(path) <= 0)
+                    {
+                        pos = path + strlen(path);
+                        *pos = PATH_DELIMITER;
+                        bfirst = false;
+                        continue;
+                    }
+                    bfirst = false;
+                    continue;
+                }
+
+                if ( !DMDirectoryExist( path ) ) {
+
+#ifdef WIN32
+                    if ( 0 != mkdir( path ) )
+#else
+                    if ( 0 != mkdir( path, S_IRWXU | S_IRWXG | S_IXOTH) )
+#endif
+                    {
+                        return false;
+                    }
+                }
+
+                pos = path + strlen( path );
+                *pos = PATH_DELIMITER;
+            }
+        }
+        else { //bforce == false
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
 static std::string DMGetRootPath() {
 #ifdef WIN32
     static char path[MAX_PATH];
     static bool first_time = true;
 
-    if (first_time) {
+    if ( first_time ) {
         first_time = false;
-        GetModuleFileNameA(0, path, sizeof(path));
-        char* p = strrchr(path, '\\');
-        *(p) = '\0';
+        GetModuleFileNameA( 0, path, sizeof( path ) );
+        char* p = strrchr( path, '\\' );
+        *( p ) = '\0';
     }
 
     return path;
@@ -105,16 +216,16 @@ static std::string DMGetRootPath() {
     static char path[MAX_PATH];
     static bool first_time = true;
 
-    if (first_time) {
-        uint32_t size = sizeof(path);
-        int nRet = _NSGetExecutablePath(path, &size);
+    if ( first_time ) {
+        uint32_t size = sizeof( path );
+        int nRet = _NSGetExecutablePath( path, &size );
 
-        if (nRet != 0) {
+        if ( nRet != 0 ) {
             return "./";
         }
 
-        char* p = strrchr(path, '/');
-        *(p) = '\0';
+        char* p = strrchr( path, '/' );
+        *( p ) = '\0';
     }
 
     return path;
@@ -122,20 +233,68 @@ static std::string DMGetRootPath() {
     static char path[MAX_PATH];
     static bool first_time = true;
 
-    if (first_time) {
+    if ( first_time ) {
         first_time = false;
-        int nRet = readlink("/proc/self/exe", path, MAX_PATH);
+        int nRet = readlink( "/proc/self/exe", path, MAX_PATH );
 
-        if (nRet < 0 || nRet >= MAX_PATH) {
+        if ( nRet < 0 || nRet >= MAX_PATH ) {
             return "./";
         }
 
-        char* p = strrchr(path, '/');
-        *(p) = '\0';
+        char* p = strrchr( path, '/' );
+        *( p ) = '\0';
     }
 
     return path;
 #endif
+}
+
+static std::string DMGetExePath() {
+#ifdef WIN32
+    static char path[MAX_PATH];
+    static bool first_time = true;
+
+    if ( first_time ) {
+        first_time = false;
+        GetModuleFileNameA( 0, path, sizeof( path ) );
+    }
+
+    return path;
+#elif __APPLE__
+    static char path[MAX_PATH];
+    static bool first_time = true;
+
+    if ( first_time ) {
+        uint32_t size = sizeof( path );
+        int nRet = _NSGetExecutablePath( path, &size );
+
+        if ( nRet != 0 ) {
+            return "./";
+        }
+    }
+
+    return path;
+#else
+    static char path[MAX_PATH];
+    static bool first_time = true;
+
+    if ( first_time ) {
+        first_time = false;
+        int nRet = readlink( "/proc/self/exe", path, MAX_PATH );
+
+        if ( nRet < 0 || nRet >= MAX_PATH ) {
+            return "./";
+        }
+    }
+
+    return path;
+#endif
+}
+
+static std::string DMGetWorkPath() {
+    char szPath[MAX_PATH];
+    getcwd( szPath, sizeof( szPath ) );
+    return szPath;
 }
 
 // tolua_end
