@@ -162,8 +162,14 @@ static inline bool DMDirectoryCreate( const char* dir_name, bool force ) {
                         bfirst = false;
                         continue;
                     }
-                    pos = path + strlen(path);
-                    *pos = PATH_DELIMITER;
+
+                    if (strlen(path) <= 0)
+                    {
+                        pos = path + strlen(path);
+                        *pos = PATH_DELIMITER;
+                        bfirst = false;
+                        continue;
+                    }
                     bfirst = false;
                     continue;
                 }
