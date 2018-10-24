@@ -66,7 +66,7 @@ bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwRe
     return SetTimer(qwIDEvent, qwElapse, qwRemain, dm::any(), false);
 }
 
-bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwRemain, const dm::any& oAny,
+bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst, const dm::any& oAny,
     bool bExact)
 {
     CDMTimerElement* poNewTimer = CDMTimerModule::Instance()->FetchElement();
@@ -82,7 +82,7 @@ bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwRe
     poNewTimer->m_bErased = false;
     poNewTimer->m_bExact = bExact;
     poNewTimer->m_oAny = oAny;
-    poNewTimer->m_qwNextTime = CDMTimerModule::Instance()->GetBootTime() + qwRemain;
+    poNewTimer->m_qwNextTime = CDMTimerModule::Instance()->GetBootTime() + qwFirst;
     CDMTimerModule::Instance()->AddTimerElement(poNewTimer);
     TimerElementMapIt It = m_oTimerElementMap.find(qwIDEvent);
 
