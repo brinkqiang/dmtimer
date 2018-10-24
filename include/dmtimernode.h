@@ -43,10 +43,15 @@ class CDMTimerNode :
     void Reset();
     void CopyFrom( const CDMTimerNode& oNode );
 
-    bool SetTimer( uint64_t qwIDEvent, uint64_t qwElapse );
+    bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse);
 
     bool SetTimer( uint64_t qwIDEvent, uint64_t qwElapse, const dm::any& oAny,
-                   bool bExact = false );
+        bool bExact = false);
+
+    bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwRemain);
+
+    bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwRemain, const dm::any& oAny,
+        bool bExact = false);
 
     void KillTimer( uint64_t qwIDEvent );
 
