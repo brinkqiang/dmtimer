@@ -63,6 +63,7 @@
 #include <direct.h>
 #include <process.h>
 #include <conio.h>
+#include <io.h>
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -134,6 +135,21 @@ using namespace stdext;
 #define PATH_DELIMITER '/'
 #endif
 
+#ifdef WIN32
+#define PATH_DELIMITER_STR "\\"
+#else
+#define PATH_DELIMITER_STR "/"
+#endif
 #define DMASSERT assert
+
+#ifdef WIN32
+#define DMAPI __stdcall
+typedef HANDLE DMHANDLE;
+#define DMINVALID_HANDLE  NULL
+#else
+#define DMAPI
+typedef int DMHANDLE;
+#define DMINVALID_HANDLE  0
+#endif
 
 #endif // __DMOS_H_INCLUDE__
