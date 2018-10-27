@@ -52,41 +52,27 @@ void CDMTimerNode::CopyFrom( const CDMTimerNode& oNode ) {
 }
 
 bool CDMTimerNode::SetTimer( uint64_t qwIDEvent, uint64_t qwElapse ) {
-    CDMTimerElement* poNewTimer = CDMTimerModule::Instance()->FetchElement();
-
-    if ( NULL == poNewTimer ) {
-        DMASSERT( 0 );
-        return false;
-    }
-
-    poNewTimer->m_poTimerSink = this;
-    poNewTimer->m_qwID = qwIDEvent;
-    poNewTimer->m_qwElapse = qwElapse;
-    poNewTimer->m_bErased = false;
-    poNewTimer->m_bExact = false;
-    poNewTimer->m_oAny = dm::any();
-    poNewTimer->m_qwNextTime = CDMTimerModule::Instance()->GetBootTime() + qwElapse;
-    CDMTimerModule::Instance()->AddTimerElement( poNewTimer );
-    TimerElementMapIt It = m_oTimerElementMap.find( qwIDEvent );
-
-    if ( It != m_oTimerElementMap.end() ) {
-        It->second->Kill();
-        m_oTimerElementMap[qwIDEvent] = poNewTimer;
-    }
-    else {
-        m_oTimerElementMap[qwIDEvent] = poNewTimer;
-    }
-
-    return true;
+    return SetTimer(qwIDEvent, qwElapse, qwElapse, dm::any(), false);
 }
 
 bool CDMTimerNode::SetTimer( uint64_t qwIDEvent,
                              uint64_t qwElapse, const dm::any& oAny,
                              bool bExact ) {
+    return SetTimer(qwIDEvent, qwElapse, qwElapse, oAny, bExact);
+}
+
+bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwRemain)
+{
+    return SetTimer(qwIDEvent, qwElapse, qwRemain, dm::any(), false);
+}
+
+bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst, const dm::any& oAny,
+    bool bExact)
+{
     CDMTimerElement* poNewTimer = CDMTimerModule::Instance()->FetchElement();
 
-    if ( NULL == poNewTimer ) {
-        DMASSERT( 0 );
+    if (NULL == poNewTimer) {
+        DMASSERT(0);
         return false;
     }
 
@@ -96,11 +82,11 @@ bool CDMTimerNode::SetTimer( uint64_t qwIDEvent,
     poNewTimer->m_bErased = false;
     poNewTimer->m_bExact = bExact;
     poNewTimer->m_oAny = oAny;
-    poNewTimer->m_qwNextTime = CDMTimerModule::Instance()->GetBootTime() + qwElapse;
-    CDMTimerModule::Instance()->AddTimerElement( poNewTimer );
-    TimerElementMapIt It = m_oTimerElementMap.find( qwIDEvent );
+    poNewTimer->m_qwNextTime = CDMTimerModule::Instance()->GetBootTime() + qwFirst;
+    CDMTimerModule::Instance()->AddTimerElement(poNewTimer);
+    TimerElementMapIt It = m_oTimerElementMap.find(qwIDEvent);
 
-    if ( It != m_oTimerElementMap.end() ) {
+    if (It != m_oTimerElementMap.end()) {
         It->second->Kill();
         m_oTimerElementMap[qwIDEvent] = poNewTimer;
     }
