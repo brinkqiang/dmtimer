@@ -66,6 +66,7 @@ class CDMTimerNode :
     virtual void OnTimer( uint64_t qwIDEvent, dm::any& oAny );
   private:
     TimerElementMap m_oTimerElementMap;
+    std::string m_strTimerObjName;
 };
 
 #endif // __DMTIMERNODE_H_INCLUDE__

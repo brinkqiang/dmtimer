@@ -82,6 +82,7 @@ bool CDMTimerModule::__TimerPending( CDMTimerElement* pElement ) {
     return NULL != pElement->m_stEntry.next;
 }
 
+
 void CDMTimerModule::RemoveTimerElement( CDMTimerElement* pElement ) {
     if ( __TimerPending( pElement ) ) {
         list_del( &pElement->m_stEntry );
@@ -159,7 +160,9 @@ int CDMTimerModule::Run() {
                 continue;
             }
 
+            SetTimerInfo(timer->m_qwID, typeid(*(timer->m_poTimerSink)).name());
             timer->m_poTimerSink->OnTimer( timer->m_qwID, timer->m_oAny );
+            DelTimerInfo();
             ++nEvents;
 
             if ( timer->m_bErased ) {
@@ -223,11 +226,23 @@ int gettimeofday( struct timeval* tv, struct timezone* tz ) {
 #endif
 
 uint64_t CDMTimerModule::GetBootTime() {
-    unsigned int dwCurTime = GetTickCount32();
-    unsigned int dwPassedTime = dwCurTime - m_dwTickCount;
+    uint32_t dwCurTime = GetTickCount32();
+    uint32_t dwPassedTime = dwCurTime - m_dwTickCount;
     m_dwTickCount = dwCurTime;
     m_qwTotalTickCount += dwPassedTime;
     return m_qwTotalTickCount;
+}
+
+void CDMTimerModule::SetTimerInfo(uint64_t qwIDEvent, const std::string& strTimerObjName)
+{
+    m_qwIDEvent = qwIDEvent;
+    m_strTimerObjName = strTimerObjName;
+}
+
+void CDMTimerModule::DelTimerInfo()
+{
+    m_qwIDEvent = 0;
+    m_strTimerObjName = "";
 }
 
 CDMTimerElement* CDMTimerModule::FetchElement() {

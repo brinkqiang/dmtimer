@@ -93,6 +93,9 @@ class CDMTimerModule : public CDMSafeSingleton<CDMTimerModule> {
   public:
     uint64_t GetBootTime();
 
+    void    SetTimerInfo(uint64_t qwIDEvent, const std::string& strTimerObjName);
+    void    DelTimerInfo();
+
   private:
     void    __ReleaseElement( struct list_head* head );
     int     __Cascade( TVec* tv, int idx );
@@ -106,7 +109,7 @@ class CDMTimerModule : public CDMSafeSingleton<CDMTimerModule> {
     uint64_t m_qwLastTime;
     uint64_t m_qwCurTime;
 
-    unsigned int m_dwTickCount;
+    uint32_t m_dwTickCount;
     uint64_t m_qwTotalTickCount;
 
     TVec_Root   m_tv1;
@@ -114,6 +117,9 @@ class CDMTimerModule : public CDMSafeSingleton<CDMTimerModule> {
     TVec        m_tv3;
     TVec        m_tv4;
     TVec        m_tv5;
+
+    uint64_t m_qwIDEvent;
+    std::string m_strTimerObjName;
 };
 
 #endif // __DMTIMERMODULE_H_INCLUDE__
