@@ -35,7 +35,7 @@ struct timezone {
 static inline int gettimeofday(struct ::timeval* tv, struct timezone* tz);
 #endif
 
-static inline unsigned int GetTickCount32() {
+static inline uint32_t GetTickCount32() {
 #ifdef _MSC_VER
     return ::GetTickCount();
 #else
@@ -55,12 +55,12 @@ class CDMTimeElapse {
         m_dwStart = GetTickCount32();
     }
 
-    inline unsigned int End() {
+    inline uint32_t End() {
         return GetTickCount32() - m_dwStart;
     }
 
   private:
-    unsigned int m_dwStart;
+    uint32_t m_dwStart;
 };
 
 
