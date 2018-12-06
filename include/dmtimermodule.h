@@ -103,8 +103,9 @@ class CDMTimerModule : public CDMSafeSingleton<CDMTimerModule> {
 
     CDMTimerElement* __GetTimerInfoByEntry( list_head* head );
   private:
-    CDynamicRapidPool<CDMTimerElement, eMAX_POOL_S, eMAX_POOL_I>
-    m_oTimerElementPool;
+    typedef CDynamicRapidPool<CDMTimerElement, eMAX_POOL_S, eMAX_POOL_I> TimerElementPool;
+
+    TimerElementPool m_oTimerElementPool;
 
     uint64_t m_qwLastTime;
     uint64_t m_qwCurTime;
