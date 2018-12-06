@@ -13,6 +13,7 @@
 `OnTimer`的定义如下：
 ```
     virtual void OnTimer(uint64_t qwIDEvent);
+    virtual void OnTimer(uint64_t qwIDEvent, const dm::any& oAny);
 ```
 
 唯一的参数`qwIDEvent`即我们注册timer时用的eventid。这个eventid在一个`CDMTimerNode`对象内必须是唯一的，
