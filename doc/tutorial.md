@@ -22,19 +22,36 @@
 注册timer的接口：
 ```
     bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse);
+
+    bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, const dm::any& oAny, bool bExact);
+
+    bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst);
 ```
 
-*    第一个参数`qwIDEvent`代表timer的id，当这个timer超时，回调用户实现的OnTimer时，参数就会和这个`qwIDEvent`一致。
-*    第二个参数`qwElapse`代表超时时间，即从现在开始过多少时间这个timer超时，单位为**毫秒**;
-*    它的返回值是一个bool类型，表示这个timer是否设置成功。
+```
+    bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst, const dm::any& oAny, bool bExact);
+```
+
+*    第一个参数`uint64_t qwIDEvent`代表timer的id，当这个timer超时，回调用户实现的OnTimer时，参数就会和这个`qwIDEvent`一致。
+*    第二个参数`uint64_t qwElapse`代表超时时间，即从现在开始过多少时间这个timer超时，单位为**毫秒**;
+*    第三个参数`uint64_t qwFirst`代表第一次触发时间, 正常使用应该是 qwFirst 与 qwElapse 相等
+*    第四个参数`const dm::any& oAny`代表该timer所需要绑定额外数据
+*    第五个参数`bool bExact`代表该timer调用机制, false(默认) 漏调(用于忙的状态 防止恶性循环) true 补调(某些逻辑需求 依赖于timer调用次数)
+
+*    如果timer存在 会删除之前timer重新设置
 
 注销timer的接口：
 ```
-    bool CDMTimerNode::KillTimer(uint64_t qwIDEvent);
+    void CDMTimerNode::KillTimer(uint64_t qwIDEvent);
 ```
 
 *    第一个参数`qwIDEvent`代表要取消的timer的id。
-*    返回值是一个bool类型，表示这个timer是否成功注销。
+*    如果timer的id不存在会忽略
+```
+    void CDMTimerNode::KillTimer();
+```
+
+*    删除当前对象所有timer, 使用的是延迟删除标记方式
 
 ### 更多接口
 获取timer已过去的时间：
@@ -42,15 +59,15 @@
     uint64_t CDMTimerNode::GetTimerElapse(uint64_t qwIDEvent);
 ```
 
-*    第一个参数`qwIDEvent`代表timer的id。
-*    返回值是一个unsigned long long类型，代表这个timer从启动到现在已经过去了这么长时间，单位为毫秒。
+*    第一个参数`uint64_t qwIDEvent`代表timer的id。
+*    返回值是一个uint64_t 类型，代表这个timer从启动到现在已经过去了这么长时间，单位为毫秒。
 
 获取timer还有多少时间超时：
 ``` 
     uint64_t CDMTimerNode::GetTiemrRemain(uint64_t qwIDEvent);
 ```
 
-*    第一个参数`qwIDEvent`代表timer的id。
+*    第一个参数`uint64_t qwIDEvent`代表timer的id。
 *    返回值是一个uint64_t类型，代表这个timer剩余多少时间超时。
 
 
