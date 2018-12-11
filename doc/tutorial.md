@@ -56,7 +56,7 @@
 *    删除当前对象所有timer, 使用的是延迟删除标记方式
 
 ### 更多接口
-获取timer已过去的时间：
+获取timer已启动的时间：
 ```
     uint64_t CDMTimerNode::GetTimerElapse(uint64_t qwIDEvent);
 ```
@@ -64,12 +64,12 @@
 *    第一个参数`uint64_t qwIDEvent`代表timer的ID
 *    返回值是一个uint64_t 类型，代表这个timer从启动到现在已经过去了这么长时间，单位为毫秒
 
-获取timer还有多少时间超时：
+获取timer剩余多少时间会被调用
 ``` 
     uint64_t CDMTimerNode::GetTiemrRemain(uint64_t qwIDEvent);
 ```
 
 *    第一个参数`uint64_t qwIDEvent`代表timer的ID
-*    返回值是一个uint64_t类型，代表这个timer剩余多少时间超时
+*    返回值是一个uint64_t类型，代表这个timer剩余多少时间会被调用，单位为毫秒
 
 
