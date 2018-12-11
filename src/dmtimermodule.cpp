@@ -30,7 +30,7 @@ void CDMTimerModule::AddTimerElement( CDMTimerElement* pElement ) {
         int i = ( qwExpires >> ( TVR_BITS + 2 * TVN_BITS ) ) & TVN_MASK;
         vec = m_tv4.vec + i;
     }
-    else if ( ( signed long long )idx < 0 ) {
+    else if ( ( int64_t )idx < 0 ) {
         vec = m_tv1.vec + ( m_qwLastTime & TVR_MASK );
     }
     else {
@@ -242,7 +242,7 @@ void CDMTimerModule::SetTimerInfo(uint64_t qwIDEvent, const std::string& strTime
 void CDMTimerModule::DelTimerInfo()
 {
     m_qwIDEvent = 0;
-    m_strTimerObjName = "";
+    m_strTimerObjName.clear();
 }
 
 CDMTimerElement* CDMTimerModule::FetchElement() {
