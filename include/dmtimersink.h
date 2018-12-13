@@ -34,8 +34,8 @@
 #define TVN_MASK (TVN_SIZE - 1)
 #define TVR_MASK (TVR_SIZE - 1)
 
-#define TIME_NOT_EQ(x, y) ((x) != (y))
-#define INDEX(t, N) ((t >> (TVR_BITS + (N) * TVN_BITS)) & TVN_MASK)
+#define DM_TIME_NOT_EQ(x, y) ((x) != (y))
+#define DM_INDEX(t, N) ((t >> (TVR_BITS + (N) * TVN_BITS)) & TVN_MASK)
 
 #define DM_MAGIC_USED       (0xcc)
 #define DM_MAGIC_UNUSED     (0xcd)

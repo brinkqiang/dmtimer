@@ -137,16 +137,16 @@ int CDMTimerModule::Run() {
     m_qwCurTime =  GetBootTime();
     CDMTimerElement* timer = NULL;
 
-    while ( TIME_NOT_EQ( m_qwCurTime, m_qwLastTime ) ) {
+    while ( DM_TIME_NOT_EQ( m_qwCurTime, m_qwLastTime ) ) {
         struct list_head work_list;
         struct list_head* temp = &work_list;
         int index = m_qwLastTime & TVR_MASK;
 
         if ( !index
-                && ( !__Cascade( &m_tv2, INDEX( m_qwLastTime, 0 ) ) )
-                && ( !__Cascade( &m_tv3, INDEX( m_qwLastTime, 1 ) ) )
-                && ( !__Cascade( &m_tv4, INDEX( m_qwLastTime, 2 ) ) ) ) {
-            __Cascade( &m_tv5, INDEX( m_qwLastTime, 3 ) );
+                && ( !__Cascade( &m_tv2, DM_INDEX( m_qwLastTime, 0 ) ) )
+                && ( !__Cascade( &m_tv3, DM_INDEX( m_qwLastTime, 1 ) ) )
+                && ( !__Cascade( &m_tv4, DM_INDEX( m_qwLastTime, 2 ) ) ) ) {
+            __Cascade( &m_tv5, DM_INDEX( m_qwLastTime, 3 ) );
         }
 
         list_replace_init( m_tv1.vec + index, &work_list );
