@@ -66,7 +66,7 @@
 
 获取timer剩余多少时间会被调用
 ``` 
-    uint64_t CDMTimerNode::GetTiemrRemain(uint64_t qwIDEvent);
+    uint64_t CDMTimerNode::GetTimerRemain(uint64_t qwIDEvent);
 ```
 
 *    第一个参数`uint64_t qwIDEvent`代表timer的ID
