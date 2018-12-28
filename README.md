@@ -1,8 +1,8 @@
 # dmtimer
 
 Copyright (c) 2013-2018 brinkqiang (brink.qiang@gmail.com)
-[![dmtimer](https://img.shields.io/badge/brinkqiang-dmtimer-blue.svg?style=flat-square)](https://github.com/brinkqiang/dmtimer) 
 
+[![dmtimer](https://img.shields.io/badge/brinkqiang-dmtimer-blue.svg?style=flat-square)](https://github.com/brinkqiang/dmtimer)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/brinkqiang/dmtimer/blob/master/LICENSE)
 [![blog](https://img.shields.io/badge/Author-Blog-7AD6FD.svg)](https://brinkqiang.github.io/)
 [![Open Source Love](https://badges.frapsoft.com/os/v3/open-source.png)](https://github.com/brinkqiang)
@@ -20,6 +20,7 @@ Copyright (c) 2013-2018 brinkqiang (brink.qiang@gmail.com)
 [osx-link]:  https://travis-ci.org/brinkqiang/dmtimer "Travis build status"
 [win-badge]: https://ci.appveyor.com/api/projects/status/github/brinkqiang/dmtimer?branch=master&svg=true "AppVeyor build status"
 [win-link]:  https://ci.appveyor.com/project/brinkqiang/dmtimer "AppVeyor build status"
+
 
 ## Intro
 C++ high performance timer
