@@ -1,7 +1,13 @@
 # dmtimer
-Copyright (c) 2013-2018 brinkqiang (brink.qiang@gmail.com)
 
-[dmtimer GitHub](https://github.com/brinkqiang/dmtimer)
+Copyright (c) 2013-2018 brinkqiang (brink.qiang@gmail.com)
+[![dmtimer](https://img.shields.io/badge/brinkqiang-dmtimer-blue.svg?style=flat-square)](https://github.com/brinkqiang/dmtimer) 
+
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/brinkqiang/dmtimer/blob/master/LICENSE)
+[![blog](https://img.shields.io/badge/Author-Blog-7AD6FD.svg)](https://brinkqiang.github.io/)
+[![Open Source Love](https://badges.frapsoft.com/os/v3/open-source.png)](https://github.com/brinkqiang)
+[![GitHub stars](https://img.shields.io/github/stars/brinkqiang/dmtimer.svg?label=Stars)](https://github.com/brinkqiang/dmtimer) 
+[![GitHub forks](https://img.shields.io/github/forks/brinkqiang/dmtimer.svg?label=Fork)](https://github.com/brinkqiang/dmtimer)
 
 ## Build status
 | [Linux][lin-link] | [MacOSX][osx-link] | [Windows][win-link] |
