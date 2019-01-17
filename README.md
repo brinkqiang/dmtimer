@@ -47,7 +47,7 @@ class CMain :
     friend class TSingleton<CMain>;
 
     enum {
-        eMAX_PLAYER = 10 * 10000,
+        eMAX_PLAYER = 100 * 10000,
         eMAX_PLAYER_EVENT = 10,
     };
 
@@ -68,7 +68,7 @@ class CMain :
 
         for ( int i = 0; i < eMAX_PLAYER; ++i ) {
             for ( int j = 1; j <= eMAX_PLAYER_EVENT; ++j ) {
-                m_oPlayers[i].SetTimer( j, 100 );
+                m_oPlayers[i].SetTimer( j, 500 );
             }
         }
 
