@@ -113,7 +113,7 @@ void CDMTimerModule::Init() {
         INIT_LIST_HEAD( m_tv5.vec + i );
     }
 
-    m_dwTickCount = GetTickCount32();
+    m_qwTickCount = GetTickCount64();
     m_qwTotalTickCount =  0;
     m_qwLastTime = GetBootTime();
     m_qwCurTime =  GetBootTime();
@@ -226,10 +226,10 @@ int gettimeofday( struct timeval* tv, struct timezone* tz ) {
 #endif
 
 uint64_t CDMTimerModule::GetBootTime() {
-    uint32_t dwCurTime = GetTickCount32();
-    uint32_t dwPassedTime = dwCurTime - m_dwTickCount;
-    m_dwTickCount = dwCurTime;
-    m_qwTotalTickCount += dwPassedTime;
+    uint64_t qwCurTime = GetTickCount64();
+    uint64_t qwPassedTime = qwCurTime - m_qwTickCount;
+    m_qwTickCount = qwCurTime;
+    m_qwTotalTickCount += qwPassedTime;
     return m_qwTotalTickCount;
 }
 

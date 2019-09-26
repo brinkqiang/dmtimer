@@ -20,7 +20,7 @@ class CMain :
     friend class TSingleton<CMain>;
 
     enum {
-        eMAX_PLAYER = 10 * 10000,
+        eMAX_PLAYER = 100 * 10000,
         eMAX_PLAYER_EVENT = 10,
     };
 
@@ -31,7 +31,7 @@ class CMain :
 
     typedef enum {
         eTimerTime_UUID = 1000,
-        eTimerTime_STOP = 10000,
+        eTimerTime_STOP = 20000,
     } ETimerTime;
 
   public:
