@@ -22,12 +22,9 @@
 #ifndef __DMTIMERMODULE_H_INCLUDE__
 #define __DMTIMERMODULE_H_INCLUDE__
 
-#include <chrono>
-
 #include "dmsingleton.h"
 #include "dmrapidpool.h"
 #include "dmtimernode.h"
-
 
 #ifdef _MSC_VER
 struct timezone {
@@ -38,19 +35,14 @@ struct timezone {
 static inline int gettimeofday(struct ::timeval* tv, struct timezone* tz);
 #endif
 
-static inline uint64_t DMGetTickCount64() {
-    //auto now = std::chrono::system_clock::now();
-    //auto now = std::chrono::steady_clock::now();
-    //auto now = std::chrono::high_resolution_clock::now();
-    //return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+static inline uint32_t GetTickCount32() {
 #ifdef _MSC_VER
-        return ::GetTickCount();
+    return ::GetTickCount();
 #else
-        struct timespec ts = { 0 };
-        clock_gettime(CLOCK_MONOTONIC, &ts);
-        return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
+    struct timespec ts = { 0 };
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 #endif
-
 }
 
 class CDMTimeElapse {
@@ -60,15 +52,15 @@ class CDMTimeElapse {
     }
 
     inline void Start() {
-        m_qwStart = DMGetTickCount64();
+        m_dwStart = GetTickCount32();
     }
 
-    inline uint64_t End() {
-        return DMGetTickCount64() - m_qwStart;
+    inline uint32_t End() {
+        return GetTickCount32() - m_dwStart;
     }
 
   private:
-    uint64_t m_qwStart;
+    uint32_t m_dwStart;
 };
 
 
@@ -118,7 +110,7 @@ class CDMTimerModule : public CDMSafeSingleton<CDMTimerModule> {
     uint64_t m_qwLastTime;
     uint64_t m_qwCurTime;
 
-    uint64_t m_qwTickCount;
+    uint32_t m_dwTickCount;
     uint64_t m_qwTotalTickCount;
 
     TVec_Root   m_tv1;
