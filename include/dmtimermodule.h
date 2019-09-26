@@ -39,9 +39,9 @@ static inline int gettimeofday(struct ::timeval* tv, struct timezone* tz);
 #endif
 
 static inline uint64_t GetTickCount64() {
-    auto now = std::chrono::system_clock::now();
+    //auto now = std::chrono::system_clock::now();
     //auto now = std::chrono::steady_clock::now();
-    //auto now = std::chrono::high_resolution_clock::now();
+    auto now = std::chrono::high_resolution_clock::now();
     return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
 }
 
@@ -52,15 +52,15 @@ class CDMTimeElapse {
     }
 
     inline void Start() {
-        m_dwStart = GetTickCount64();
+        m_qwStart = GetTickCount64();
     }
 
-    inline uint32_t End() {
-        return GetTickCount64() - m_dwStart;
+    inline uint64_t End() {
+        return GetTickCount64() - m_qwStart;
     }
 
   private:
-    uint32_t m_dwStart;
+    uint64_t m_qwStart;
 };
 
 
