@@ -24,6 +24,16 @@ static inline uint32_t GetTickCount32_CLOCK_REALTIME() {
 #endif
 }
 
+static inline uint32_t GetTickCount32_CLOCK_MONOTONIC_RAW() {
+#ifdef _MSC_VER
+    return ::GetTickCount();
+#else
+    struct timespec ts = { 0 };
+    clock_gettime(CLOCK_MONOTONIC_RAW, &ts);
+    return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
+#endif
+}
+
 static inline uint32_t GetTickCount32_CLOCK_MONOTONIC() {
 #ifdef _MSC_VER
     return ::GetTickCount();
@@ -56,7 +66,7 @@ static inline uint32_t GetTickCount32_gettimeofday() {
 
 #define TIME_TEST_COUNT (100000000)
 
-TEST(TIME_API, CLOCK_REALTIME_COARSE)
+TEST(clock_realtime_coarse, clock_realtime_coarse)
 {
     uint64_t qwCount = 0;
     for (int i=0; i < TIME_TEST_COUNT; ++i)
@@ -66,7 +76,7 @@ TEST(TIME_API, CLOCK_REALTIME_COARSE)
     std::cout << qwCount << std::endl;
 }
 
-TEST(TIME_API, CLOCK_REALTIME)
+TEST(clock_realtime, clock_realtime)
 {
     uint64_t qwCount = 0;
     for (int i = 0; i < TIME_TEST_COUNT; ++i)
@@ -76,7 +86,17 @@ TEST(TIME_API, CLOCK_REALTIME)
     std::cout << qwCount << std::endl;
 }
 
-TEST(TIME_API, CLOCK_MONOTONIC)
+TEST(clock_monotonic_raw, clock_monotonic_raw)
+{
+    uint64_t qwCount = 0;
+    for (int i = 0; i < TIME_TEST_COUNT; ++i)
+    {
+        qwCount += GetTickCount32_CLOCK_MONOTONIC_RAW();
+    }
+    std::cout << qwCount << std::endl;
+}
+
+TEST(clock_monotonic, clock_monotonic)
 {
     uint64_t qwCount = 0;
     for (int i = 0; i < TIME_TEST_COUNT; ++i)
@@ -86,7 +106,7 @@ TEST(TIME_API, CLOCK_MONOTONIC)
     std::cout << qwCount << std::endl;
 }
 
-TEST(TIME_API, gettimeofday)
+TEST(gettimeofday, gettimeofday)
 {
     uint64_t qwCount = 0;
     for (int i = 0; i < TIME_TEST_COUNT; ++i)
