@@ -39,8 +39,8 @@ static inline int gettimeofday(struct ::timeval* tv, struct timezone* tz);
 #endif
 
 static inline uint64_t GetTickCount64() {
-    //auto now = std::chrono::system_clock::now();
-    auto now = std::chrono::steady_clock::now();
+    auto now = std::chrono::system_clock::now();
+    //auto now = std::chrono::steady_clock::now();
     //auto now = std::chrono::high_resolution_clock::now();
     return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
 }
