@@ -189,42 +189,6 @@ uint64_t CDMTimerModule::GetCurTime() {
     return m_qwCurTime;
 }
 
-#ifdef _MSC_VER
-
-#define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
-
-typedef union {
-    uint64_t ft_scalar;
-    FILETIME ft_struct;
-} FT;
-
-int gettimeofday( struct timeval* tv, struct timezone* tz ) {
-    FT ft;
-    static int tzflag = 0;
-
-    if ( NULL != tv ) {
-        GetSystemTimeAsFileTime( &ft.ft_struct );
-        ft.ft_scalar /= 10;
-        ft.ft_scalar -= DELTA_EPOCH_IN_MICROSECS;
-        tv->tv_sec = ( long )( ft.ft_scalar / 1000000UL );
-        tv->tv_usec = ( long )( ft.ft_scalar % 1000000UL );
-    }
-
-    if ( NULL != tz ) {
-        if ( !tzflag ) {
-            _tzset();
-            tzflag++;
-        }
-
-        tz->tz_minuteswest = _timezone / 60;
-        tz->tz_dsttime = _daylight;
-    }
-
-    return 0;
-}
-
-#endif
-
 uint64_t CDMTimerModule::GetBootTime() {
     uint32_t dwCurTime = GetTickCount32();
     uint32_t dwPassedTime = dwCurTime - m_dwTickCount;

@@ -44,6 +44,12 @@ static inline uint32_t GetTickCount32_CLOCK_MONOTONIC() {
 #endif
 }
 
+static inline uint32_t GetTickCount32_gettimeofday() {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec * 1000 + tv.tv_usec / 1000;
+}
+
 static inline uint32_t GetTickCount32_chrono_system_clock() {
     auto now = std::chrono::system_clock::now();
     return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
@@ -57,13 +63,6 @@ static inline uint32_t GetTickCount32_high_resolution_clock() {
     auto now = std::chrono::high_resolution_clock::now();
     return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
 }
-
-static inline uint32_t GetTickCount32_gettimeofday() {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return tv.tv_sec * 1000 + tv.tv_usec / 1000;
-}
-
 #define TIME_TEST_COUNT (100000000)
 
 TEST(clock_realtime_coarse, clock_realtime_coarse)
@@ -112,6 +111,36 @@ TEST(gettimeofday, gettimeofday)
     for (int i = 0; i < TIME_TEST_COUNT; ++i)
     {
         qwCount += GetTickCount32_gettimeofday();
+    }
+    std::cout << qwCount << std::endl;
+}
+
+TEST(chrono_system_clock, chrono_system_clock)
+{
+    uint64_t qwCount = 0;
+    for (int i = 0; i < TIME_TEST_COUNT; ++i)
+    {
+        qwCount += GetTickCount32_chrono_system_clock();
+    }
+    std::cout << qwCount << std::endl;
+}
+
+TEST(chrono_steady_clock, chrono_steady_clock)
+{
+    uint64_t qwCount = 0;
+    for (int i = 0; i < TIME_TEST_COUNT; ++i)
+    {
+        qwCount += GetTickCount32_chrono_steady_clock();
+    }
+    std::cout << qwCount << std::endl;
+}
+
+TEST(high_resolution_clock, high_resolution_clock)
+{
+    uint64_t qwCount = 0;
+    for (int i = 0; i < TIME_TEST_COUNT; ++i)
+    {
+        qwCount += GetTickCount32_high_resolution_clock();
     }
     std::cout << qwCount << std::endl;
 }
