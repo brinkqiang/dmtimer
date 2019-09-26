@@ -38,11 +38,19 @@ struct timezone {
 static inline int gettimeofday(struct ::timeval* tv, struct timezone* tz);
 #endif
 
-static inline uint64_t GetTickCount64() {
+static inline uint64_t DMGetTickCount64() {
     //auto now = std::chrono::system_clock::now();
     //auto now = std::chrono::steady_clock::now();
-    auto now = std::chrono::high_resolution_clock::now();
-    return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+    //auto now = std::chrono::high_resolution_clock::now();
+    //return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+#ifdef _MSC_VER
+        return ::GetTickCount();
+#else
+        struct timespec ts = { 0 };
+        clock_gettime(CLOCK_MONOTONIC, &ts);
+        return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
+#endif
+
 }
 
 class CDMTimeElapse {
@@ -52,11 +60,11 @@ class CDMTimeElapse {
     }
 
     inline void Start() {
-        m_qwStart = GetTickCount64();
+        m_qwStart = DMGetTickCount64();
     }
 
     inline uint64_t End() {
-        return GetTickCount64() - m_qwStart;
+        return DMGetTickCount64() - m_qwStart;
     }
 
   private:
