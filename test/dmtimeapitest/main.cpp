@@ -53,8 +53,10 @@ static inline uint32_t GetTickCount32_high_resolution_clock() {
     auto now = std::chrono::high_resolution_clock::now();
     return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
 }
+
 #define TIME_TEST_COUNT (100000000)
 
+#ifndef WIN32
 TEST(clock_realtime_coarse, clock_realtime_coarse)
 {
     uint64_t qwCount = 0;
@@ -84,6 +86,17 @@ TEST(clock_monotonic, clock_monotonic)
     }
     std::cout << qwCount << std::endl;
 }
+#else
+TEST(GetTickCount, GetTickCount)
+{
+    uint64_t qwCount = 0;
+    for (int i = 0; i < TIME_TEST_COUNT; ++i)
+    {
+        qwCount += GetTickCount32();
+    }
+    std::cout << qwCount << std::endl;
+}
+#endif
 
 TEST(gettimeofday, gettimeofday)
 {
