@@ -44,7 +44,7 @@ static inline uint32_t GetTickCount32() {
     return ::GetTickCount();
 #else
     struct timespec ts = { 0 };
-    clock_gettime(CLOCK_MONOTONIC, &ts);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &ts);
     return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 #endif
 }
