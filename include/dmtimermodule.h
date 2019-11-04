@@ -73,8 +73,6 @@ static inline uint32_t GetTickCount32() {
     //return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
 #ifdef _MSC_VER
     return ::GetTickCount();
-#else if defined(__linux__)
-
 #else
     struct timespec ts = { 0 };
     clock_gettime(CLOCK_MONOTONIC, &ts);
