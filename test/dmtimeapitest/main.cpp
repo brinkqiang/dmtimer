@@ -66,7 +66,7 @@ static inline uint32_t GetTickCount32_high_resolution_clock() {
     return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
 }
 
-#define TIME_TEST_COUNT (100000000)
+#define TIME_TEST_COUNT (10 * 1000 * 1000)
 
 #ifndef WIN32
 TEST(clock_realtime_coarse, clock_realtime_coarse)
