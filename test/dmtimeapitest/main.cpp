@@ -5,8 +5,12 @@
 #include <chrono>
 
 static inline uint32_t GetTickCount32_CLOCK_REALTIME_COARSE() {
-#ifdef _MSC_VER
+#ifdef WIN32
     return ::GetTickCount();
+#elif __APPLE__
+    struct timespec ts = { 0 };
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 #else
     struct timespec ts = { 0 };
     clock_gettime(CLOCK_REALTIME_COARSE, &ts);
@@ -15,8 +19,12 @@ static inline uint32_t GetTickCount32_CLOCK_REALTIME_COARSE() {
 }
 
 static inline uint32_t GetTickCount32_CLOCK_REALTIME() {
-#ifdef _MSC_VER
+#ifdef WIN32
     return ::GetTickCount();
+#elif __APPLE__
+    struct timespec ts = { 0 };
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 #else
     struct timespec ts = { 0 };
     clock_gettime(CLOCK_REALTIME, &ts);
@@ -25,8 +33,12 @@ static inline uint32_t GetTickCount32_CLOCK_REALTIME() {
 }
 
 static inline uint32_t GetTickCount32_CLOCK_MONOTONIC() {
-#ifdef _MSC_VER
+#ifdef WIN32
     return ::GetTickCount();
+#elif __APPLE__
+    struct timespec ts = { 0 };
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 #else
     struct timespec ts = { 0 };
     clock_gettime(CLOCK_MONOTONIC, &ts);
