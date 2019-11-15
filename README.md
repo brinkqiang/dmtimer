@@ -171,6 +171,59 @@ int main( int argc, char* argv[] ) {
 }
 
 ```
+## test
+```
+Running main() from gtest_main.cc
+[==========] Running 7 tests from 7 test cases.
+[----------] Global test environment set-up.
+[----------] 1 test from clock_realtime_coarse
+[ RUN      ] clock_realtime_coarse.clock_realtime_coarse
+185306418897129146
+[       OK ] clock_realtime_coarse.clock_realtime_coarse (625 ms)
+[----------] 1 test from clock_realtime_coarse (630 ms total)
+
+[----------] 1 test from clock_realtime
+[ RUN      ] clock_realtime.clock_realtime
+185306526911819519
+[       OK ] clock_realtime.clock_realtime (1609 ms)
+[----------] 1 test from clock_realtime (1609 ms total)
+
+[----------] 1 test from clock_monotonic
+[ RUN      ] clock_monotonic.clock_monotonic
+253981295601526960
+[       OK ] clock_monotonic.clock_monotonic (1608 ms)
+[----------] 1 test from clock_monotonic (1608 ms total)
+
+[----------] 1 test from gettimeofday
+[ RUN      ] gettimeofday.gettimeofday
+185306852249981606
+[       OK ] gettimeofday.gettimeofday (1681 ms)
+[----------] 1 test from gettimeofday (1681 ms total)
+
+[----------] 1 test from chrono_system_clock
+[ RUN      ] chrono_system_clock.chrono_system_clock
+185308930355752908
+[       OK ] chrono_system_clock.chrono_system_clock (39878 ms)
+[----------] 1 test from chrono_system_clock (39878 ms total)
+
+[----------] 1 test from chrono_steady_clock
+[ RUN      ] chrono_steady_clock.chrono_steady_clock
+253987528206487313
+[       OK ] chrono_steady_clock.chrono_steady_clock (39935 ms)
+[----------] 1 test from chrono_steady_clock (39935 ms total)
+
+[----------] 1 test from high_resolution_clock
+[ RUN      ] high_resolution_clock.high_resolution_clock
+185316910674516278
+[       OK ] high_resolution_clock.high_resolution_clock (39863 ms)
+[----------] 1 test from high_resolution_clock (39863 ms total)
+
+[----------] Global test environment tear-down
+[==========] 7 tests from 7 test cases ran. (125204 ms total)
+[  PASSED  ] 7 tests.
+```
+
+
 ## Contacts
 [![Join the chat](https://badges.gitter.im/brinkqiang/dmtimer/Lobby.svg)](https://gitter.im/brinkqiang/dmtimer)
 
