@@ -44,7 +44,7 @@ before_script:
 script:
 # Environment variables https://docs.travis-ci.com/user/environment-variables
 - echo $TRAVIS_REPO_SLUG
-- "if [ -f bin/dmtimertest ] ; then bin/dmtimertest ; fi"
+- "if [ -f bin/dmtimerapitest ] ; then bin/dmtimerapitest ; fi"
 
 after_success:
 - echo success
