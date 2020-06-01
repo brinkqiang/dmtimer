@@ -40,25 +40,8 @@
 #include <string.h>
 #include <time.h>
 #include <assert.h>
-
 #include <csignal>
-
-#include <string>
-#include <vector>
-#include <queue>
-#include <deque>
-#include <list>
-
-#include <set>
-#include <map>
-
-#include <sstream>
-#include <fstream>
-#include <iostream>
-
 #include <winsock2.h>
-
-
 #include <windows.h>
 #include <direct.h>
 #include <process.h>
@@ -72,7 +55,7 @@ namespace stdext {
 }
 
 namespace std {
-using namespace stdext;
+    using namespace stdext;
 }
 
 #define VSNPRINTF _vsnprintf
@@ -91,19 +74,7 @@ using namespace stdext;
 
 #include <csignal>
 
-#include <string>
-#include <vector>
-#include <queue>
-#include <deque>
-#include <list>
-
-#include <set>
-#include <map>
-
-#include <sstream>
-#include <fstream>
-#include <iostream>
-
+#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>

@@ -23,6 +23,8 @@
 #define __DMUTIL_H_INCLUDE__
 
 #include "dmos.h"
+#include <string>
+#include <iostream>
 
 #ifdef __APPLE__
 #include <mach-o/dyld.h>
