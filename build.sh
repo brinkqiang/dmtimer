@@ -19,8 +19,8 @@
 rm -rf build
 mkdir build
 pushd build
-cmake -DCMAKE_BUILD_TYPE=relwithdebinfo ..
-cmake --build . --config relwithdebinfo
+cmake -DCMAKE_BUILD_TYPE=debug ..
+cmake --build . --config debug
 popd
 
 # popd
