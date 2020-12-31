@@ -165,5 +165,3 @@ int main(int argc, char *argv[])
     CMain::Instance()->WaitFor();
     return 0;
 }
-
-#endif // __MAIN_H__
