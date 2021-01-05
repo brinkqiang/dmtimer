@@ -32,6 +32,8 @@ void CDMTimerEventMgr::OnTimer(uint64_t qwIDEvent,  dm::any& oAny )
 
     switch (qwIDEvent)
     {
+    case 0:
+        break;
     default:
         break;
     }
