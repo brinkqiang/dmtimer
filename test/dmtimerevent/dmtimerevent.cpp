@@ -21,6 +21,11 @@ bool CDMTimerEventMgr::Init()
     return true;
 }
 
+void CDMTimerEventMgr::AddTimerEventSink(ITimerEventSink* poSink)
+{
+    m_oMapTimerEventSink[poSink->GetEventType()].push_back(poSink);
+}
+
 bool CDMTimerEventMgr::LoadConfig()
 {
     return true;
