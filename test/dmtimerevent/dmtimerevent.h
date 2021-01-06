@@ -37,6 +37,8 @@ public:
 
     bool AddEvent(ETimerEventType eType);
     bool DelEvent(ETimerEventType eType);
+
+    virtual void OnEvent(ETimerEventType eEvent);
 private:
     std::set<ETimerEventType> m_oSetEventType;
 };
