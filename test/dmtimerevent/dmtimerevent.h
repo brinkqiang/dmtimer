@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <map>
+#include <set>
 
 #include "dmtimernode.h"
 #include "dmsingleton.h"
@@ -21,21 +22,40 @@ class ITimerEventSink
 public:
     virtual ~ITimerEventSink() = 0;
     virtual void OnEvent(ETimerEventType eEvent) = 0;
-    virtual ETimerEventType GetEventType() = 0;
 };
 
-typedef std::vector<ITimerEventSink*> VecTimerEventSink;
+inline ITimerEventSink::~ITimerEventSink()
+{
 
-class CDMTimerEventMgr : public TSingleton<CDMTimerEventMgr>, public CDMTimerNode
+}
+
+class CDMTimerEventNode : public ITimerEventSink
+{
+public:
+    CDMTimerEventNode();
+    virtual ~CDMTimerEventNode();
+
+    bool AddEvent(ETimerEventType eType);
+    bool DelEvent(ETimerEventType eType);
+private:
+    std::set<ETimerEventType> m_oSetEventType;
+};
+
+typedef std::set<ITimerEventSink*> SetTimerEventSink;
+
+
+class CDMTimerEventMgr : public CDMSafeSingleton<CDMTimerEventMgr>,
+    public CDMTimerNode
 {
     friend class TSingleton<CDMTimerEventMgr>;
 public:
     CDMTimerEventMgr();
     virtual ~CDMTimerEventMgr();
 
-    bool Init();
+    virtual bool Init();
 
     void AddTimerEventSink(ITimerEventSink* poSink, ETimerEventType eType);
+    void DelTimerEventSink(ITimerEventSink* poSink, ETimerEventType eType);
 public:
     // event
     virtual void OnTimer(uint64_t qwIDEvent,  dm::any& oAny );
@@ -43,7 +63,7 @@ private:
     bool LoadConfig();
 private:
 
-    std::map<ETimerEventType, VecTimerEventSink> m_oMapTimerEventSink;
+    std::map<ETimerEventType, SetTimerEventSink> m_oMapTimerEventSink;
 };
 
 #endif // __DMTIMEREVENT_H__
