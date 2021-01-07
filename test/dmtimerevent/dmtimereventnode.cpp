@@ -1,4 +1,5 @@
 #include "dmtimereventnode.h"
+#include "dmtimereventmodule.h"
 
 CDMTimerEventNode::CDMTimerEventNode()
 {

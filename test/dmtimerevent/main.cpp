@@ -5,6 +5,7 @@
 #include "dmthread.h"
 #include "dmconsole.h"
 #include "dmtypes.h"
+#include "dmtimereventnode.h"
 
 class CPlayer : public CDMTimerNode
 {
@@ -13,16 +14,17 @@ public:
 };
 
 class CMain : public IDMConsoleSink,
-              public IDMThread,
-              public CDMThreadCtrl,
-              public CDMTimerNode,
-              public TSingleton<CMain>
+    public IDMThread,
+    public CDMThreadCtrl,
+    public CDMTimerNode,
+    public TSingleton<CMain>,
+    public CDMTimerEventNode
 {
     friend class TSingleton<CMain>;
 
     enum
     {
-        eMAX_PLAYER = 100 * 10000,
+        eMAX_PLAYER = 100 * 1,
         eMAX_PLAYER_EVENT = 10,
     };
 
@@ -42,26 +44,14 @@ public:
     virtual void ThrdProc()
     {
         std::cout << "test start" << std::endl;
-
-        for (int i = 0; i < eMAX_PLAYER; ++i)
-        {
-            for (int j = 1; j <= eMAX_PLAYER_EVENT; ++j)
-            {
-                m_oPlayers[i].SetTimer(j, 500);
-            }
-        }
-
         SetTimer(eTimerID_UUID, eTimerTime_UUID, dm::any(std::string("hello world")));
         SleepMs(300);
         CDMTimerModule::Instance()->Run();
 
         SetTimer(eTimerID_STOP, eTimerTime_STOP, eTimerTime_STOP);
-        // test interface
-        uint64_t qwElapse = GetTimerElapse(eTimerID_UUID);
-        std::cout << "test GetTimerElapse: " << qwElapse << std::endl;
-        uint64_t qwRemain = GetTimerRemain(eTimerID_UUID);
-        std::cout << "test GetTimerRemain: " << qwRemain << std::endl;
-        CDMTimerElement *poElement = GetTimerElement(eTimerID_UUID);
+
+        AddEvent(ETimerEventType_EVERYDAY);
+
         bool bBusy = false;
 
         while (!m_bStop)
@@ -97,7 +87,7 @@ public:
         Stop();
     }
 
-    virtual void OnTimer(uint64_t qwIDEvent, dm::any &oAny)
+    virtual void OnTimer(uint64_t qwIDEvent, dm::any& oAny)
     {
         switch (qwIDEvent)
         {
@@ -112,6 +102,21 @@ public:
         {
             std::cout << DMFormatDateTime() << " test stopping..." << std::endl;
             Stop();
+        }
+        break;
+
+        default:
+            break;
+        }
+    }
+
+    virtual void OnEvent(ETimerEventType eEvent)
+    {
+        switch (eEvent)
+        {
+        case ETimerEventType_EVERYDAY:
+        {
+
         }
         break;
 
@@ -159,7 +164,7 @@ void CPlayer::OnTimer(uint64_t qwIDEvent)
     CMain::Instance()->AddOnTimerCount();
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     CMain::Instance()->Start(CMain::Instance());
     CMain::Instance()->WaitFor();
