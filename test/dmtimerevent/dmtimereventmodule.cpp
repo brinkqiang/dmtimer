@@ -1,4 +1,4 @@
-#include "dmtimerevent.h"
+#include "dmtimereventmodule.h"
 
 
 
@@ -48,18 +48,6 @@ void CDMTimerEventMgr::OnTimer(uint64_t qwIDEvent,  dm::any& oAny )
         it->OnEvent((ETimerEventType)qwIDEvent);
     }
 }
-//
-//CDMTimerEventGuard::CDMTimerEventGuard(ITimerEventSink* poSink,
-//                                       ETimerEventType eType)
-//    : m_poSink(poSink), m_eType(eType)
-//{
-//    CDMTimerEventMgr::Instance()->AddTimerEventSink(m_poSink, m_eType);
-//}
-//
-//CDMTimerEventGuard::~CDMTimerEventGuard()
-//{
-//    CDMTimerEventMgr::Instance()->DelTimerEventSink(m_poSink, m_eType);
-//}
 
 CDMTimerEventNode::CDMTimerEventNode()
 {
