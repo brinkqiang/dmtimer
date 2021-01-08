@@ -51,7 +51,7 @@ public:
         SetTimer(eTimerID_STOP, eTimerTime_STOP, eTimerTime_STOP);
 
         AddEvent(ETimerEventType_EVERYDAY);
-
+        
         bool bBusy = false;
 
         while (!m_bStop)
