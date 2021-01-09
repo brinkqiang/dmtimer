@@ -46,29 +46,29 @@ bool CDMTimerEventMgr::LoadConfig()
 bool CDMTimerEventMgr::InitEvent()
 {
     return true
-        && InitEveryDay()
-        && InitEveryWeek()
-        && InitEveryMonth()
-        && InitEveryYear()
+        && __InitEveryDay()
+        && __InitEveryWeek()
+        && __InitEveryMonth()
+        && __InitEveryYear()
         && true;
 }
 
-bool CDMTimerEventMgr::InitEveryDay()
+bool CDMTimerEventMgr::__InitEveryDay()
 {
     return true;
 }
 
-bool CDMTimerEventMgr::InitEveryWeek()
+bool CDMTimerEventMgr::__InitEveryWeek()
 {
     return true;
 }
 
-bool CDMTimerEventMgr::InitEveryMonth()
+bool CDMTimerEventMgr::__InitEveryMonth()
 {
     return true;
 }
 
-bool CDMTimerEventMgr::InitEveryYear()
+bool CDMTimerEventMgr::__InitEveryYear()
 {
     return true;
 }

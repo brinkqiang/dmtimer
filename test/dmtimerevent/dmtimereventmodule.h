@@ -32,12 +32,11 @@ public:
 private:
     bool LoadConfig();
     bool InitEvent();
-    bool InitEveryDay();
-    bool InitEveryWeek();
-    bool InitEveryMonth();
-    bool InitEveryYear();
 private:
-
+    bool __InitEveryDay();
+    bool __InitEveryWeek();
+    bool __InitEveryMonth();
+    bool __InitEveryYear();
 private:
 
     std::map<ETimerEventType, SetTimerEventSink> m_oMapTimerEventSink;
