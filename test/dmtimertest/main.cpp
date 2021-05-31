@@ -13,16 +13,21 @@ public:
 };
 
 class CMain : public IDMConsoleSink,
-              public IDMThread,
-              public CDMThreadCtrl,
-              public CDMTimerNode,
-              public TSingleton<CMain>
+    public IDMThread,
+    public CDMThreadCtrl,
+    public CDMTimerNode,
+    public TSingleton<CMain>
 {
     friend class TSingleton<CMain>;
 
     enum
     {
+#ifdef _DEBUG
+        eMAX_PLAYER = 1 * 10000,
+#else
         eMAX_PLAYER = 100 * 10000,
+#endif
+
         eMAX_PLAYER_EVENT = 10,
     };
 
@@ -51,7 +56,14 @@ public:
             }
         }
 
-        SetTimer(eTimerID_UUID, eTimerTime_UUID, dm::any(std::string("hello world")));
+        dm::any oAny(std::string("hello world"));
+        SetTimerEx(eTimerID_UUID, eTimerTime_UUID, [this,
+                   oAny = std::move(oAny)](auto& obj, uint64_t qwIDEvent)
+        {
+            std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount()
+                      << " " << dm::any_cast<std::string>(oAny) << std::endl;
+        });
+
         SleepMs(300);
         CDMTimerModule::Instance()->Run();
 
@@ -61,7 +73,7 @@ public:
         std::cout << "test GetTimerElapse: " << qwElapse << std::endl;
         uint64_t qwRemain = GetTimerRemain(eTimerID_UUID);
         std::cout << "test GetTimerRemain: " << qwRemain << std::endl;
-        CDMTimerElement *poElement = GetTimerElement(eTimerID_UUID);
+        CDMTimerElement* poElement = GetTimerElement(eTimerID_UUID);
         bool bBusy = false;
 
         while (!m_bStop)
@@ -97,7 +109,7 @@ public:
         Stop();
     }
 
-    virtual void OnTimer(uint64_t qwIDEvent, dm::any &oAny)
+    virtual void OnTimer(uint64_t qwIDEvent, dm::any& oAny)
     {
         switch (qwIDEvent)
         {
@@ -159,7 +171,7 @@ void CPlayer::OnTimer(uint64_t qwIDEvent)
     CMain::Instance()->AddOnTimerCount();
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     CMain::Instance()->Start(CMain::Instance());
     CMain::Instance()->WaitFor();
