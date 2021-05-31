@@ -57,8 +57,9 @@ public:
         }
 
         dm::any oAny(std::string("hello world"));
+
         SetTimerEx(eTimerID_UUID, eTimerTime_UUID, [this,
-                   oAny = std::move(oAny)](auto& obj, uint64_t qwIDEvent)
+                   oAny = std::move(oAny)](uint64_t qwIDEvent)
         {
             std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount()
                       << " " << dm::any_cast<std::string>(oAny) << std::endl;

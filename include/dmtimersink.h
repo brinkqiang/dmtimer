@@ -67,8 +67,7 @@ inline ITimerSink::~ITimerSink()
 }
 
 class CDMTimerNode;
-typedef std::function<void (ITimerSink& node, uint64_t qwIDEvent)>
-DMFunction;
+typedef std::function<void (uint64_t qwIDEvent)> DMFunction;
 
 class CDMTimerElement
 {

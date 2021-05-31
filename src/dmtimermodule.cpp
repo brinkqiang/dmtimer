@@ -193,7 +193,7 @@ int CDMTimerModule::Run()
 
             if (timer->m_funTimer)
             {
-                timer->m_funTimer(*timer->m_poTimerSink, timer->m_qwID);
+                timer->m_funTimer(timer->m_qwID);
             }
             else
             {
