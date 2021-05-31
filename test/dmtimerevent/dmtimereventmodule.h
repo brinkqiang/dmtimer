@@ -31,6 +31,12 @@ public:
     virtual void OnTimer(uint64_t qwIDEvent,  dm::any& oAny );
 private:
     bool LoadConfig();
+    bool InitEvent();
+private:
+    bool __InitEveryDay();
+    bool __InitEveryWeek();
+    bool __InitEveryMonth();
+    bool __InitEveryYear();
 private:
 
     std::map<ETimerEventType, SetTimerEventSink> m_oMapTimerEventSink;
