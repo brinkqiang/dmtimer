@@ -45,9 +45,12 @@ public:
     void CopyFrom( const CDMTimerNode& oNode );
 
     bool SetTimerEx(uint64_t qwIDEvent, uint64_t qwElapse, DMFunction fFun);
-    bool SetTimerEx(uint64_t qwIDEvent, uint64_t qwElapse, DMFunction fFun,
+    bool SetTimerEx(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst,
+                    DMFunction fFun);
+
+    bool SetTimerEx(uint64_t qwIDEvent, uint64_t qwElapse,
                     uint64_t qwFirst, const dm::any& oAny,
-                    bool bExact = false);
+                    bool bExact, DMFunction fFun);
 
     bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse);
 
