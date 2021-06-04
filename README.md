@@ -228,5 +228,5 @@ Running main() from gtest_main.cc
 [![Join the chat](https://badges.gitter.im/brinkqiang/dmtimer/Lobby.svg)](https://gitter.im/brinkqiang/dmtimer)
 
 ## Thanks
-pudding_186@163.com
+pudding_186@163.com 
 will@i007.cc
