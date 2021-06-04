@@ -1,6 +1,7 @@
 
 #include "dmtimernode.h"
 #include "dmtimermodule.h"
+#include "dmcroncpp.h"
 
 CDMTimerNode::CDMTimerNode() {}
 
@@ -59,6 +60,53 @@ void CDMTimerNode::CopyFrom( const CDMTimerNode& oNode )
             m_oTimerElementMap[qwIDEvent] = poNewTimer;
         }
     }
+}
+
+bool CDMTimerNode::SetTimerCron(uint64_t qwIDEvent, const std::string& strCron,
+                                DMFunction fFun)
+{
+    if (strCron.empty())
+    {
+        DMASSERT(0);
+        return false;
+    }
+
+    CDMTimerElement* poNewTimer = CDMTimerModule::Instance()->FetchElement();
+
+    if (NULL == poNewTimer)
+    {
+        DMASSERT(0);
+        return false;
+    }
+
+    auto cex = cron::make_cron(strCron);
+    time_t cur = time(0);
+    auto next = cron::cron_next(cex, cur) - cur;
+
+    poNewTimer->m_poTimerSink = this;
+    poNewTimer->m_qwID = qwIDEvent;
+    poNewTimer->m_bErased = false;
+
+    poNewTimer->m_strCron = strCron;
+    poNewTimer->m_funTimer = fFun;
+
+    poNewTimer->m_qwNextTime = CDMTimerModule::Instance()->GetBootTime() + next *
+                               1000;
+
+    CDMTimerModule::Instance()->AddTimerElement(poNewTimer);
+    TimerElementMapIt It = m_oTimerElementMap.find(qwIDEvent);
+
+    if (It != m_oTimerElementMap.end())
+    {
+        It->second->Kill();
+        m_oTimerElementMap[qwIDEvent] = poNewTimer;
+    }
+    else
+    {
+        m_oTimerElementMap[qwIDEvent] = poNewTimer;
+    }
+
+    return true;
 }
 
 bool CDMTimerNode::SetTimer( uint64_t qwIDEvent, uint64_t qwElapse )

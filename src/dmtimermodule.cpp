@@ -1,5 +1,6 @@
 
 #include "dmtimermodule.h"
+#include "dmcroncpp.h"
 
 CDMTimerModule::CDMTimerModule()
 {
@@ -209,12 +210,23 @@ int CDMTimerModule::Run()
                 continue;
             }
 
-            timer->m_qwNextTime += timer->m_qwElapse;
-
-            if ( !timer->m_bExact && m_qwCurTime >= timer->m_qwNextTime )
+            if (timer->m_strCron.empty())
             {
-                timer->m_qwNextTime = m_qwCurTime + timer->m_qwElapse;
+                timer->m_qwNextTime += timer->m_qwElapse;
+
+                if (!timer->m_bExact && m_qwCurTime >= timer->m_qwNextTime)
+                {
+                    timer->m_qwNextTime = m_qwCurTime + timer->m_qwElapse;
+                }
             }
+            else
+            {
+                auto cex = cron::make_cron(timer->m_strCron);
+                time_t cur = time(0);
+                auto next = cron::cron_next(cex, cur) - cur;
+                timer->m_qwNextTime = m_qwCurTime + next * 1000;
+            }
+
 
             AddTimerElement( timer );
         }

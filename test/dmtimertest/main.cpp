@@ -34,6 +34,7 @@ class CMain : public IDMConsoleSink,
     typedef enum
     {
         eTimerID_UUID = 0,
+        eTimerID_CRON = 1,
         eTimerID_STOP,
     } ETimerID;
 
@@ -56,11 +57,19 @@ public:
             }
         }
 
+        SetTimerCron(eTimerID_CRON, "0/10 * * ? * MON-FRI", [this](uint64_t qwIDEvent)
+        {
+            auto p = GetTimerElement(qwIDEvent);
+            std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount()
+                      << " TimerCron" << std::endl;
+        });
+
         dm::any oAny(std::string("hello world"));
 
         SetTimerEx(eTimerID_UUID, eTimerTime_UUID, [this,
                    oAny = std::move(oAny)](uint64_t qwIDEvent)
         {
+            auto p = GetTimerElement(qwIDEvent);
             std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount()
                       << " " << dm::any_cast<std::string>(oAny) << std::endl;
         });
@@ -123,8 +132,8 @@ public:
 
         case eTimerID_STOP:
         {
-            std::cout << DMFormatDateTime() << " test stopping..." << std::endl;
-            Stop();
+            //std::cout << DMFormatDateTime() << " test stopping..." << std::endl;
+            //Stop();
         }
         break;
 

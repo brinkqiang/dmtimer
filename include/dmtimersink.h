@@ -92,6 +92,7 @@ public:
         m_bErased = false;
         m_bExact = false;
         m_funTimer = nullptr;
+        m_strCron.clear();
     }
 
     inline void Kill()
@@ -109,7 +110,7 @@ public:
     ITimerSink*         m_poTimerSink;
     DMFunction          m_funTimer;
     dm::any             m_oAny;
-
+    std::string         m_strCron;
     bool                m_bErased;
     bool                m_bExact;
 };

@@ -44,6 +44,9 @@ public:
     void Reset();
     void CopyFrom( const CDMTimerNode& oNode );
 
+    bool SetTimerCron(uint64_t qwIDEvent, const std::string& strCron,
+                      DMFunction fFun);
+
     bool SetTimerEx(uint64_t qwIDEvent, uint64_t qwElapse, DMFunction fFun);
     bool SetTimerEx(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst,
                     DMFunction fFun);
