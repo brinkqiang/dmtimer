@@ -66,7 +66,7 @@ public:
 
         dm::any oAny(std::string("hello world"));
 
-        SetTimerEx(eTimerID_UUID, eTimerTime_UUID, [this,
+        SetTimerLambda(eTimerID_UUID, eTimerTime_UUID, [this,
                    oAny = std::move(oAny)](uint64_t qwIDEvent)
         {
             auto p = GetTimerElement(qwIDEvent);

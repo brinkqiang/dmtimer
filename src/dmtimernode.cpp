@@ -162,19 +162,19 @@ bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse,
     return true;
 }
 
-bool CDMTimerNode::SetTimerEx(uint64_t qwIDEvent, uint64_t qwElapse,
+bool CDMTimerNode::SetTimerLambda(uint64_t qwIDEvent, uint64_t qwElapse,
                               DMFunction fFun)
 {
-    return SetTimerEx(qwIDEvent, qwElapse, qwElapse, dm::any(), false, fFun);
+    return SetTimerLambda(qwIDEvent, qwElapse, qwElapse, dm::any(), false, fFun);
 }
 
-bool CDMTimerNode::SetTimerEx(uint64_t qwIDEvent, uint64_t qwElapse,
+bool CDMTimerNode::SetTimerLambda(uint64_t qwIDEvent, uint64_t qwElapse,
                               uint64_t qwFirst, DMFunction fFun)
 {
-    return SetTimerEx(qwIDEvent, qwElapse, qwFirst, dm::any(), false, fFun);
+    return SetTimerLambda(qwIDEvent, qwElapse, qwFirst, dm::any(), false, fFun);
 }
 
-bool CDMTimerNode::SetTimerEx(uint64_t qwIDEvent, uint64_t qwElapse,
+bool CDMTimerNode::SetTimerLambda(uint64_t qwIDEvent, uint64_t qwElapse,
                               uint64_t qwFirst, const dm::any& oAny,
                               bool bExact, DMFunction fFun)
 {
