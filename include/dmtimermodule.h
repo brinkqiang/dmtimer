@@ -58,12 +58,13 @@ static inline int gettimeofday(struct timeval* tv, struct timezone* tz) {
         }
 
         tz->tz_minuteswest = _timezone / 60;
-        tz->tz_dsttime = _daylight;
+aylight;
     }
 
     return 0;
 }
-
+#else
+#include <sys/time.h>
 #endif
 
 static inline uint32_t GetTickCount32() {
