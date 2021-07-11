@@ -80,7 +80,7 @@ jobs:
         shell: cmd
         run: |
           cmake --version
-          cmake --build build -A x64 --config $BUILD_TYPE
+          cmake --build build--config $BUILD_TYPE
 
       - name: Test
         # working-directory: ${{runner.workspace}}
