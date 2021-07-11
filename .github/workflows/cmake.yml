@@ -60,7 +60,7 @@ jobs:
         run: |
           cmake --version
           cmake -B build -DCMAKE_CXX_COMPILER=cl.exe -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-          cmake --build build
+          cmake --build build -DCMAKE_BUILD_TYPE=$BUILD_TYPE
 
       - name: Test
         # working-directory: ${{runner.workspace}}
