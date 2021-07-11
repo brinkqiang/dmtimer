@@ -5,7 +5,6 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: relwithdebinfo
-  # ARCH: x64
 
 jobs:
   unix:
@@ -44,13 +43,17 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest]
-
+        arch:
+          - amd64
+          - amd64_x86
+          - amd64_arm64
     steps:
       - uses: actions/checkout@v2
       - uses: lukka/get-cmake@latest
       # - uses: seanmiddleditch/gha-setup-vsdevenv@master
       - uses: ilammy/msvc-dev-cmd@v1
-
+        with:
+          arch: ${{ matrix.arch }}
       - name: Create Build Environment
         # Some projects don't allow in-source building, so create a separate build directory
         # We'll use this as our working directory for all subsequent commands
