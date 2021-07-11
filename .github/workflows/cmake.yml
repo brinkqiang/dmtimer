@@ -55,7 +55,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: lukka/get-cmake@latest
-
+      - uses: seanmiddleditch/gha-setup-vsdevenv@master
+      
       - name: Create Build Environment
         # Some projects don't allow in-source building, so create a separate build directory
         # We'll use this as our working directory for all subsequent commands
@@ -80,7 +81,7 @@ jobs:
 
       - name: Test
         working-directory: ${{runner.workspace}}/build
-        shell: bash
+        shell: cmd
         # Execute tests defined by the CMake configuration.  
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
         run: ctest -C $BUILD_TYPE
