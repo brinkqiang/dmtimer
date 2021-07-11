@@ -27,6 +27,7 @@
 #include "dmlist.h"
 #include "dmany.h"
 #include <functional>
+#include <string>
 
 #define TVN_BITS 6
 #define TVR_BITS 8
