@@ -15,7 +15,10 @@ SET(DMTIMER_VERSION "${DMTIMER_VERSION_MAJOR}.${DMTIMER_VERSION_MINOR}.${DMTIMER
 MESSAGE(STATUS "VERSION: ${DMTIMER_VERSION}")
 
 OPTION(USE_DMTIMER "use dmtimer" OFF)
-
+if(WIN32)
+add_definitions(-D_WINSOCK_DEPRECATED_NO_WARNINGS)
+add_definitions(/wd4996)
+endif(WIN32)
 LibImport("dmtimer" "src")
 ExeImport("test" "dmtimer")
 
