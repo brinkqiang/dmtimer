@@ -58,7 +58,7 @@ static inline int gettimeofday(struct timeval* tv, struct timezone* tz) {
         }
 
         tz->tz_minuteswest = _timezone / 60;
-aylight;
+        tz->tz_dsttime = _daylight;
     }
 
     return 0;
