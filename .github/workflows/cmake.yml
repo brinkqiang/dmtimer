@@ -78,7 +78,7 @@ jobs:
         # working-directory: ${{runner.workspace}}
         shell: cmd
         run: |
-          cmake --build build --config $BUILD_TYPE
+          cmake --build build -A x64 --config $BUILD_TYPE
 
       - name: Test
         # working-directory: ${{runner.workspace}}
