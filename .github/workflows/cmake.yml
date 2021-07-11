@@ -43,10 +43,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest]
-        arch:
-          - amd64
-          - amd64_x86
-          - amd64_arm64
+        
     steps:
       - uses: actions/checkout@v2
       - uses: lukka/get-cmake@latest
