@@ -60,7 +60,7 @@ jobs:
         shell: cmd
         run: |
           cmake --version
-          cmake -A x64 -B build -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+          cmake -B build -DCMAKE_BUILD_TYPE=$BUILD_TYPE
           cmake --build build --config $BUILD_TYPE
 
       - name: Test
