@@ -50,10 +50,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: lukka/get-cmake@latest
-      # - uses: seanmiddleditch/gha-setup-vsdevenv@master
-      - uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: ${{ matrix.arch }}
+      - uses: seanmiddleditch/gha-setup-vsdevenv@master
+
       - name: Create Build Environment
         # Some projects don't allow in-source building, so create a separate build directory
         # We'll use this as our working directory for all subsequent commands
@@ -64,7 +62,7 @@ jobs:
         shell: cmd
         run: |
           cmake --version
-          cmake -B build
+          cmake -B build -DCMAKE_CXX_COMPILER=cl.exe
           cmake --build build --config $BUILD_TYPE
 
       - name: Test
