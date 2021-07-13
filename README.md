@@ -10,16 +10,16 @@ Copyright (c) 2013-2018 brinkqiang (brink.qiang@gmail.com)
 [![GitHub forks](https://img.shields.io/github/forks/brinkqiang/dmtimer.svg?label=Fork)](https://github.com/brinkqiang/dmtimer)
 
 ## Build status
-| [Linux][lin-link] | [Mac][Mac-link] | [Windows][win-link] |
+| [Linux][lin-link] | [Mac][mac-link] | [Windows][win-link] |
 | :---------------: | :----------------: | :-----------------: |
 | ![lin-badge]      | ![mac-badge]       | ![win-badge]        |
 
 [lin-badge]: https://github.com/brinkqiang/dmtimer/workflows/linux/badge.svg "linux build status"
-[lin-link]:  https://travis-ci.org/brinkqiang/dmtimer "linux build status"
+[lin-link]:  https://github.com/brinkqiang/dmtimer/actions/workflows/linux.yml "linux build status"
 [mac-badge]: https://github.com/brinkqiang/dmtimer/workflows/mac/badge.svg "mac build status"
-[mac-link]:  https://travis-ci.org/brinkqiang/dmtimer "mac build status"
+[mac-link]:  https://github.com/brinkqiang/dmtimer/actions/workflows/mac.yml "mac build status"
 [win-badge]: https://github.com/brinkqiang/dmtimer/workflows/win/badge.svg "win build status"
-[win-link]:  https://ci.appveyor.com/project/brinkqiang/dmtimer "win build status"
+[win-link]:  https://github.com/brinkqiang/dmtimer/actions/workflows/win.yml "win build status"
 
 ## Intro
 C++ high performance timer
