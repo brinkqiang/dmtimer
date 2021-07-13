@@ -10,17 +10,16 @@ Copyright (c) 2013-2018 brinkqiang (brink.qiang@gmail.com)
 [![GitHub forks](https://img.shields.io/github/forks/brinkqiang/dmtimer.svg?label=Fork)](https://github.com/brinkqiang/dmtimer)
 
 ## Build status
-| [Linux][lin-link] | [MacOSX][osx-link] | [Windows][win-link] |
+| [Linux][lin-link] | [Mac][Mac-link] | [Windows][win-link] |
 | :---------------: | :----------------: | :-----------------: |
-| ![lin-badge]      | ![osx-badge]       | ![win-badge]        |
+| ![lin-badge]      | ![mac-badge]       | ![win-badge]        |
 
-[lin-badge]: https://travis-ci.com/brinkqiang/dmtimer.svg?branch=master "Travis build status"
-[lin-link]:  https://travis-ci.com/brinkqiang/dmtimer "Travis build status"
-[osx-badge]: https://travis-ci.com/brinkqiang/dmtimer.svg?branch=master "Travis build status"
-[osx-link]:  https://travis-ci.com/brinkqiang/dmtimer "Travis build status"
-[win-badge]: https://ci.appveyor.com/api/projects/status/github/brinkqiang/dmtimer?branch=master&svg=true "AppVeyor build status"
-[win-link]:  https://ci.appveyor.com/project/brinkqiang/dmtimer "AppVeyor build status"
-
+[lin-badge]: https://github.com/brinkqiang/dmtimer/workflows/linux/badge.svg "linux build status"
+[lin-link]:  https://travis-ci.org/brinkqiang/dmtimer "linux build status"
+[mac-badge]: https://github.com/brinkqiang/dmtimer/workflows/mac/badge.svg "mac build status"
+[mac-link]:  https://travis-ci.org/brinkqiang/dmtimer "mac build status"
+[win-badge]: https://github.com/brinkqiang/dmtimer/workflows/win/badge.svg "win build status"
+[win-link]:  https://ci.appveyor.com/project/brinkqiang/dmtimer "win build status"
 
 ## Intro
 C++ high performance timer
