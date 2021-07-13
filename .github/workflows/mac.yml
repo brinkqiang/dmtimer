@@ -42,7 +42,7 @@ jobs:
       - name: Status
         uses: Sibz/github-status-action@v1
         with:
-          authToken: ${{secrets.GITHUB_TOKEN}}
+          authToken: ${{secrets.MYACTION_TOKEN}}
           context: 'Set Status'
           description: 'Passed'
           state: 'success'
