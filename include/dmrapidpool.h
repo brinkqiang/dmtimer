@@ -29,6 +29,7 @@
 #include <cstring>
 #include <cassert>
 #include <new>
+#include <cstdint>
 
 template<class T, int S>
 class CDMRapidPool {
@@ -36,15 +37,15 @@ class CDMRapidPool {
     typedef T OBJTYPE;
 
     typedef struct tagRapidData {
-        unsigned int dwUse: 1;
-        unsigned int dwIndex: 15;
-        unsigned int dwFlag: 16;
+        uint32_t dwUse: 1;
+        uint32_t dwIndex: 15;
+        uint32_t dwFlag: 16;
         char szData[sizeof( OBJTYPE )];
     } SRapidData;
 
     static const int SIZE = S;
 
-    CDMRapidPool( unsigned short wIndex = 0 )
+    CDMRapidPool( uint16_t wIndex = 0 )
         : m_wIndex( wIndex ), m_wFirstFlag( 0 ), m_nFreeCount( 0 ) {
         for ( int i = 0; i < SIZE; ++i ) {
             m_stRapidData[i].dwUse = 0;
@@ -112,8 +113,8 @@ class CDMRapidPool {
     }
 
   private:
-    unsigned short m_wIndex;
-    unsigned short m_wFirstFlag;
+    uint16_t m_wIndex;
+    uint16_t m_wFirstFlag;
     int m_nFreeCount;
     SRapidData m_stRapidData[SIZE];
 };
