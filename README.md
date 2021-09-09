@@ -170,7 +170,7 @@ int main( int argc, char* argv[] ) {
 }
 
 ```
-## test
+## API test
 ```
 Running main() from gtest_main.cc
 [==========] Running 7 tests from 7 test cases.
