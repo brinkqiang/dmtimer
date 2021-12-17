@@ -129,7 +129,7 @@ class CDynamicRapidPool {
     static const int SIZE = S;
     static const int INDEX = I;
 
-    //static_assert(SIZE < 65535 && INDEX < 32767, "SIZE Must < 65535, INDEX Must < 32767!");
+    static_assert(SIZE < 65535 && INDEX < 32767, "SIZE Must < 65535, INDEX Must < 32767!");
 
     CDynamicRapidPool()
         : m_oDefaultRapidPool( 0 ) {
