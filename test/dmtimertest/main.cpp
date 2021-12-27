@@ -57,26 +57,6 @@ public:
             }
         }
 
-        SetTimerCron(eTimerID_CRON, "0/10 * * ? * MON-FRI", [this](uint64_t qwIDEvent)
-        {
-            auto p = GetTimerElement(qwIDEvent);
-            std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount()
-                      << " TimerCron" << std::endl;
-        });
-
-        dm::any oAny(std::string("hello world"));
-
-        SetTimerLambda(eTimerID_UUID, eTimerTime_UUID, [this,
-                   oAny = std::move(oAny)](uint64_t qwIDEvent)
-        {
-            auto p = GetTimerElement(qwIDEvent);
-            std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount()
-                      << " " << dm::any_cast<std::string>(oAny) << std::endl;
-        });
-
-        SleepMs(300);
-        CDMTimerModule::Instance()->Run();
-
         SetTimer(eTimerID_STOP, eTimerTime_STOP, eTimerTime_STOP);
         // test interface
         uint64_t qwElapse = GetTimerElapse(eTimerID_UUID);
