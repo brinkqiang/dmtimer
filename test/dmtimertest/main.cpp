@@ -56,17 +56,12 @@ public:
                 m_oPlayers[i].SetTimer(j, 500);
             }
         }
+        
         dm::any oAny(std::string("hello world"));
 
         SetTimer(eTimerID_UUID, eTimerTime_UUID, std::move(oAny));
         SetTimer(eTimerID_STOP, eTimerTime_STOP);
 
-        // test interface
-        uint64_t qwElapse = GetTimerElapse(eTimerID_UUID);
-        std::cout << "test GetTimerElapse: " << qwElapse << std::endl;
-        uint64_t qwRemain = GetTimerRemain(eTimerID_UUID);
-        std::cout << "test GetTimerRemain: " << qwRemain << std::endl;
-        CDMTimerElement* poElement = GetTimerElement(eTimerID_UUID);
         bool bBusy = false;
 
         while (!m_bStop)
