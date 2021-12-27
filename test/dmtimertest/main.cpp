@@ -56,8 +56,9 @@ public:
                 m_oPlayers[i].SetTimer(j, 500);
             }
         }
+        dm::any oAny(std::string("hello world"));
 
-        SetTimer(eTimerID_UUID, eTimerTime_UUID);
+        SetTimer(eTimerID_UUID, eTimerTime_UUID, std::move(oAny));
         SetTimer(eTimerID_STOP, eTimerTime_STOP);
 
         // test interface
