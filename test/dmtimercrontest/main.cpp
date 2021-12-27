@@ -57,8 +57,7 @@ public:
                    oAny = std::move(oAny)](uint64_t qwIDEvent)
         {
             auto p = GetTimerElement(qwIDEvent);
-            std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount()
-                      << " " << dm::any_cast<std::string>(oAny) << std::endl;
+            std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount() << " Lambda" << std::endl;
         });
 
         bool bBusy = false;
