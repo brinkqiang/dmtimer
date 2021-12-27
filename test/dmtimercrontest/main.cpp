@@ -56,7 +56,7 @@ public:
         SetTimerLambda(eTimerID_UUID, eTimerTime_UUID, [this,
                    oAny = std::move(oAny)](uint64_t qwIDEvent)
         {
-            auto p = GetTimerElement(qwIDEvent);
+            AddOnTimerCount();
             std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount() << " Lambda" << std::endl;
         });
 
