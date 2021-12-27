@@ -57,7 +57,10 @@ public:
             }
         }
 
-        SetTimer(eTimerID_STOP, eTimerTime_STOP, eTimerTime_STOP);
+
+        SetTimer(eTimerID_UUID, eTimerTime_UUID);
+        SetTimer(eTimerID_STOP, eTimerTime_STOP);
+
         // test interface
         uint64_t qwElapse = GetTimerElapse(eTimerID_UUID);
         std::cout << "test GetTimerElapse: " << qwElapse << std::endl;
