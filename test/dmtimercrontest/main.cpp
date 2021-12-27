@@ -43,6 +43,8 @@ public:
     {
         std::cout << "test start" << std::endl;
 
+        SetTimer(eTimerID_STOP, eTimerTime_STOP, eTimerTime_STOP);
+
         SetTimerCron(eTimerID_CRON, "0/10 * * ? * MON-FRI", [this](uint64_t qwIDEvent)
         {
             auto p = GetTimerElement(qwIDEvent);
@@ -107,8 +109,8 @@ public:
 
         case eTimerID_STOP:
         {
-            //std::cout << DMFormatDateTime() << " test stopping..." << std::endl;
-            //Stop();
+            std::cout << DMFormatDateTime() << " test stopping..." << std::endl;
+            Stop();
         }
         break;
 
