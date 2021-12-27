@@ -57,7 +57,6 @@ public:
             }
         }
 
-
         SetTimer(eTimerID_UUID, eTimerTime_UUID);
         SetTimer(eTimerID_STOP, eTimerTime_STOP);
 
