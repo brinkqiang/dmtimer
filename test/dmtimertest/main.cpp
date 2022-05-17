@@ -25,7 +25,7 @@ class CMain : public IDMConsoleSink,
 #ifdef _DEBUG
         eMAX_PLAYER = 1 * 10000,
 #else
-        eMAX_PLAYER = 50 * 10000,
+        eMAX_PLAYER = 1 * 10000,
 #endif
 
         eMAX_PLAYER_EVENT = 10,
@@ -56,7 +56,7 @@ public:
                 m_oPlayers[i].SetTimer(j, 500);
             }
         }
-        
+
         dm::any oAny(std::string("hello world"));
 
         SetTimer(eTimerID_UUID, eTimerTime_UUID, std::move(oAny));
@@ -104,7 +104,7 @@ public:
         case eTimerID_UUID:
         {
             std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount()
-                      << " " << dm::any_cast<std::string>(oAny) << std::endl;
+                << " " << dm::any_cast<std::string>(oAny) << std::endl;
         }
         break;
 
