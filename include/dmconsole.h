@@ -24,9 +24,10 @@
 
 #include "dmos.h"
 #include "dmsingleton.h"
+#include <atomic>
 
 class IDMConsoleSink {
-  public:
+public:
     virtual ~IDMConsoleSink() {};
 
     virtual void OnCloseEvent() {};
@@ -36,26 +37,27 @@ class HDMConsoleMgr : public TSingleton<HDMConsoleMgr> {
     friend class TSingleton<HDMConsoleMgr>;
 
     typedef void(*consolehandler_t)(int);
-  public:
-    void SetHandlerHook( IDMConsoleSink* pSink ) {
+public:
+    void SetHandlerHook(IDMConsoleSink* pSink) {
         m_pConsoleSink = pSink;
 
-        m_phHandler = signal( SIGINT, &HDMConsoleMgr::OnConsoleEvent );
+        m_phHandler = signal(SIGINT, &HDMConsoleMgr::OnConsoleEvent);
 
-        if ( SIG_ERR == m_phHandler ) {
-            DMASSERT( 0 );
+        if (SIG_ERR == m_phHandler) {
+            DMASSERT(0);
         }
     }
 
     void OnCloseEvent() {
-        if ( m_bOnce && m_pConsoleSink ) {
-            m_bOnce = false;
+
+        bool bCloseEvent = true;
+        if (m_pConsoleSink && m_bOnce.compare_exchange_strong(bCloseEvent, false)) {
             m_pConsoleSink->OnCloseEvent();
         }
     }
 
-    static void OnConsoleEvent( int nEventType ) {
-        switch ( nEventType ) {
+    static void OnConsoleEvent(int nEventType) {
+        switch (nEventType) {
         case SIGINT:
         case SIGILL:
         case SIGFPE:
@@ -64,19 +66,19 @@ class HDMConsoleMgr : public TSingleton<HDMConsoleMgr> {
         case SIGABRT: {
             HDMConsoleMgr::Instance()->OnCloseEvent();
         }
-        break;
+                    break;
 
         default:
-            DMASSERT( 0 );
+            DMASSERT(0);
             break;
         }
     }
-  private:
+private:
 
     consolehandler_t m_phHandler;
 
 
-  public:
+public:
     HDMConsoleMgr() {
         m_pConsoleSink = NULL;
         m_bOnce = true;
@@ -85,9 +87,9 @@ class HDMConsoleMgr : public TSingleton<HDMConsoleMgr> {
     ~HDMConsoleMgr() {
     }
 
-  private:
-    IDMConsoleSink*   m_pConsoleSink;
-    bool            m_bOnce;
+private:
+    IDMConsoleSink* m_pConsoleSink;
+    std::atomic_bool  m_bOnce;
 };
 
 #endif // __DMCONSOLE_H_INCLUDE__
