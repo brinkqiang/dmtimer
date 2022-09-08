@@ -191,11 +191,11 @@ int CDMTimerModule::Run()
                 continue;
             }
 
-            //if (timer->m_bPause)
-            //{
-            //    AddTimerElement(timer);
-            //    continue;
-            //}
+            if (timer->m_bPause)
+            {
+                AddTimerElement(timer);
+                continue;
+            }
 
             SetTimerInfo(timer->m_qwID, typeid(*(timer->m_poTimerSink)).name());
 
