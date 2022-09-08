@@ -25,7 +25,7 @@ class CMain : public IDMConsoleSink,
 #ifdef _DEBUG
         eMAX_PLAYER = 1 * 10000,
 #else
-        eMAX_PLAYER = 1 * 10000,
+        eMAX_PLAYER = 100 * 10000,
 #endif
 
         eMAX_PLAYER_EVENT = 10,
