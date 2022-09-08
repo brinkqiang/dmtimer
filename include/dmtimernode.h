@@ -38,49 +38,51 @@ public:
     CDMTimerNode();
     virtual ~CDMTimerNode();
 
-    CDMTimerNode( const CDMTimerNode& oNode );
-    CDMTimerNode& operator=( const CDMTimerNode& oNode );
+    CDMTimerNode(const CDMTimerNode& oNode);
+    CDMTimerNode& operator=(const CDMTimerNode& oNode);
 
     void Reset();
-    void CopyFrom( const CDMTimerNode& oNode );
+    void CopyFrom(const CDMTimerNode& oNode);
 
     bool SetTimerCron(uint64_t qwIDEvent, const std::string& strCron,
-                      DMFunction fFun);
+        DMFunction fFun);
 
     bool SetTimerLambda(uint64_t qwIDEvent, uint64_t qwElapse, DMFunction fFun);
     bool SetTimerLambda(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst,
-                    DMFunction fFun);
+        DMFunction fFun);
 
     bool SetTimerLambda(uint64_t qwIDEvent, uint64_t qwElapse,
-                    uint64_t qwFirst, const dm::any& oAny,
-                    bool bExact, DMFunction fFun);
+        uint64_t qwFirst, const dm::any& oAny,
+        bool bExact, DMFunction fFun);
 
     bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse);
 
-    bool SetTimer( uint64_t qwIDEvent, uint64_t qwElapse, const dm::any& oAny,
-                   bool bExact = false);
+    bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, const dm::any& oAny,
+        bool bExact = false);
 
     bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst);
 
     bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst,
-                  const dm::any& oAny,
-                  bool bExact = false);
+        const dm::any& oAny,
+        bool bExact = false);
 
-    void KillTimer( uint64_t qwIDEvent );
+    void KillTimer(uint64_t qwIDEvent);
 
     void KillTimer();
 
-    uint64_t GetTimerElapse( uint64_t qwIDEvent );
-    uint64_t GetTimerRemain( uint64_t qwIDEvent );
+    bool PauseTimer(uint64_t qwIDEvent);
+    bool ResumeTimer(uint64_t qwIDEvent);
 
-    CDMTimerElement* GetTimerElement( uint64_t qwIDEvent );
+    uint64_t GetTimerElapse(uint64_t qwIDEvent);
+    uint64_t GetTimerRemain(uint64_t qwIDEvent);
 
-    virtual void OnTimer( uint64_t qwIDEvent );
-    virtual void OnTimer( uint64_t qwIDEvent, dm::any& oAny );
+    CDMTimerElement* GetTimerElement(uint64_t qwIDEvent);
+
+    virtual void OnTimer(uint64_t qwIDEvent);
+    virtual void OnTimer(uint64_t qwIDEvent, dm::any& oAny);
 private:
     TimerElementMap m_oTimerElementMap;
     std::string m_strTimerObjName;
 };
 
 #endif // __DMTIMERNODE_H_INCLUDE__
-

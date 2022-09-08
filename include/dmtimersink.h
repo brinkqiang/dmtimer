@@ -56,10 +56,10 @@ class ITimerSink
 {
 public:
     virtual ~ITimerSink() = 0;
-    virtual void OnTimer( uint64_t qwIDEvent ) = 0;
-    virtual void OnTimer( uint64_t qwIDEvent, dm::any& oAny )
+    virtual void OnTimer(uint64_t qwIDEvent) = 0;
+    virtual void OnTimer(uint64_t qwIDEvent, dm::any& oAny)
     {
-        OnTimer( qwIDEvent );
+        OnTimer(qwIDEvent);
     }
 };
 
@@ -68,7 +68,7 @@ inline ITimerSink::~ITimerSink()
 }
 
 class CDMTimerNode;
-typedef std::function<void (uint64_t qwIDEvent)> DMFunction;
+typedef std::function<void(uint64_t qwIDEvent)> DMFunction;
 
 class CDMTimerElement
 {
@@ -87,11 +87,12 @@ public:
         m_stEntry.next = NULL;
         m_stEntry.prev = NULL;
         m_qwNextTime = 0;
-        m_qwElapse = 0;
+        m_qwCD = 0;
         m_qwID = 0;
         m_poTimerSink = NULL;
         m_bErased = false;
         m_bExact = false;
+        m_bPause = false;
         m_funTimer = nullptr;
         m_strCron.clear();
     }
@@ -101,20 +102,35 @@ public:
         m_bErased = true;
     }
 
+    inline void PauseTimer()
+    {
+        m_bPause = true;
+    }
+
+    inline void ResumeTimer()
+    {
+        m_bPause = false;
+    }
+
+    inline bool IsPause()
+    {
+        return m_bPause;
+    }
+
 public:
     struct list_head    m_stEntry;
 
-    uint64_t  m_qwNextTime;
-    uint64_t  m_qwElapse;
-    uint64_t  m_qwID;
+    uint64_t  m_qwNextTime;         // 下次触发时机
+    uint64_t  m_qwCD;               // 间隔
+    uint64_t  m_qwID;               // 唯一ID
 
-    ITimerSink*         m_poTimerSink;
-    DMFunction          m_funTimer;
-    dm::any             m_oAny;
-    std::string         m_strCron;
-    bool                m_bErased;
-    bool                m_bExact;
+    ITimerSink* m_poTimerSink;      // sink
+    DMFunction          m_funTimer; // function 方式
+    dm::any             m_oAny;     // 参数
+    std::string         m_strCron;  // cron表达式
+    bool                m_bErased;  // 延迟删除标记
+    bool                m_bExact;   // 是否精确匹配
+    bool                m_bPause;   // 是否暂停
 };
 
 #endif // __DMTIMERSINK_H_INCLUDE__
-
