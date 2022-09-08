@@ -49,17 +49,10 @@ public:
     {
         std::cout << "test start" << std::endl;
 
-        for (int i = 0; i < eMAX_PLAYER; ++i)
-        {
-            for (int j = 1; j <= eMAX_PLAYER_EVENT; ++j)
-            {
-                m_oPlayers[i].SetTimer(j, 500);
-            }
-        }
-
         dm::any oAny(std::string("hello world"));
 
         SetTimer(eTimerID_UUID, eTimerTime_UUID, std::move(oAny));
+
         SetTimer(eTimerID_STOP, eTimerTime_STOP);
 
         bool bBusy = false;
@@ -103,8 +96,7 @@ public:
         {
         case eTimerID_UUID:
         {
-            std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount()
-                << " " << dm::any_cast<std::string>(oAny) << std::endl;
+            std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount() << " " << dm::any_cast<std::string>(oAny) << std::endl;
         }
         break;
 
