@@ -109,7 +109,7 @@ class CDMRapidPool {
     }
 
     static inline SRapidData* GetRapidData( OBJTYPE* tObj ) {
-        return ( SRapidData* )( ( char* )tObj - offsetof( SRapidData, szData ) );
+        return ( SRapidData* )( ( char* )tObj - std::offsetof( SRapidData, szData ) );
     }
 
   private:
