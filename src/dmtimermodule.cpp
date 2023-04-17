@@ -1,7 +1,7 @@
 
 #include "dmtimermodule.h"
 #include "dmcroncpp.h"
-#include <stddef.h>
+#include <cstddef>
 
 CDMTimerModule::CDMTimerModule()
 {

@@ -24,12 +24,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stddef.h>
-
 #include <cstring>
 #include <cassert>
 #include <new>
 #include <cstdint>
+#include <cstddef>
 
 template<class T, int S>
 class CDMRapidPool {
