@@ -1,7 +1,6 @@
 
 #include "dmtimermodule.h"
 #include "dmcroncpp.h"
-#include <cstddef>
 
 CDMTimerModule::CDMTimerModule()
 {
@@ -113,10 +112,12 @@ void CDMTimerModule::RemoveTimerElement(CDMTimerElement* pElement)
     DMASSERT(0);
 }
 
-CDMTimerElement* CDMTimerModule::__GetTimerInfoByEntry(struct list_head* head)
+CDMTimerElement* CDMTimerModule::__GetTimerInfoByEntry(struct list_head*
+    head)
 {
     const struct list_head* ptr = head;
-    return (CDMTimerElement*)((char*)ptr - std::offsetof(CDMTimerElement, m_stEntry));
+    return (CDMTimerElement*)((char*)ptr - offsetof(CDMTimerElement,
+        m_stEntry));
 }
 
 void CDMTimerModule::Init()

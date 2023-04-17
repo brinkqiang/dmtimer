@@ -24,11 +24,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
+
 #include <cstring>
 #include <cassert>
 #include <new>
 #include <cstdint>
-#include <cstddef>
 
 template<class T, int S>
 class CDMRapidPool {
@@ -108,7 +109,7 @@ class CDMRapidPool {
     }
 
     static inline SRapidData* GetRapidData( OBJTYPE* tObj ) {
-        return ( SRapidData* )( ( char* )tObj - std::offsetof( SRapidData, szData ) );
+        return ( SRapidData* )( ( char* )tObj - offsetof( SRapidData, szData ) );
     }
 
   private:
