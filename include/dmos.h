@@ -89,8 +89,15 @@ namespace std {
 #include <unistd.h>
 
 #ifndef MAX_PATH
-#define MAX_PATH    PATH_MAX
+
+#ifndef PATH_MAX
+#define PATH_MAX 256
 #endif
+
+#define MAX_PATH    PATH_MAX
+
+#endif
+
 #define VSNPRINTF vsnprintf
 #define SleepMs(x) usleep(x*1000)
 #ifndef INFINITE
