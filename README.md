@@ -224,7 +224,6 @@ Running main() from gtest_main.cc
 
 
 ## Contacts
-[![Join the chat](https://badges.gitter.im/brinkqiang/dmtimer/Lobby.svg)](https://gitter.im/brinkqiang/dmtimer)
 
 ## Thanks
 pudding_186@163.com  
