@@ -134,11 +134,12 @@ void CDMTimerModule::Init()
         INIT_LIST_HEAD(m_tv4.vec + i);
         INIT_LIST_HEAD(m_tv5.vec + i);
     }
-
+    m_dwSpeed = SPEED_DEFAULT;
     m_dwTickCount = GetTickCount32();
     m_qwTotalTickCount = 0;
     m_qwLastTime = GetBootTime();
     m_qwCurTime = GetBootTime();
+
 }
 
 void CDMTimerModule::UnInit()
@@ -248,12 +249,22 @@ uint64_t CDMTimerModule::GetCurTime()
     return m_qwCurTime;
 }
 
+
+void CDMTimerModule::SetSpeed(uint32_t dwSpeed)
+{
+    m_dwSpeed = dwSpeed;
+}
+
 uint64_t CDMTimerModule::GetBootTime()
 {
     uint32_t dwCurTime = GetTickCount32();
-    uint32_t dwPassedTime = dwCurTime - m_dwTickCount;
+    uint32_t dwRealPassedTime = dwCurTime - m_dwTickCount;
     m_dwTickCount = dwCurTime;
-    m_qwTotalTickCount += dwPassedTime;
+
+    uint64_t qwPassedTime = static_cast<uint64_t>(dwRealPassedTime) * m_dwSpeed / SPEED_DEFAULT;
+
+    m_qwTotalTickCount += (qwPassedTime);
+
     return m_qwTotalTickCount;
 }
 

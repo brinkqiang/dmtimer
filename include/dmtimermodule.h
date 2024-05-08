@@ -33,6 +33,7 @@ struct timezone {
 };
 
 #define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
+#define SPEED_DEFAULT  10000
 
 typedef union {
     uint64_t ft_scalar;
@@ -120,6 +121,7 @@ class CDMTimerModule : public CDMSafeSingleton<CDMTimerModule> {
     int Run();
 
     uint64_t GetCurTime();
+    void SetSpeed(uint32_t dwSpeed);
 
     CDMTimerElement* FetchElement();
     void ReleaseElement( CDMTimerElement* pElement );
@@ -157,6 +159,7 @@ class CDMTimerModule : public CDMSafeSingleton<CDMTimerModule> {
 
     uint64_t m_qwIDEvent;
     std::string m_strTimerObjName;
+    uint32_t       m_dwSpeed;
 };
 
 #endif // __DMTIMERMODULE_H_INCLUDE__
