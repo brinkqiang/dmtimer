@@ -72,4 +72,10 @@
 *    第一个参数`uint64_t qwIDEvent`代表timer的ID
 *    返回值是一个uint64_t类型，代表这个timer剩余多少时间会被调用，单位为毫秒
 
+设置全局timer 速度倍率
 
+```
+void CDMTimerModule::SetSpeed(uint32_t dwSpeed);
+
+```
+*    第一个参数`uint32_t dwSpeed`代表timer的倍率 10000 代表正常速度，20000 代表 2倍速
