@@ -167,7 +167,7 @@ if(MSVC)
   # 设置链接器防御标志
   set(PUBLIC_LINKER_DEFENSES_FLAGS_COMMON "${PUBLIC_LINKER_DEFENSES_FLAGS_COMMON} /guard:cf /dynamicbase")
 
-elseif(CMAKE_CXX_COMPILER MATCHES "clang")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
   # 为Clang启用强堆栈保护
   public_add_defense_compiler_flag("-fstack-protector-strong")
   # 为发布版本启用_FORTIFY_SOURCE
@@ -176,7 +176,7 @@ elseif(CMAKE_CXX_COMPILER MATCHES "clang")
     # 为非Apple平台设置链接器防御标志
     set(PUBLIC_LINKER_DEFENSES_FLAGS_COMMON "${PUBLIC_LINKER_DEFENSES_FLAGS_COMMON} -z noexecstack -z relro -z now")
   endif()
-elseif(CMAKE_CXX_COMPILER MATCHES "gcc")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "GNU")
   # 为旧版本的GCC启用堆栈保护
   if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "4.9")
     public_add_defense_compiler_flag("-fstack-protector")
