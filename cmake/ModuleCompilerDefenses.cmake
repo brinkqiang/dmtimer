@@ -162,20 +162,11 @@ if(MSVC)
   public_add_defense_compiler_flag("/sdl")
   # 启用控制流保护
   public_add_defense_compiler_flag("/guard:cf")
-  # 启用一系列的警告标志
-  public_add_defense_compiler_flag("/w34018 /w34146 /w34244 /w34267 /w34302 /w34308 /w34509 /w34532 /w34533 /w34700 /w34789 /w34995 /w34996")
-  # 设置链接器防御标志
-  set(PUBLIC_LINKER_DEFENSES_FLAGS_COMMON "${PUBLIC_LINKER_DEFENSES_FLAGS_COMMON} /guard:cf /dynamicbase")
 
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
   # 为Clang启用强堆栈保护
   public_add_defense_compiler_flag("-fstack-protector-strong")
-  # 为发布版本启用_FORTIFY_SOURCE
-  public_add_defense_compiler_flag_release("-D_FORTIFY_SOURCE=2")
-  if (NOT APPLE)
-    # 为非Apple平台设置链接器防御标志
-    set(PUBLIC_LINKER_DEFENSES_FLAGS_COMMON "${PUBLIC_LINKER_DEFENSES_FLAGS_COMMON} -z noexecstack -z relro -z now")
-  endif()
+
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "GNU")
   # 为旧版本的GCC启用堆栈保护
   if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "4.9")
@@ -184,9 +175,6 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "GNU
     # 为新版GCC启用强堆栈保护
     public_add_defense_compiler_flag("-fstack-protector-strong")
   endif()
-
-  # 设置GCC的链接器防御标志
-  set(PUBLIC_LINKER_DEFENSES_FLAGS_COMMON "${PUBLIC_LINKER_DEFENSES_FLAGS_COMMON} -z noexecstack -z relro -z now")
 else()
   # 其他编译器不支持堆栈保护标志
   message(WARNING "Stack protection flags are not supported for this compiler.")
@@ -194,14 +182,6 @@ endif()
 
 # 确保使用位置无关代码
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
-if(CMAKE_CXX_COMPILER MATCHES "gcc" OR CMAKE_CXX_COMPILER MATCHES "clang")
-  if(NOT CMAKE_CXX_FLAGS MATCHES "-fPIC")
-    # 启用位置无关代码
-    public_add_defense_compiler_flag("-fPIC")
-  endif()
-  # 设置可执行文件的链接器标志
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fPIE -pie")
-endif()
 
 # 设置共享库、模块和可执行文件的链接器标志
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${PUBLIC_LINKER_DEFENSES_FLAGS_COMMON}")
