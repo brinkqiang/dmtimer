@@ -33,7 +33,6 @@ struct timezone {
 };
 
 #define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
-#define SPEED_DEFAULT  10000
 
 typedef union {
     uint64_t ft_scalar;
@@ -110,6 +109,7 @@ class CDMTimerModule : public CDMSafeSingleton<CDMTimerModule> {
         eMAX_POOL_I = 1000,
         eMAX_TIME_COUNT = eMAX_POOL_S * eMAX_POOL_I,
     };
+    const uint32_t SPEED_DEFAULT = 10000;
 
   public:
     CDMTimerModule();
