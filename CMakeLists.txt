@@ -5,6 +5,8 @@ PROJECT(dmtimer)
 LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 INCLUDE(cmake/ModuleImport.cmake)
 INCLUDE(cmake/ModuleCompileOptions.cmake)
+INCLUDE(cmake/ModuleCompilerDefenses.cmake)
+
 ModuleSetCompileOptions()
 
 SET(DMTIMER_VERSION_MAJOR "1")
@@ -22,19 +24,5 @@ endif(WIN32)
 LibImport("dmtimer" "src")
 ExeImport("test" "dmtimer")
 
-#ADD_CUSTOM_COMMAND(
-#TARGET dmtimertest
-#PRE_BUILD
-#COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#${CMAKE_CURRENT_SOURCE_DIR}/config/test.csv
-#$<TARGET_FILE_DIR:dmtimertest>
-#)
-
-#INSTALL(DIRECTORY include/ DESTINATION include)
-#INSTALL(TARGETS dmtimer
-#        RUNTIME DESTINATION bin
-#        LIBRARY DESTINATION lib
-#        ARCHIVE DESTINATION lib)
-
-#SET(DMTIMER_LIBS "dmtimer")
-#MARK_AS_ADVANCED(${DMTIMER_LIBS})
+SET(DMTIMER_LIBS "dmtimer")
+MARK_AS_ADVANCED(${DMTIMER_LIBS})
