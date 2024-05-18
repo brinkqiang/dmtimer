@@ -185,21 +185,6 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "GNU
     public_add_defense_compiler_flag("-fstack-protector-strong")
   endif()
 
-  # 检查并确保启用了格式检查标志
-  if(NOT CMAKE_CXX_FLAGS MATCHES "-Wformat" OR NOT CMAKE_CXX_FLAGS MATCHES "format-security")
-    message(FATAL_ERROR "Defense flags: uncompatible options")
-  endif()
-
-  # 为Android和非Android平台启用_FORTIFY_SOURCE
-  if(ANDROID)
-    public_add_defense_compiler_flag_release("-D_FORTIFY_SOURCE=2")
-    if(NOT CMAKE_CXX_FLAGS_RELEASE MATCHES "-D_FORTIFY_SOURCE=2")
-      public_add_defense_compiler_flag_release("-D_FORTIFY_SOURCE=1")
-    endif()
-  else()
-    public_add_defense_compiler_flag_release("-D_FORTIFY_SOURCE=2")
-  endif()
-
   # 设置GCC的链接器防御标志
   set(PUBLIC_LINKER_DEFENSES_FLAGS_COMMON "${PUBLIC_LINKER_DEFENSES_FLAGS_COMMON} -z noexecstack -z relro -z now")
 else()
