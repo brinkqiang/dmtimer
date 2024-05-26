@@ -27,15 +27,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: brinkqiang/get-cmake@v1
-      #- name: vcpkg build
-      #  uses: brinkqiang/vcpkg-action@v1
-      #  id: vcpkg
-      #  with:
-      #    pkgs: 
-      #    triplet: ${{ matrix.config.vcpkg_triplet }}
-      #    cache-key: ${{ matrix.config.os }}
-      #    token: ${{ github.token }}
-      #    github-binarycache: true
+      - name: vcpkg build
+        uses: brinkqiang/vcpkg-action@v1
+        id: vcpkg
+        with:
+          pkgs: gtest
+          triplet: ${{ matrix.config.vcpkg_triplet }}
+          cache-key: ${{ matrix.config.os }}
+          token: ${{ github.token }}
+          github-binarycache: true
 
       - name: Get current date
         id: date
