@@ -26,7 +26,7 @@
 #include "dmrapidpool.h"
 #include "dmtimernode.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 struct timezone {
     int  tz_minuteswest; /* minutes W of Greenwich */
     int  tz_dsttime;     /* type of dst correction */
@@ -72,7 +72,7 @@ static inline uint32_t GetTickCount32() {
     //auto now = std::chrono::steady_clock::now();
     //auto now = std::chrono::high_resolution_clock::now();
     //return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
-#ifdef WIN32
+#ifdef _WIN32
     return ::GetTickCount();
 #else
     struct timespec ts = { 0 };

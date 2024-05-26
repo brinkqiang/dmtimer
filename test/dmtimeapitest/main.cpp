@@ -5,7 +5,7 @@
 #include <chrono>
 
 static inline uint32_t GetTickCount32_CLOCK_REALTIME_COARSE() {
-#ifdef WIN32
+#ifdef _WIN32
     return ::GetTickCount();
 #elif __APPLE__
     struct timespec ts = { 0 };
@@ -19,7 +19,7 @@ static inline uint32_t GetTickCount32_CLOCK_REALTIME_COARSE() {
 }
 
 static inline uint32_t GetTickCount32_CLOCK_REALTIME() {
-#ifdef WIN32
+#ifdef _WIN32
     return ::GetTickCount();
 #elif __APPLE__
     struct timespec ts = { 0 };
@@ -33,7 +33,7 @@ static inline uint32_t GetTickCount32_CLOCK_REALTIME() {
 }
 
 static inline uint32_t GetTickCount32_CLOCK_MONOTONIC() {
-#ifdef WIN32
+#ifdef _WIN32
     return ::GetTickCount();
 #elif __APPLE__
     struct timespec ts = { 0 };
