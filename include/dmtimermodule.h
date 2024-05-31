@@ -104,12 +104,10 @@ class CDMTimerModule : public CDMSafeSingleton<CDMTimerModule> {
   public:
     friend class CDMSafeSingleton<CDMTimerModule>;
 
-    enum {
-        eMAX_POOL_S = 50000,
-        eMAX_POOL_I = 1000,
-        eMAX_TIME_COUNT = eMAX_POOL_S * eMAX_POOL_I,
-    };
-    const uint32_t SPEED_DEFAULT = 10000;
+    static const uint32_t MAX_POOL_S = 50000;
+    static const uint32_t MAX_POOL_I = 1000;
+    static const uint32_t MAX_POOL_COUNT = MAX_POOL_S * MAX_POOL_I;
+    static const uint32_t SPEED_DEFAULT = 10000;
 
   public:
     CDMTimerModule();
@@ -141,7 +139,7 @@ class CDMTimerModule : public CDMSafeSingleton<CDMTimerModule> {
 
     CDMTimerElement* __GetTimerInfoByEntry( list_head* head );
   private:
-    typedef CDynamicRapidPool<CDMTimerElement, eMAX_POOL_S, eMAX_POOL_I> TimerElementPool;
+    typedef CDynamicRapidPool<CDMTimerElement, MAX_POOL_S, MAX_POOL_I> TimerElementPool;
 
     TimerElementPool m_oTimerElementPool;
 

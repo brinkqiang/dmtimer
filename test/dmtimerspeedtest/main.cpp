@@ -48,6 +48,7 @@ public:
     virtual void ThrdProc()
     {
         CDMTimerModule::Instance()->SetSpeed(20000);
+
         std::cout << "test start" << std::endl;
 
         for (int i = 0; i < eMAX_PLAYER; ++i)
