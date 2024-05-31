@@ -1,7 +1,7 @@
 #!/bin/bash
 
 rm -rf build
-mkdir build
+mkdir -p build
 pushd build
 
 # -DCMAKE_EXPORT_COMPILE_COMMANDS=ON option is implemented only by Makefile Generators and Ninja Generators.
