@@ -19,7 +19,7 @@
 rm -rf build
 mkdir build
 pushd build
-cmake -DCMAKE_BUILD_TYPE=relwithdebinfo ..
+cmake -DCMAKE_BUILD_TYPE=relwithdebinfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
 cmake --build . --config relwithdebinfo -- -j$(nproc)
 popd
 
