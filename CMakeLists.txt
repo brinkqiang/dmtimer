@@ -24,8 +24,6 @@ endif(WIN32)
 
 LibImport("dmtimer" "src")
 
-SET(DMTIMER_LIBS "dmtimer")
-MARK_AS_ADVANCED(${DMTIMER_LIBS})
 
 if (PROJECT_IS_TOP_LEVEL) # need cmake 3.21+
     ExeImport("test" "dmtimer")
