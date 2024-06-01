@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.21)
 
 PROJECT(dmtimer)
 
@@ -21,8 +21,12 @@ if(WIN32)
 add_definitions(-D_WINSOCK_DEPRECATED_NO_WARNINGS)
 add_definitions(/wd4996)
 endif(WIN32)
+
 LibImport("dmtimer" "src")
-ExeImport("test" "dmtimer")
 
 SET(DMTIMER_LIBS "dmtimer")
 MARK_AS_ADVANCED(${DMTIMER_LIBS})
+
+if (PROJECT_IS_TOP_LEVEL) # need cmake 3.21+
+    ExeImport("test" "dmtimer")
+endif(PROJECT_IS_TOP_LEVEL)
