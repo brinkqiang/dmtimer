@@ -21,6 +21,10 @@ Copyright (c) 2013-2018 brinkqiang (brink.qiang@gmail.com)
 [win-badge]: https://github.com/brinkqiang/dmtimer/workflows/win/badge.svg "win build status"
 [win-link]:  https://github.com/brinkqiang/dmtimer/actions/workflows/win.yml "win build status"
 
+# Doc
+- [build](./doc/compile.md)
+- [how to use](./doc/tutorial.md)
+
 ## Intro
 C++ high performance timer
 ```cpp
