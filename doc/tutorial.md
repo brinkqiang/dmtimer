@@ -24,9 +24,20 @@
 ```
     bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse);
 
-    bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, const dm::any& oAny, bool bExact);
+    bool CDMTimerNode::SetTimerCron(uint64_t qwIDEvent, const std::string& strCron, DMFunction fFun);
+
+    bool CDMTimerNode::SetTimerLambda(uint64_t qwIDEvent, uint64_t qwElapse, DMFunction fFun);
+    bool CDMTimerNode::SetTimerLambda(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst, DMFunction fFun);
+
+    bool CDMTimerNode::SetTimerLambda(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst, const dm::any& oAny, bool bExact, DMFunction fFun);
+
+    bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse);
+
+    bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, const dm::any& oAny, bool bExact = false);
 
     bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst);
+
+    bool CDMTimerNode::SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst, const dm::any& oAny, bool bExact = false);
 ```
 
 ```
