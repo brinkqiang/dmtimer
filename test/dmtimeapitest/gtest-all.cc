@@ -7881,6 +7881,7 @@ InternalRunDeathTestFlag* ParseInternalRunDeathTestFlag() {
 #else
 # include <limits.h>
 # include <climits>  // Some Linux distributions define PATH_MAX here.
+# include <unistd.h>
 #endif  // GTEST_OS_WINDOWS_MOBILE
 
 #if GTEST_OS_WINDOWS
@@ -7890,7 +7891,7 @@ InternalRunDeathTestFlag* ParseInternalRunDeathTestFlag() {
 #elif defined(_XOPEN_PATH_MAX)
 # define GTEST_PATH_MAX_ _XOPEN_PATH_MAX
 #else
-# define GTEST_PATH_MAX_ _POSIX_PATH_MAX
+# define GTEST_PATH_MAX_ 512
 #endif  // GTEST_OS_WINDOWS
 
 
