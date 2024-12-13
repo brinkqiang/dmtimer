@@ -142,7 +142,16 @@ macro(ModuleSetCompileOptions)
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}" )
     SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}")
     SET(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_STATIC_LINKER_FLAGS}")
-    LINK_LIBRARIES()
+
+    set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+    find_package(Threads REQUIRED)
+
+    SET(CMAKE_THREAD_LINK "")
+    if(Threads_FOUND)
+      SET(CMAKE_THREAD_LINK "Threads::Threads")
+    endif(Threads_FOUND)
+
+    LINK_LIBRARIES(${CMAKE_THREAD_LINK})
   ELSEIF (UNIX)
     MESSAGE(STATUS "Now is UNIX-like OS")
 
@@ -173,16 +182,6 @@ macro(ModuleSetCompileOptions)
         message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
     endif(COMPILER_SUPPORTS_CXX17)
 
-
-    set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
-    find_package(Threads REQUIRED)
-
-    # 判断是否找到 pthread
-    SET(CMAKE_THREAD_LINK "")
-    if(Threads_FOUND)
-      SET(CMAKE_THREAD_LINK "Threads::Threads")
-    endif(Threads_FOUND)
-
     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -Wl,--rpath=./ -Wl,-rpath-link=./lib")
     SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -D_DEBUG")
     SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -g")
@@ -198,6 +197,14 @@ macro(ModuleSetCompileOptions)
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
     SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}")
     SET(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_STATIC_LINKER_FLAGS}")
+
+    set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+    find_package(Threads REQUIRED)
+
+    SET(CMAKE_THREAD_LINK "")
+    if(Threads_FOUND)
+      SET(CMAKE_THREAD_LINK "Threads::Threads")
+    endif(Threads_FOUND)
 
     LINK_LIBRARIES(m ${CMAKE_THREAD_LINK})
     FIND_PROGRAM(CCACHE_FOUND ccache)
