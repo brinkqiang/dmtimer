@@ -8,7 +8,7 @@ cd build
 
 # -DCMAKE_EXPORT_COMPILE_COMMANDS=ON option is implemented only by Makefile Generators and Ninja Generators.
 cmake -DCMAKE_BUILD_TYPE=relwithdebinfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
-cmake --build . --config relwithdebinfo -- /m:%NUMBER_OF_PROCESSORS%
+cmake --build . --config relwithdebinfo -- /m:$(nproc)
 
 # popd
 cd ..
