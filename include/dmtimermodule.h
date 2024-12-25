@@ -29,7 +29,7 @@
 #include "dmtimernode.h"
 #include <timeapi.h>
 
-#if defined(USE_QUERYPERFORMANCE) && defined(_WIN32)
+#if defined(DMTIMER_USE_HIGH_RESOLUTION) && defined(_WIN32)
 #pragma comment(lib, "winmm.lib")
 #endif
 
@@ -79,7 +79,9 @@ static std::once_flag initializedFlag;  // ÉùÃ÷ std::once_flag ¶ÔÏó
 
 static inline uint32_t GetTickCount32() {
 
-#if defined(USE_QUERYPERFORMANCE) && defined(_WIN32)
+#if defined(DMTIMER_USE_HIGH_RESOLUTION) && defined(_WIN32)
+	std::call_once(initializedFlag, []() {  timeBeginPeriod(1);});
+
 	auto now = std::chrono::high_resolution_clock::now();
 	return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
 #elif defined(_WIN32)

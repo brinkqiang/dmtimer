@@ -9,9 +9,15 @@ INCLUDE(cmake/ModuleCompilerDefenses.cmake)
 
 ModuleSetCompileOptions()
 
+OPTION(DMTIMER_USE_HIGH_RESOLUTION "use high resolution" ON)
+
 if(WIN32)
     add_definitions(-D_WINSOCK_DEPRECATED_NO_WARNINGS)
     add_definitions(/wd4996)
+
+    if(DMTIMER_USE_HIGH_RESOLUTION)
+        add_definitions(-DDMTIMER_USE_HIGH_RESOLUTION)
+    endif()
 endif(WIN32)
 
 LibImport("dmtimer" "src")

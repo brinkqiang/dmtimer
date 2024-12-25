@@ -1,5 +1,5 @@
 
-#define USE_QUERYPERFORMANCE
+#define DMTIMER_USE_HIGH_RESOLUTION
 
 #include "dmutil.h"
 #include "dmtimermodule.h"
