@@ -22,14 +22,13 @@
 #ifndef __DMTIMERMODULE_H_INCLUDE__
 #define __DMTIMERMODULE_H_INCLUDE__
 
-#define DMTIMER_USE_HIGH_RESOLUTION
-
 #include "dmsingleton.h"
 #include "dmrapidpool.h"
 #include "dmtimernode.h"
 #include <timeapi.h>
 
 #if defined(DMTIMER_USE_HIGH_RESOLUTION) && defined(_WIN32)
+#include <mutex>
 #pragma comment(lib, "winmm.lib")
 #endif
 
@@ -73,14 +72,16 @@ static inline int gettimeofday(struct timeval* tv, struct timezone* tz) {
 #else
 #include <sys/time.h>
 #endif
-#include <mutex>
 
-static std::once_flag initializedFlag;  // ÉùÃ÷ std::once_flag ¶ÔÏó
 
 static inline uint32_t GetTickCount32() {
 
-#if defined(DMTIMER_USE_HIGH_RESOLUTION) && defined(_WIN32)
-	std::call_once(initializedFlag, []() {  timeBeginPeriod(1);});
+#if defined(DMTIMER_USE_HIGH_RESOLUTION)
+
+#ifdef _WIN32
+	static std::once_flag initializedFlag;
+	std::call_once(initializedFlag, []() {  timeBeginPeriod(1); });
+#endif
 
 	auto now = std::chrono::high_resolution_clock::now();
 	return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
