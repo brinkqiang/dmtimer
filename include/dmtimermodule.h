@@ -25,10 +25,11 @@
 #include "dmsingleton.h"
 #include "dmrapidpool.h"
 #include "dmtimernode.h"
-#include <timeapi.h>
 
 #if defined(DMTIMER_USE_HIGH_RESOLUTION) && defined(_WIN32)
 #include <mutex>
+#include <timeapi.h>
+
 #pragma comment(lib, "winmm.lib")
 #endif
 
