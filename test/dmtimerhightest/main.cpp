@@ -1,4 +1,6 @@
 
+#define USE_QUERYPERFORMANCE
+
 #include "dmutil.h"
 #include "dmtimermodule.h"
 #include "dmsingleton.h"
