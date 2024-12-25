@@ -22,7 +22,7 @@
 #ifndef __DMTIMERMODULE_H_INCLUDE__
 #define __DMTIMERMODULE_H_INCLUDE__
 
-#define USE_QUERYPERFORMANCE
+#define DMTIMER_USE_HIGH_RESOLUTION
 
 #include "dmsingleton.h"
 #include "dmrapidpool.h"
@@ -78,29 +78,10 @@ static inline int gettimeofday(struct timeval* tv, struct timezone* tz) {
 static std::once_flag initializedFlag;  // 声明 std::once_flag 对象
 
 static inline uint32_t GetTickCount32() {
-    //auto now = std::chrono::system_clock::now();
-    //auto now = std::chrono::steady_clock::now();
-    //auto now = std::chrono::high_resolution_clock::now();
-    //return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+
 #if defined(USE_QUERYPERFORMANCE) && defined(_WIN32)
-	// 高精度计时器
-	std::call_once(initializedFlag, []() {
-		timeBeginPeriod(1);  // 设置系统计时器精度为1ms
-		});
-
-	LARGE_INTEGER counter;
-	LARGE_INTEGER frequency;
-
-	// 获取性能计数器频率
-	if (QueryPerformanceFrequency(&frequency) == 0) {
-		return 0;  // 如果无法获取频率，返回 0
-	}
-
-	// 获取当前计数器值
-	QueryPerformanceCounter(&counter);
-
-	// 将计数器值转换为毫秒
-	return static_cast<uint32_t>((counter.QuadPart * 1000) / frequency.QuadPart);
+	auto now = std::chrono::high_resolution_clock::now();
+	return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
 #elif defined(_WIN32)
     return ::GetTickCount();
 #else
