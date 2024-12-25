@@ -84,7 +84,13 @@ static inline uint32_t GetTickCount32() {
 
 #ifdef _WIN32
 	static std::once_flag initializedFlag;
-	std::call_once(initializedFlag, []() {  timeBeginPeriod(1); });
+	std::call_once(initializedFlag, []() { 
+        static auto t = timeBeginPeriod(1);
+        std::atexit([](){ 
+            timeEndPeriod(t);
+        });
+    });
+
 #endif
 
 	auto now = std::chrono::high_resolution_clock::now();
