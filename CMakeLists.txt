@@ -9,7 +9,7 @@ INCLUDE(cmake/ModuleCompilerDefenses.cmake)
 
 ModuleSetCompileOptions()
 
-OPTION(DMTIMER_USE_HIGH_RESOLUTION "use high resolution" ON)
+OPTION(DMTIMER_USE_HIGH_RESOLUTION "use high resolution" OFF)
 
 if(WIN32)
     add_definitions(-D_WINSOCK_DEPRECATED_NO_WARNINGS)
