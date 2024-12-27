@@ -50,6 +50,21 @@ macro(ModuleInclude ModuleName ModulePath)
 
 endmacro(ModuleInclude)
 
+macro(InterfaceImport ModuleName ModulePath DependsLib)
+    MESSAGE(STATUS "ModuleImport ${ModuleName} ${ModulePath}")
+
+    set(${ModuleName}_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath})
+    mark_as_advanced(${ModuleName}_INCLUDE_DIR)
+    set(${ModuleName}_LIBRARIES ${ModuleName})
+    mark_as_advanced(${ModuleName}_LIBRARIES)
+    
+    add_library(${ModuleName} INTERFACE)
+
+    target_include_directories(${ModuleName} INTERFACE ${${ModuleName}_INCLUDE_DIR})
+
+    TARGET_LINK_LIBRARIES(${ModuleName} ${DependsLib})
+endmacro(InterfaceImport)
+
 macro(ModuleImport ModuleName ModulePath)
     MESSAGE(STATUS "ModuleImport ${ModuleName} ${ModulePath}")
 
