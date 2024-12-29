@@ -91,7 +91,7 @@ namespace std {
 #ifndef MAX_PATH
 
 #ifndef PATH_MAX
-#define PATH_MAX 256
+#define PATH_MAX 512
 #endif
 
 #define MAX_PATH    PATH_MAX
