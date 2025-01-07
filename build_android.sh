@@ -8,7 +8,7 @@ cd build
 
 # -DCMAKE_EXPORT_COMPILE_COMMANDS=ON option is implemented only by Makefile Generators and Ninja Generators.
 echo download https://googledownloads.cn/android/repository/android-ndk-r27c-linux.zip
-echo x android-ndk-r27c-linux
+echo x android-ndk-r27c-linux.zip
 echo sudo mv android-ndk-r27c-linux /opt
 echo export ANDROID_NDK=/opt/android-ndk-r27c
 echo export PATH=$PATH:/opt/android-ndk-r27c
