@@ -152,7 +152,7 @@ macro(LibImport ModuleName ModulePath)
             LIST(APPEND LIB_SOURCES)
         ENDIF(WIN32)
 
-        ADD_LIBRARY(${ModuleName} ${LIB_SOURCES})
+        ADD_LIBRARY(${ModuleName} STATIC ${LIB_SOURCES})
     ENDIF()
 endmacro(LibImport)
 
@@ -183,7 +183,7 @@ macro(LibImportExclude ModuleName ModulePath ExcludeList)
             LIST(APPEND LIB_SOURCES)
         ENDIF(WIN32)
 
-        ADD_LIBRARY(${ModuleName} ${LIB_SOURCES})
+        ADD_LIBRARY(${ModuleName} STATIC ${LIB_SOURCES})
     ENDIF()
 endmacro(LibImportExclude)
 
