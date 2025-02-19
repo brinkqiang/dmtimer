@@ -8,7 +8,7 @@ RUN apt-get install -yqq gcc-13 g++-13 cmake git && \
 ENV PROJECT_NAME=dmtimer
 
 WORKDIR /git
-RUN git clone --depth 1 --branch latest https://hub.fastgit.org/brinkqiang/dmtimer.git
+RUN git clone --depth 1 --branch latest https://github.com/brinkqiang/dmtimer.git
 
 WORKDIR /git/dmtimer
 RUN ./build.sh
