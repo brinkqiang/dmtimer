@@ -15,4 +15,4 @@ RUN ./build.sh
 
 EXPOSE 8080
 
-CMD ./bin/relwithdebinfo/dmtimertest
+CMD ./bin/relwithdebinfo/dmtimeapitest
