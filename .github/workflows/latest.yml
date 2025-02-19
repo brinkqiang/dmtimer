@@ -1,0 +1,44 @@
+name: Auto Update Latest Tag
+
+on:
+  push:
+    branches:
+      - master    # master 分支
+      - main      # main 分支
+  workflow_dispatch:  # 允许手动触发工作流
+
+jobs:
+  create-latest-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create or update 'latest' tag
+        run: |
+          # 获取当前提交的哈希值
+          COMMIT_HASH=$(git rev-parse HEAD)
+          echo "获取当前提交的哈希值: COMMIT_HASH=$COMMIT_HASH"
+
+          # 检查本地和远程是否已存在 'latest' 标签
+          TAG_EXISTS_LOCAL=$(git tag -l "latest")
+          TAG_EXISTS_REMOTE=$(git ls-remote --tags origin latest)
+
+          echo "本地标签检查: $TAG_EXISTS_LOCAL"
+          echo "远程标签检查: $TAG_EXISTS_REMOTE"
+
+          if [ -z "$TAG_EXISTS_LOCAL" ] && [ -z "$TAG_EXISTS_REMOTE" ]; then
+            echo "No 'latest' tag found. Creating a new tag."
+            git tag latest $COMMIT_HASH
+          else
+            echo "'latest' tag exists. Updating the tag."
+            git tag -f latest $COMMIT_HASH
+          fi
+          
+          # 强制推送 'latest' 标签到远程仓库
+          git push origin latest --force
+          
+      - name: Print current time
+        run: |
+          echo "The current UTC time is: $(date -u)"
