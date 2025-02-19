@@ -9,7 +9,7 @@ static inline uint32_t GetTickCount32_CLOCK_REALTIME_COARSE() {
     return ::GetTickCount();
 #elif __APPLE__
     struct timespec ts = { 0 };
-    clock_gettime(CLOCK_MONOTONIC, &ts);
+    clock_gettime(CLOCK_REALTIME_COARSE, &ts);
     return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 #else
     struct timespec ts = { 0 };
@@ -23,7 +23,7 @@ static inline uint32_t GetTickCount32_CLOCK_REALTIME() {
     return ::GetTickCount();
 #elif __APPLE__
     struct timespec ts = { 0 };
-    clock_gettime(CLOCK_MONOTONIC, &ts);
+    clock_gettime(CLOCK_REALTIME, &ts);
     return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 #else
     struct timespec ts = { 0 };
