@@ -1,0 +1,15 @@
+stages:
+  - build
+
+variables:
+  BUILD_DIR: "build"
+
+before_script:
+  - mkdir -p ${BUILD_DIR}
+
+build_job:
+  stage: build
+  script:
+    - cd ${BUILD_DIR}
+    - cmake -DCMAKE_BUILD_TYPE=relwithdebinfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
+    - cmake --build . --config relwithdebinfo -- -j$(nproc)
