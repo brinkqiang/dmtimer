@@ -9,6 +9,8 @@ before_script:
 
 build_job:
   stage: build
+  tags:
+    - linux  # 与 Runner 标签一致
   script:
     - cd ${BUILD_DIR}
     - cmake -DCMAKE_BUILD_TYPE=relwithdebinfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
