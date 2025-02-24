@@ -6,8 +6,6 @@ before_script:
 
 build_job:
   stage: build
-  tags:
-    - linux
   script:
     - cd build
     - cmake -DCMAKE_BUILD_TYPE=relwithdebinfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
