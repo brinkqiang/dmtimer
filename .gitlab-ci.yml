@@ -1,17 +1,14 @@
 stages:
   - build
 
-variables:
-  BUILD_DIR: "build"
-
 before_script:
-  - mkdir -p ${BUILD_DIR}
+  - mkdir -p build
 
 build_job:
   stage: build
   tags:
     - linux  # 与 Runner 标签一致
   script:
-    - cd ${BUILD_DIR}
+    - cd build
     - cmake -DCMAKE_BUILD_TYPE=relwithdebinfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
     - cmake --build . --config relwithdebinfo -- -j$(nproc)
