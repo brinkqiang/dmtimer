@@ -150,9 +150,9 @@ macro(ModuleSetCompileOptions)
     find_package(Threads REQUIRED)
 
     set(CMAKE_THREAD_LINK "")
-    if(Threads_FOUND)
+    if(THREADS_FOUND)
       set(CMAKE_THREAD_LINK "Threads::Threads")
-    endif(Threads_FOUND)
+    endif(THREADS_FOUND)
 
     link_libraries(${CMAKE_THREAD_LINK})
   elseif (UNIX)
@@ -197,9 +197,9 @@ macro(ModuleSetCompileOptions)
     find_package(Threads REQUIRED)
 
     set(CMAKE_THREAD_LINK "")
-    if(Threads_FOUND)
+    if(THREADS_FOUND)
       set(CMAKE_THREAD_LINK "Threads::Threads")
-    endif(Threads_FOUND)
+    endif(THREADS_FOUND)
 
     link_libraries(m ${CMAKE_THREAD_LINK})
     find_program(CCACHE_FOUND ccache)
