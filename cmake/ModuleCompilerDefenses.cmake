@@ -4,7 +4,7 @@
 # 初始化链接器防御标志变量
 set(PUBLIC_LINKER_DEFENSES_FLAGS_COMMON "")
 
-MACRO(public_check_compiler_flag LANG FLAG RESULT)
+macro(public_check_compiler_flag LANG FLAG RESULT)
   set(_fname "${ARGN}")
   if(NOT DEFINED ${RESULT})
     if(_fname)
@@ -61,8 +61,8 @@ MACRO(public_check_compiler_flag LANG FLAG RESULT)
         list(APPEND __cmake_flags "-DCMAKE_CXX_EXTENSIONS=${CMAKE_CXX_EXTENSIONS}")
       endif()
 
-      MESSAGE(STATUS "Performing Test ${RESULT}${__msg}")
-      TRY_COMPILE(${RESULT}
+      message(STATUS "Performing Test ${RESULT}${__msg}")
+      try_compile(${RESULT}
         "${CMAKE_BINARY_DIR}"
         "${_fname}"
         CMAKE_FLAGS ${__cmake_flags}
@@ -70,12 +70,12 @@ MACRO(public_check_compiler_flag LANG FLAG RESULT)
         ${__link_libs}
         OUTPUT_VARIABLE OUTPUT)
 
-      IF(${RESULT})
-        SET(${RESULT} 1 CACHE INTERNAL "Test ${RESULT}")
-        MESSAGE(STATUS "Performing Test ${RESULT} - Success")
-      ELSE(${RESULT})
-        MESSAGE(STATUS "Performing Test ${RESULT} - Failed")
-        SET(${RESULT} "" CACHE INTERNAL "Test ${RESULT}")
+      if(${RESULT})
+        set(${RESULT} 1 CACHE INTERNAL "Test ${RESULT}")
+        message(STATUS "Performing Test ${RESULT} - Success")
+      else(${RESULT})
+        message(STATUS "Performing Test ${RESULT} - Failed")
+        set(${RESULT} "" CACHE INTERNAL "Test ${RESULT}")
         file(APPEND ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeError.log
             "Compilation failed:\n"
             "    source file: '${_fname}'\n"
@@ -83,12 +83,12 @@ MACRO(public_check_compiler_flag LANG FLAG RESULT)
             "===== BUILD LOG =====\n"
             "${OUTPUT}\n"
             "===== END =====\n\n")
-      ENDIF(${RESULT})
+      endif(${RESULT})
     else()
-      SET(${RESULT} 0)
+      set(${RESULT} 0)
     endif()
   endif()
-ENDMACRO()
+endmacro()
 
 macro(public_check_flag_support lang flag varname base_options)
   if(CMAKE_BUILD_TYPE)
