@@ -107,7 +107,7 @@ macro(ModuleSetCompileOptions)
       endif()
     endif()
   elseif (APPLE)
-    message(STATUS "Now is Apple systems")
+    message(STATUS "Now is Apple OS")
 
     set(DMOS_NAME "mac") 
 
