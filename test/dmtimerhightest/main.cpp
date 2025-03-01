@@ -1,5 +1,7 @@
 
+#ifndef DMTIMER_USE_HIGH_RESOLUTION
 #define DMTIMER_USE_HIGH_RESOLUTION
+#endif
 
 #include "dmutil.h"
 #include "dmtimermodule.h"
