@@ -237,13 +237,13 @@ macro(AddInstall ModuleList)
 
     message(STATUS "AddInstall ${ModuleList} ...")
     if (WIN32)
-        INSTALL(TARGETS ${ModuleList}
+        install(TARGETS ${ModuleList}
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
     else(WIN32)
-        INCLUDE(GNUInstallDirs)
-        INSTALL(TARGETS ${ModuleList}
+        include(GNUInstallDirs)
+        install(TARGETS ${ModuleList}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
