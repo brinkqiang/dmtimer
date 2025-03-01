@@ -37,7 +37,7 @@ macro(ModuleSetCompileOptions)
     cmake_policy(SET CMP0048 NEW)
   endif()
   
-  set (CMAKE_C_STANDARD 99)
+  set(CMAKE_C_STANDARD 99)
   
   if ("${CMAKE_BUILD_TYPE}" STREQUAL "")
     set(CMAKE_BUILD_TYPE "debug")
