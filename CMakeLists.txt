@@ -14,6 +14,8 @@ option(DMTIMER_USE_HIGH_RESOLUTION "use high resolution" on)
 if(WIN32)
     add_definitions(-D_WINSOCK_DEPRECATED_NO_WARNINGS)
     add_definitions(/wd4996)
+else()
+    set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,readability-*)
 endif(WIN32)
 
 if(DMTIMER_USE_HIGH_RESOLUTION)
