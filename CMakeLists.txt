@@ -9,7 +9,8 @@ include(cmake/ModuleCompilerDefenses.cmake)
 
 ModuleSetCompileOptions()
 
-option(DMTIMER_USE_HIGH_RESOLUTION "use high resolution" on)
+option(DMTIMER_USE_HIGH_RESOLUTION "use high resolution" OFF)
+option(USE_CLANG_TIDY "enable clang-tidy" OFF)
 
 if(WIN32)
     add_definitions(-D_WINSOCK_DEPRECATED_NO_WARNINGS)
