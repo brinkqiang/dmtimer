@@ -24,4 +24,4 @@ CheckOptions:
     value:           1
   - key:             modernize-use-default-member-init.UseAssignment
     value:           1
-HeaderFilterRegex: '^(?!.*/test/).*' # 排除所有包含 /test/ 的路径
+HeaderFilterRegex: '^(?!.*/(test/|tests/|thirdparty/)).*'  # 排除 test/、tests/、third_party/ 目录
