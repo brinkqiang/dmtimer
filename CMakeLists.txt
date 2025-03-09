@@ -21,7 +21,7 @@ else()
     if(USE_CLANG_TIDY)
         set(CMAKE_CXX_CLANG_TIDY clang-tidy
         --config-file=${CMAKE_CURRENT_SOURCE_DIR}/.clang-tidy
-        -line-filter=[{\"name\": \".*/gtest.*.cc\"}])
+        -line-filter='[{"name": ".*/test/dmtimeapitest/.*"}])
     endif()
 endif(WIN32)
 
