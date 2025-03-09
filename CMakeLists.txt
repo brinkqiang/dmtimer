@@ -16,8 +16,14 @@ if(WIN32)
     add_definitions(-D_WINSOCK_DEPRECATED_NO_WARNINGS)
     add_definitions(/wd4996)
 else()
-    if(USE_CLANG_TIDY)
-        set(CMAKE_CXX_CLANG_TIDY "clang-tidy;--config-file=${CMAKE_CURRENT_SOURCE_DIR}/.clang-tidy")
+    if(USE_CLANG_TIDY AND NOT WIN32)
+        find_program(CLANG_TIDY_EXE NAMES clang-tidy)
+        if(CLANG_TIDY_EXE)
+            set(CMAKE_CXX_CLANG_TIDY 
+                "${CLANG_TIDY_EXE};--config-file=${CMAKE_CURRENT_SOURCE_DIR}/.clang-tidy"
+                CACHE STRING "clang-tidy command" FORCE
+            )
+        endif()
     endif()
 endif(WIN32)
 
