@@ -24,3 +24,4 @@ CheckOptions:
     value:           1
   - key:             modernize-use-default-member-init.UseAssignment
     value:           1
+HeaderFilterRegex: '^(src|include)/.*'  # 仅检查 src/ 或 include/ 目录下的文件
