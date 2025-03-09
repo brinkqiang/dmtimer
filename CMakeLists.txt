@@ -15,7 +15,7 @@ if(WIN32)
     add_definitions(-D_WINSOCK_DEPRECATED_NO_WARNINGS)
     add_definitions(/wd4996)
 else()
-    set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,readability-*)
+    set(CMAKE_CXX_CLANG_TIDY "clang-tidy;--config-file=${CMAKE_CURRENT_SOURCE_DIR}/.clang-tidy")
 endif(WIN32)
 
 if(DMTIMER_USE_HIGH_RESOLUTION)
