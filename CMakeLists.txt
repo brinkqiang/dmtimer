@@ -19,7 +19,9 @@ if(WIN32)
     add_definitions(/wd4996)
 else()
     if(USE_CLANG_TIDY)
-        set(CMAKE_CXX_CLANG_TIDY clang-tidy;--config-file=${CMAKE_CURRENT_SOURCE_DIR}/.clang-tidy)
+        set(CMAKE_CXX_CLANG_TIDY clang-tidy
+        --config-file=${CMAKE_CURRENT_SOURCE_DIR}/.clang-tidy
+        -line-filter=[{\"name\": \".*/test/.*\"}])
     endif()
 endif(WIN32)
 
