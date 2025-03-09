@@ -12,6 +12,8 @@ ModuleSetCompileOptions()
 option(DMTIMER_USE_HIGH_RESOLUTION "use high resolution" OFF)
 option(USE_CLANG_TIDY "enable clang-tidy" OFF)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 if(WIN32)
     add_definitions(-D_WINSOCK_DEPRECATED_NO_WARNINGS)
     add_definitions(/wd4996)
