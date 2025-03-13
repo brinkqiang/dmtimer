@@ -37,7 +37,7 @@
 #endif
 #include <iostream>
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__MINGW32__)
 struct timezone {
     int  tz_minuteswest; /* minutes W of Greenwich */
     int  tz_dsttime;     /* type of dst correction */
@@ -83,7 +83,7 @@ static inline uint32_t GetTickCount32() {
 
 #if defined(DMTIMER_USE_HIGH_RESOLUTION)
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__MINGW32__)
 	static std::once_flag initializedFlag;
 	std::call_once(initializedFlag, []() { 
         timeBeginPeriod(1);
@@ -96,7 +96,7 @@ static inline uint32_t GetTickCount32() {
 
 	auto now = std::chrono::high_resolution_clock::now();
 	return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
-#elif defined(_WIN32)
+#if defined(_WIN32) && !defined(__MINGW32__)
     return ::GetTickCount();
 #else
     struct timespec ts = { 0 };
