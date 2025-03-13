@@ -120,17 +120,17 @@ public:
 public:
     struct list_head    m_stEntry;
 
-    uint64_t  m_qwNextTime;         // ÏÂ´Î´¥·¢Ê±»ú
-    uint64_t  m_qwCD;               // ¼ä¸ô
-    uint64_t  m_qwID;               // Î¨Ò»ID
+    uint64_t  m_qwNextTime;         // ä¸‹æ¬¡è§¦å‘æ—¶æœº
+    uint64_t  m_qwCD;               // é—´éš”
+    uint64_t  m_qwID;               // å”¯ä¸€ID
 
     ITimerSink* m_poTimerSink;      // sink
-    DMFunction          m_funTimer; // function ·½Ê½
-    dm::any             m_oAny;     // ²ÎÊı
-    std::string         m_strCron;  // cron±í´ïÊ½
-    bool                m_bErased;  // ÑÓ³ÙÉ¾³ı±ê¼Ç
-    bool                m_bExact;   // ÊÇ·ñ¾«È·Æ¥Åä
-    bool                m_bPause;   // ÊÇ·ñÔİÍ£
+    DMFunction          m_funTimer; // function æ–¹å¼
+    dm::any             m_oAny;     // å‚æ•°
+    std::string         m_strCron;  // cronè¡¨è¾¾å¼
+    bool                m_bErased;  // å»¶è¿Ÿåˆ é™¤æ ‡è®°
+    bool                m_bExact;   // æ˜¯å¦ç²¾ç¡®åŒ¹é…
+    bool                m_bPause;   // æ˜¯å¦æš‚åœ
 };
 
 #endif // __DMTIMERSINK_H_INCLUDE__

@@ -83,11 +83,12 @@ macro(ModuleSetCompileOptions)
       set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /DEBUG /OPT:REF /OPT:NOICF /STACK:16777216")
       set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /DEBUG /OPT:REF /OPT:NOICF /STACK:16777216")
       set(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_STATIC_LINKER_FLAGS}")
+      
       link_libraries(Ws2_32)
       add_definitions(/bigobj)
-      add_definitions(/DNOMINMAX /DWIN32_LEAN_AND_MEAN=1 /D_CRT_SECURE_NO_WARNINGS /D_SCL_SECURE_NO_WARNINGS)
-
-      add_compile_options(/W3 /wd4005 /wd4068 /wd4244 /wd4267 /wd4800)
+      add_definitions(/DNOMINMAX /DWIN32_LEAN_AND_MEAN=1 /D_CRT_SECURE_NO_WARNINGS /D_SCL_SECURE_NO_WARNINGS /D_WINSOCK_DEPRECATED_NO_WARNINGS)
+      add_definitions(/utf-8)
+      add_compile_options(/W3 /wd4005 /wd4068 /wd4244 /wd4267 /wd4800 /wd4996)
 
       check_cxx_compiler_flag("/std:c++17" COMPILER_SUPPORTS_CXX17)
       check_cxx_compiler_flag("/std:c++14" COMPILER_SUPPORTS_CXX14)
