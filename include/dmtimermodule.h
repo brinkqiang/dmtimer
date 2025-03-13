@@ -82,16 +82,15 @@ static inline int gettimeofday(struct timeval* tv, struct timezone* tz) {
 static inline uint32_t GetTickCount32() {
 
 #if defined(DMTIMER_USE_HIGH_RESOLUTION)
-
-#if defined(_WIN32) && !defined(__MINGW32__)
-	static std::once_flag initializedFlag;
-	std::call_once(initializedFlag, []() { 
-        timeBeginPeriod(1);
-        std::atexit([](){ 
-            timeEndPeriod(1);
-        });
-    });
-
+  #if defined(_WIN32) && !defined(__MINGW32__)
+    static std::once_flag initializedFlag;
+    std::call_once(initializedFlag, []() { 
+          timeBeginPeriod(1);
+          std::atexit([](){ 
+              timeEndPeriod(1);
+          });
+      });
+  #endif
 #endif
 
 	auto now = std::chrono::high_resolution_clock::now();

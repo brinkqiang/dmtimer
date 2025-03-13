@@ -12,7 +12,7 @@ ModuleSetCompileOptions()
 option(DMTIMER_USE_HIGH_RESOLUTION "use high resolution" OFF)
 option(USE_CLANG_TIDY "enable clang-tidy" OFF)
 
-#set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(WIN32)
     set(CMAKE_DEPENDS_USE_COMPILER TRUE)
