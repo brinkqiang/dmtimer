@@ -229,6 +229,10 @@ Running main() from gtest_main.cc
 
 ## Contacts
 
+## Publish
+git tag v${DMTIMER_VERSION}
+git push origin v${DMTIMER_VERSION}
+
 ## Thanks
 pudding_186@163.com  
 will@i007.cc
