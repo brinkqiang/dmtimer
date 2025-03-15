@@ -231,6 +231,7 @@ Running main() from gtest_main.cc
 
 ## Publish
 git tag v${DMTIMER_VERSION}
+
 git push origin v${DMTIMER_VERSION}
 
 ## Thanks
