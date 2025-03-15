@@ -9,6 +9,11 @@ include(cmake/ModuleCompilerDefenses.cmake)
 
 ModuleSetCompileOptions()
 
+set(DMTIMER_VERSION_MAJOR "1")
+set(DMTIMER_VERSION_MINOR "3")
+set(DMTIMER_VERSION_PATCH "0")
+set(DMTIMER_VERSION "${DMTIMER_VERSION_MAJOR}.${DMTIMER_VERSION_MINOR}.${DMTIMER_VERSION_PATCH}")
+
 option(DMTIMER_USE_HIGH_RESOLUTION "use high resolution" OFF)
 option(USE_CLANG_TIDY "enable clang-tidy" OFF)
 
@@ -27,6 +32,8 @@ endif(WIN32)
 if(DMTIMER_USE_HIGH_RESOLUTION)
     add_definitions(-DDMTIMER_USE_HIGH_RESOLUTION)
 endif()
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer_config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer_config.h)
 
 LibImport("dmtimer" "src")
 
