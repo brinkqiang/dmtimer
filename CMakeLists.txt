@@ -20,6 +20,8 @@ option(USE_CLANG_TIDY "enable clang-tidy" OFF)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+enable_testing()
+
 if(WIN32)
     set(CMAKE_DEPENDS_USE_COMPILER TRUE)
 else()
@@ -39,5 +41,5 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer_config.h.in ${CMAKE_C
 LibImport("dmtimer" "src")
 
 if (PROJECT_IS_TOP_LEVEL) # need cmake 3.21+
-    ExeImport("test" "dmtimer")
+    ExeImportAndTest("test" "dmtimer")
 endif(PROJECT_IS_TOP_LEVEL)

@@ -47,7 +47,7 @@ class CMain : public IDMConsoleSink,
     {
         eTimerTime_UUID = 1000,
         eTimerTime_NEW = 5,
-        eTimerTime_STOP = 20000,
+        eTimerTime_STOP = 10000,
     } ETimerTime;
 
 public:
