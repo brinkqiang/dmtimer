@@ -10,6 +10,18 @@ jobs:
   linux:
     runs-on: self-hosted
 
+    strategy:
+      matrix:
+        config:
+          - os: ubuntu-latest
+            cc: gcc
+            cxx: g++
+            vcpkg_triplet: x64-linux
+          - os: ubuntu-latest
+            cc: clang
+            cxx: clang++
+            vcpkg_triplet: x64-linux
+
     steps:
       - uses: actions/checkout@v4
       - uses: brinkqiang/get-cmake@v1
