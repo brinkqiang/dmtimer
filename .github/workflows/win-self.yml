@@ -38,13 +38,13 @@ jobs:
         run: cmake -E make_directory ${{github.workspace}}\build
 
       - name: Configure CMake
-        shell: bash
+        shell: cmd
         working-directory: ${{github.workspace}}\build
         run: cmake -DCMAKE_TOOLCHAIN_FILE=..\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.config.vcpkg_triplet }} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} ${{matrix.config.flags}} ..
 
       - name: Build
         working-directory: ${{github.workspace}}\build
-        shell: bash
+        shell: cmd
         run: cmake --build . --config ${{env.BUILD_TYPE}}
 
       - name: Status
