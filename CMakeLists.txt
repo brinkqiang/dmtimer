@@ -23,6 +23,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 enable_testing()
 
 if(WIN32)
+    if(MSVC)
+        add_compile_options(/Bt)
+    endif()
+
     set(CMAKE_DEPENDS_USE_COMPILER TRUE)
 else()
     if(USE_CLANG_TIDY)
