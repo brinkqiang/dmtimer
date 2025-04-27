@@ -22,6 +22,8 @@ Copyright (c) 2013-2018 brinkqiang (brink.qiang@gmail.com)
 [win-link]:  https://github.com/brinkqiang/dmtimer/actions/workflows/win.yml "win build status"
 
 # Doc
+
+- [deepwiki](https://deepwiki.com/brinkqiang/dmtimer)
 - [build](./doc/compile.md)
 - [how to use](./doc/tutorial.md)
 
