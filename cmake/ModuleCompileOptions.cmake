@@ -47,6 +47,16 @@ macro(ModuleSetCompileOptions)
   endif()
   
   set(CMAKE_C_STANDARD 99)
+
+  set(CMAKE_BUILD_RPATH_USE_ORIGIN ON)
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+  
+  if(APPLE)
+    set(CMAKE_INSTALL_RPATH "@loader_path;@loader_path/../lib")  # macOS
+
+  elseif(UNIX)
+    set(CMAKE_INSTALL_RPATH "$ORIGIN:$ORIGIN/../lib")  # Linux
+  endif()
   
   if ("${CMAKE_BUILD_TYPE}" STREQUAL "")
     set(CMAKE_BUILD_TYPE "debug")
@@ -249,14 +259,14 @@ macro(AddInstall ModuleList)
     if (WIN32)
         install(TARGETS ${ModuleList}
         RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib)
+        LIBRARY DESTINATION bin
+        ARCHIVE DESTINATION bin)
     else(WIN32)
         include(GNUInstallDirs)
         install(TARGETS ${ModuleList}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+        LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_BINDIR})
     endif(WIN32)
 
     configure_file(
