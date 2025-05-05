@@ -23,7 +23,7 @@ Copyright (c) 2013-2018 brinkqiang (brink.qiang@gmail.com)
 
 # Doc
 
-- [deepwiki](https://deepwiki.com/brinkqiang/dmtimer)
+- [deepwiki-dmtimer](https://deepwiki.com/brinkqiang/dmtimer)
 - [build](./doc/compile.md)
 - [how to use](./doc/tutorial.md)
 
