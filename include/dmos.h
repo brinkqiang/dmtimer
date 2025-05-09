@@ -130,4 +130,22 @@ typedef int DMHANDLE;
 #define DMINVALID_HANDLE  0
 #endif
 
+#ifdef _WIN32
+
+#ifdef _MSC_VER
+#define DMEXPORT_DLL __declspec(dllexport)
+#else
+#define DMEXPORT_DLL
+#endif
+
+#else
+
+#ifdef __GNUC__
+#define DMEXPORT_DLL __attribute__((visibility("default")))
+#else
+#define DMEXPORT_DLL
+#endif
+
+#endif
+
 #endif // __DMOS_H_INCLUDE__
