@@ -47,3 +47,5 @@ LibImport("dmtimer" "src")
 if (PROJECT_IS_TOP_LEVEL) # need cmake 3.21+
     ExeImportAndTest("test" "dmtimer")
 endif(PROJECT_IS_TOP_LEVEL)
+
+AddInstall("dmtimer" "${CMAKE_CURRENT_SOURCE_DIR}/include")
