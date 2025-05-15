@@ -111,7 +111,10 @@ void CDMTimerModule::RemoveTimerElement(CDMTimerElement* pElement)
 
     DMASSERT(0);
 }
-
+#if defined(__GNUC__) || defined(__clang__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Winvalid-offsetof"
+#endif
 CDMTimerElement* CDMTimerModule::__GetTimerInfoByEntry(struct list_head*
     head)
 {
@@ -120,6 +123,10 @@ CDMTimerElement* CDMTimerModule::__GetTimerInfoByEntry(struct list_head*
         m_stEntry));
 }
 
+#if defined(__GNUC__) || defined(__clang__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Winvalid-offsetof"
+#endif
 void CDMTimerModule::Init()
 {
     for (int j = 0; j < TVR_SIZE; ++j)
