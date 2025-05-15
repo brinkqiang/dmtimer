@@ -124,8 +124,7 @@ CDMTimerElement* CDMTimerModule::__GetTimerInfoByEntry(struct list_head*
 }
 
 #if defined(__GNUC__) || defined(__clang__)
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Winvalid-offsetof"
+    #pragma GCC diagnostic pop
 #endif
 void CDMTimerModule::Init()
 {
