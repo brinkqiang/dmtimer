@@ -234,33 +234,6 @@ void CDMTimerNode::KillTimer()
     m_oTimerElementMap.clear();
 }
 
-
-bool CDMTimerNode::PauseTimer(uint64_t qwIDEvent)
-{
-    TimerElementMapIt It = m_oTimerElementMap.find(qwIDEvent);
-
-    if (It == m_oTimerElementMap.end())
-    {
-        return false;
-    }
-
-    It->second->PauseTimer();
-    return true;
-}
-
-bool CDMTimerNode::ResumeTimer(uint64_t qwIDEvent)
-{
-    TimerElementMapIt It = m_oTimerElementMap.find(qwIDEvent);
-
-    if (It == m_oTimerElementMap.end())
-    {
-        return false;
-    }
-
-    It->second->ResumeTimer();
-    return true;
-}
-
 uint64_t CDMTimerNode::GetTimerElapse(uint64_t qwIDEvent)
 {
     TimerElementMapIt It = m_oTimerElementMap.find(qwIDEvent);

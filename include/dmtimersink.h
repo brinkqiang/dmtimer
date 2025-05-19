@@ -92,7 +92,6 @@ public:
         m_poTimerSink = NULL;
         m_bErased = false;
         m_bExact = false;
-        m_bPause = false;
         m_funTimer = nullptr;
         m_strCron.clear();
     }
@@ -100,21 +99,6 @@ public:
     inline void Kill()
     {
         m_bErased = true;
-    }
-
-    inline void PauseTimer()
-    {
-        m_bPause = true;
-    }
-
-    inline void ResumeTimer()
-    {
-        m_bPause = false;
-    }
-
-    inline bool IsPause()
-    {
-        return m_bPause;
     }
 
 public:
@@ -130,7 +114,6 @@ public:
     std::string         m_strCron;  // cron表达式
     bool                m_bErased;  // 延迟删除标记
     bool                m_bExact;   // 是否精确匹配
-    bool                m_bPause;   // 是否暂停
 };
 
 #endif // __DMTIMERSINK_H_INCLUDE__

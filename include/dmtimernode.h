@@ -70,9 +70,6 @@ public:
 
     void KillTimer();
 
-    bool PauseTimer(uint64_t qwIDEvent);
-    bool ResumeTimer(uint64_t qwIDEvent);
-
     uint64_t GetTimerElapse(uint64_t qwIDEvent);
     uint64_t GetTimerRemain(uint64_t qwIDEvent);
 
