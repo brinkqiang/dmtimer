@@ -239,24 +239,6 @@ macro(ModuleSetWinCompilerFlags)
     if (MSVC)
         set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     endif()
-
-    set(CompilerFlags
-        CMAKE_CXX_FLAGS
-        CMAKE_CXX_FLAGS_DEBUG
-        CMAKE_CXX_FLAGS_RELEASE
-        CMAKE_CXX_FLAGS_RELWITHDEBINFO
-        CMAKE_CXX_FLAGS_MINSIZEREL
-        CMAKE_C_FLAGS
-        CMAKE_C_FLAGS_DEBUG
-        CMAKE_C_FLAGS_RELEASE
-        CMAKE_C_FLAGS_RELWITHDEBINFO
-        CMAKE_C_FLAGS_MINSIZEREL
-        )
-    foreach(CompilerFlag ${CompilerFlags})
-      message(STATUS "Processing ${CompilerFlag}: ${${CompilerFlag}}")
-      string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
-      message(STATUS "  -> Updated ${CompilerFlag}: ${${CompilerFlag}}")
-    endforeach()
   endif (WIN32)
 endmacro()
 
