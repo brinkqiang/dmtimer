@@ -45,7 +45,8 @@ macro(ModuleSetCompileOptions)
   if(POLICY CMP0048)
     cmake_policy(SET CMP0048 NEW)
   endif()
-  
+
+
   set(CMAKE_C_STANDARD 99)
 
   set(CMAKE_BUILD_RPATH_USE_ORIGIN ON)
@@ -231,23 +232,34 @@ endmacro(ModuleSetCompileOptions)
 
 macro(ModuleSetWinCompilerFlags)
   if (WIN32)
+    if(POLICY CMP0091)
+        cmake_policy(SET CMP0091 NEW)
+    endif()
+  
+    if (MSVC)
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    endif()
+
     set(CompilerFlags
-            CMAKE_CXX_FLAGS
-            CMAKE_CXX_FLAGS_DEBUG
-            CMAKE_CXX_FLAGS_RELEASE
-            CMAKE_CXX_FLAGS_RELWITHDEBINFO
-            CMAKE_CXX_FLAGS_MINSIZEREL
-            CMAKE_C_FLAGS
-            CMAKE_C_FLAGS_DEBUG
-            CMAKE_C_FLAGS_RELEASE
-            CMAKE_C_FLAGS_RELWITHDEBINFO
-            CMAKE_C_FLAGS_MINSIZEREL
-            )
+        CMAKE_CXX_FLAGS
+        CMAKE_CXX_FLAGS_DEBUG
+        CMAKE_CXX_FLAGS_RELEASE
+        CMAKE_CXX_FLAGS_RELWITHDEBINFO
+        CMAKE_CXX_FLAGS_MINSIZEREL
+        CMAKE_C_FLAGS
+        CMAKE_C_FLAGS_DEBUG
+        CMAKE_C_FLAGS_RELEASE
+        CMAKE_C_FLAGS_RELWITHDEBINFO
+        CMAKE_C_FLAGS_MINSIZEREL
+        )
     foreach(CompilerFlag ${CompilerFlags})
+      message(STATUS "Processing ${CompilerFlag}: ${${CompilerFlag}}")
       string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+      message(STATUS "  -> Updated ${CompilerFlag}: ${${CompilerFlag}}")
     endforeach()
   endif (WIN32)
 endmacro()
+
 
 macro(AddInstall ModuleList HeadersDir)
     message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
