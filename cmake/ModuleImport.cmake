@@ -62,7 +62,7 @@ macro(InterfaceImport ModuleName ModulePath DependsLib)
 
     target_include_directories(${ModuleName} INTERFACE ${${ModuleName}_INCLUDE_DIR})
 
-    target_link_libraries(${ModuleName} ${DependsLib})
+    target_link_libraries(${ModuleName} PUBLIC ${DependsLib})
 endmacro()
 
 macro(ModuleImport ModuleName ModulePath)
@@ -276,7 +276,7 @@ macro(LibImportDepends ModuleName ModulePath DependsLib)
         endif(WIN32)
 
         add_library(${ModuleName} STATIC ${LIB_SOURCES})
-        target_link_libraries(${ModuleName} ${DependsLib})
+        target_link_libraries(${ModuleName} PUBLIC ${DependsLib})
     endif()
 endmacro()
 
@@ -311,7 +311,7 @@ macro(DllImportDepends ModuleName ModulePath DependsLib)
         else(WIN32)
             add_library(${ModuleName} SHARED ${LIB_SOURCES})
         endif(WIN32)
-        target_link_libraries(${ModuleName} ${DependsLib})
+        target_link_libraries(${ModuleName} PUBLIC ${DependsLib})
     endif()
 endmacro()
 
