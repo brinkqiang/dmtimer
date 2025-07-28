@@ -10,6 +10,38 @@ macro(SUBDIRLIST result curdir)
     set(${result} ${dirlist})
 endmacro()
 
+macro(ModuleInclude2 ModuleName ModulePath)
+    message(STATUS "ModuleInclude2 ${ModuleName} ${ModulePath}")
+
+    if (WIN32)
+        include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/include/${ModuleName})
+        include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/include)
+
+        link_directories(${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/lib)
+    else()
+        if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/cmake/Find${ModuleName}.cmake)
+            include(${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/cmake/Find${ModuleName}.cmake)
+            include_directories(${${ModuleName}_INCLUDE_DIRS})
+        else()
+            message(FATAL_ERROR "ModuleImport2 ${ModuleName} Find${ModuleName}.cmake not exist.")
+        endif()
+    endif()
+
+endmacro(ModuleInclude2)
+
+macro(ModuleImport2 ModuleName ModulePath)
+    message(STATUS "ModuleImport2 ${ModuleName} ${ModulePath}")
+
+    if (IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/thirdparty)
+        SUBDIRLIST(SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/thirdparty)
+        foreach(subdir ${SUBDIRS})
+            ModuleInclude2(${ModuleName} ${ModulePath}/thirdparty/${subdir})
+        endforeach()
+    endif()
+
+    ModuleInclude2(${ModuleName} ${ModulePath})
+endmacro()
+
 macro(ModuleInclude ModuleName ModulePath)
     message(STATUS "ModuleInclude ${ModuleName} ${ModulePath}")
 
@@ -62,7 +94,7 @@ macro(InterfaceImport ModuleName ModulePath DependsLib)
 
     target_include_directories(${ModuleName} INTERFACE ${${ModuleName}_INCLUDE_DIR})
 
-    target_link_libraries(${ModuleName} PUBLIC ${DependsLib})
+    target_link_libraries(${ModuleName} INTERFACE ${DependsLib})
 endmacro()
 
 macro(ModuleImport ModuleName ModulePath)
@@ -82,7 +114,7 @@ macro(ModuleImport ModuleName ModulePath)
         elseif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/cmake/CMakeLists.txt)
             add_subdirectory(${ModulePath}/cmake)
         else()
-            message(FATAL_ERROR "ModuleImport ${ModuleName} CMakeLists.txt not exist.")
+            ModuleImport2(${ModuleName} ${ModulePath})
         endif()
 
         if (IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/thirdparty)
@@ -315,37 +347,6 @@ macro(DllImportDepends ModuleName ModulePath DependsLib)
     endif()
 endmacro()
 
-macro(ModuleInclude2 ModuleName ModulePath)
-    message(STATUS "ModuleInclude2 ${ModuleName} ${ModulePath}")
-
-    if (WIN32)
-        include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/include/${ModuleName})
-        include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/include)
-
-        link_directories(${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/lib)
-    else()
-        if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/cmake/Find${ModuleName}.cmake)
-            include(${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/cmake/Find${ModuleName}.cmake)
-            include_directories(${${ModuleName}_INCLUDE_DIRS})
-        else()
-            message(FATAL_ERROR "ModuleImport2 ${ModuleName} Find${ModuleName}.cmake not exist.")
-        endif()
-    endif()
-
-endmacro(ModuleInclude2)
-
-macro(ModuleImport2 ModuleName ModulePath)
-    message(STATUS "ModuleImport2 ${ModuleName} ${ModulePath}")
-
-    if (IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/thirdparty)
-        SUBDIRLIST(SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR}/${ModulePath}/thirdparty)
-        foreach(subdir ${SUBDIRS})
-            ModuleInclude2(${ModuleName} ${ModulePath}/thirdparty/${subdir})
-        endforeach()
-    endif()
-
-    ModuleInclude2(${ModuleName} ${ModulePath})
-endmacro()
 
 macro(ModuleImportAll ModulePath)
     message(STATUS "ModuleImportAll ${ModulePath}")
