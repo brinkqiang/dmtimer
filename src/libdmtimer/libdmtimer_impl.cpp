@@ -1,6 +1,7 @@
-#include "libdmtimer_impl.h"
+﻿#include "libdmtimer_impl.h"
 #include "dmcroncpp.h"
 #include <chrono>
+#include <typeinfo> // 需要包含此头文件以使用 typeid
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -20,9 +21,47 @@ extern "C" DMEXPORT_DLL IDMTimer* DMAPI dmtimerGetModule()
     return new DMTimerImpl();
 }
 
-DMTimerImpl::DMTimerImpl() { Init(); }
-DMTimerImpl::~DMTimerImpl() { UnInit(); }
-void DMTimerImpl::Release(void) { delete this; }
+DMTimerImpl::DMTimerImpl() 
+{ 
+    Init(); 
+}
+
+DMTimerImpl::~DMTimerImpl() 
+{ 
+    UnInit(); 
+}
+
+void DMTimerImpl::Release(void) 
+{ 
+    delete this; 
+}
+
+void DMTimerImpl::SetTimerInfo(uint64_t qwIDEvent, const std::string& strTimerObjName)
+{
+    m_qwRunningIDEvent = qwIDEvent;
+    m_strRunningTimerObjName = strTimerObjName;
+}
+
+void DMTimerImpl::DelTimerInfo()
+{
+    m_qwRunningIDEvent = 0;
+    m_strRunningTimerObjName.clear();
+}
+
+uint64_t DMTimerImpl::GetRunningTimerID() const
+{
+    return m_qwRunningIDEvent;
+}
+
+const std::string& DMTimerImpl::GetRunningTimerObjectName() const
+{
+    return m_strRunningTimerObjName;
+}
+
+void DMTimerImpl::SetSpeed(uint32_t dwSpeed)
+{
+    m_dwSpeed = dwSpeed;
+}
 
 void DMTimerImpl::Init()
 {
@@ -39,6 +78,8 @@ void DMTimerImpl::Init()
     m_qwTotalTickCount = 0;
     m_qwLastTime = GetBootTime();
     m_qwCurTime = GetBootTime();
+    m_qwRunningIDEvent = 0;
+    m_strRunningTimerObjName.clear();
 }
 
 void DMTimerImpl::UnInit()
@@ -50,7 +91,6 @@ void DMTimerImpl::UnInit()
         __ReleaseElementList(m_tv3.vec + j);
         __ReleaseElementList(m_tv2.vec + j);
     }
-
     for (int i = 0; i < TVR_SIZE; ++i)
     {
         __ReleaseElementList(m_tv1.vec + i);
@@ -69,7 +109,10 @@ void DMTimerImpl::__ReleaseElementList(struct list_head* head)
     }
 }
 
-uint64_t DMTimerImpl::GetCurTime(void) { return m_qwCurTime; }
+uint64_t DMTimerImpl::GetCurTime(void) 
+{ 
+    return m_qwCurTime; 
+}
 
 uint64_t DMTimerImpl::GetBootTime()
 {
@@ -171,6 +214,8 @@ int DMTimerImpl::Run(void)
                 continue;
             }
 
+            SetTimerInfo(timer->m_qwID, typeid(*(timer->m_poTimerSink)).name());
+
             if (timer->m_funTimer)
             {
                 timer->m_funTimer(timer->m_qwID);
@@ -179,6 +224,9 @@ int DMTimerImpl::Run(void)
             {
                 timer->m_poTimerSink->OnTimer(timer->m_qwID, timer->m_oAny);
             }
+            
+            DelTimerInfo();
+            
             nEvents++;
 
             if (timer->m_bErased)
@@ -208,6 +256,11 @@ int DMTimerImpl::Run(void)
         ++m_qwLastTime;
     }
     return nEvents;
+}
+
+bool DMTimerImpl::SetTimer(ITimerSink* pSink, uint64_t qwIDEvent, uint64_t qwElapse)
+{
+    return SetTimer(pSink, qwIDEvent, qwElapse, qwElapse, dm::any(), false);
 }
 
 bool DMTimerImpl::SetTimer(ITimerSink* pSink, uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst, const dm::any& oAny, bool bExact)
@@ -282,7 +335,6 @@ bool DMTimerImpl::SetTimerCron(ITimerSink* pSink, uint64_t qwIDEvent, const std:
     AddTimerElement(poNewTimer);
     return true;
 }
-
 
 void DMTimerImpl::KillTimer(ITimerSink* pSink, uint64_t qwIDEvent)
 {

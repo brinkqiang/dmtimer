@@ -17,7 +17,15 @@ public: // IDMTimer interface
     virtual void DMAPI Release(void) override;
     virtual int DMAPI Run(void) override;
     virtual uint64_t DMAPI GetCurTime(void) override;
+    virtual void DMAPI SetSpeed(uint32_t dwSpeed) override;
 
+    // [新增]
+    virtual void DMAPI SetTimerInfo(uint64_t qwIDEvent, const std::string& strTimerObjName) override;
+    virtual void DMAPI DelTimerInfo() override;
+    virtual uint64_t DMAPI GetRunningTimerID() const override;
+    virtual const std::string& DMAPI GetRunningTimerObjectName() const override;
+
+    virtual bool DMAPI SetTimer(ITimerSink* pSink, uint64_t qwIDEvent, uint64_t qwElapse) override;
     virtual bool DMAPI SetTimer(ITimerSink* pSink, uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst, const dm::any& oAny, bool bExact) override;
     virtual bool DMAPI SetTimerLambda(ITimerSink* pSink, uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst, DMFunction fFun) override;
     virtual bool DMAPI SetTimerCron(ITimerSink* pSink, uint64_t qwIDEvent, const std::string& strCron, DMFunction fFun) override;
@@ -54,6 +62,10 @@ private:
     uint32_t m_dwTickCount;
     uint64_t m_qwTotalTickCount;
     uint32_t m_dwSpeed;
+
+    // [新增] 用于存储当前运行的定时器信息
+    uint64_t m_qwRunningIDEvent;
+    std::string m_strRunningTimerObjName;
 };
 
 #endif // __LIBDMTIMER_IMPL_H_INCLUDE__
