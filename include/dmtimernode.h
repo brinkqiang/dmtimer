@@ -23,63 +23,39 @@
 #define __DMTIMERNODE_H_INCLUDE__
 
 #include "dmtimersink.h"
-
+#include "dmtimer.h" // 依赖新接口
 #include <string>
-#include <map>
 
 class CDMTimerNode :
     public ITimerSink
 {
 public:
-    typedef std::map<uint64_t, CDMTimerElement*> TimerElementMap;
-    typedef TimerElementMap::iterator TimerElementMapIt;
-    typedef TimerElementMap::const_iterator TimerElementMapCIt;
-public:
-    CDMTimerNode();
+    // 构造时传入 IDMTimer 实例
+    CDMTimerNode(IDMTimer* pTimerModule = nullptr);
     virtual ~CDMTimerNode();
 
-    CDMTimerNode(const CDMTimerNode& oNode);
-    CDMTimerNode& operator=(const CDMTimerNode& oNode);
+    // 允许后绑定
+    void SetTimerModule(IDMTimer* pTimerModule);
+    IDMTimer* GetTimerModule();
 
-    void Reset();
-    void CopyFrom(const CDMTimerNode& oNode);
-
-    bool SetTimerCron(uint64_t qwIDEvent, const std::string& strCron,
-        DMFunction fFun);
-
-    bool SetTimerLambda(uint64_t qwIDEvent, uint64_t qwElapse, DMFunction fFun);
-    bool SetTimerLambda(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst,
-        DMFunction fFun);
-
-    bool SetTimerLambda(uint64_t qwIDEvent, uint64_t qwElapse,
-        uint64_t qwFirst, const dm::any& oAny,
-        bool bExact, DMFunction fFun);
-
-    bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse);
-
-    bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, const dm::any& oAny,
-        bool bExact = false);
-
+    // --- 兼容旧的继承使用方式 ---
+    // 这些方法将被代理到持有的 IDMTimer 实例
+    bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, const dm::any& oAny, bool bExact);
     bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst);
-
-    bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst,
-        const dm::any& oAny,
-        bool bExact = false);
+    bool SetTimer(uint64_t qwIDEvent, uint64_t qwElapse);
+    bool SetTimerLambda(uint64_t qwIDEvent, uint64_t qwElapse, uint64_t qwFirst, DMFunction fFun);
+    bool SetTimerCron(uint64_t qwIDEvent, const std::string& strCron, DMFunction fFun);
 
     void KillTimer(uint64_t qwIDEvent);
+    void KillAllTimers();
 
-    void KillTimer();
-
-    uint64_t GetTimerElapse(uint64_t qwIDEvent);
-    uint64_t GetTimerRemain(uint64_t qwIDEvent);
-
-    CDMTimerElement* GetTimerElement(uint64_t qwIDEvent);
-
+    // OnTimer 回调接口保持不变
     virtual void OnTimer(uint64_t qwIDEvent);
     virtual void OnTimer(uint64_t qwIDEvent, dm::any& oAny);
+
 private:
-    TimerElementMap m_oTimerElementMap;
-    std::string m_strTimerObjName;
+    // 指向定时器模块接口的指针
+    IDMTimer* m_pTimerModule;
 };
 
 #endif // __DMTIMERNODE_H_INCLUDE__

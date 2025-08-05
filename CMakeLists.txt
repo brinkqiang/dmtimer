@@ -42,10 +42,10 @@ endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer_config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/dmtimer_config.h)
 
-LibImport("dmtimer" "src")
+LibImport("libdmtimer" "src/libdmtimer")
 
 if (PROJECT_IS_TOP_LEVEL) # need cmake 3.21+
-    ExeImportAndTest("test" "dmtimer")
+    ExeImportAndTest("test" "libdmtimer")
 endif()
 
-AddInstall("dmtimer" "${CMAKE_CURRENT_SOURCE_DIR}/include")
+AddInstall("libdmtimer" "${CMAKE_CURRENT_SOURCE_DIR}/include")

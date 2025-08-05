@@ -1,24 +1,44 @@
-
-#include "dmutil.h"
-#include "dmtimermodule.h"
-#include "dmsingleton.h"
+﻿#include "dmtimer.h"
+#include "dmtimernode.h"
 #include "dmthread.h"
 #include "dmconsole.h"
 #include "dmtypes.h"
+#include "dmutil.h"
+#include <iostream>
 
+// Forward declare CMain so CPlayer can hold a pointer to it
+class CMain; 
+
+// CPlayer现在需要一个指向CMain的指针来回调计数器
 class CPlayer : public CDMTimerNode
 {
 public:
-    virtual void OnTimer(uint64_t qwIDEvent);
+    CPlayer() : m_pMain(nullptr) {}
+    virtual void OnTimer(uint64_t qwIDEvent) override;
+    
+    CMain* m_pMain;
 };
 
+// CMain不再是单例
 class CMain : public IDMConsoleSink,
     public IDMThread,
     public CDMThreadCtrl,
-    public CDMTimerNode,
-    public TSingleton<CMain>
+    public CDMTimerNode
 {
-    friend class TSingleton<CMain>;
+public:
+    // 构造函数现在接收一个模块指针，并注入给基类
+    CMain(IDMTimer* pModule)
+        : CDMTimerNode(pModule),
+          m_bStop(false), m_qwOnTimerCount(0)
+    {
+        HDMConsoleMgr::Instance()->SetHandlerHook(this);
+    }
+    
+    // 析构函数现在是100%安全的
+    virtual ~CMain()
+    {
+        std::cout << "CMain destroyed safely." << std::endl;
+    }
 
     enum
     {
@@ -27,15 +47,13 @@ class CMain : public IDMConsoleSink,
 #else
         eMAX_PLAYER = 100 * 10000,
 #endif
-
         eMAX_PLAYER_EVENT = 10,
     };
 
     typedef enum
     {
         eTimerID_UUID = 0,
-        eTimerID_CRON = 1,
-        eTimerID_STOP,
+        eTimerID_STOP = 1,
     } ETimerID;
 
     typedef enum
@@ -45,12 +63,14 @@ class CMain : public IDMConsoleSink,
     } ETimerTime;
 
 public:
-    virtual void ThrdProc()
+    virtual void ThrdProc() override
     {
         std::cout << "test start" << std::endl;
 
         for (int i = 0; i < eMAX_PLAYER; ++i)
         {
+            m_oPlayers[i].SetTimerModule(GetTimerModule());
+            m_oPlayers[i].m_pMain = this; // 将this指针(CMain实例)交给Player
             for (int j = 1; j <= eMAX_PLAYER_EVENT; ++j)
             {
                 m_oPlayers[i].SetTimer(j, 500);
@@ -59,16 +79,15 @@ public:
 
         dm::any oAny(std::string("hello world"));
 
-        SetTimer(eTimerID_UUID, eTimerTime_UUID, std::move(oAny));
+        SetTimer(eTimerID_UUID, eTimerTime_UUID, oAny, false);
         SetTimer(eTimerID_STOP, eTimerTime_STOP);
 
         bool bBusy = false;
-
         while (!m_bStop)
         {
             bBusy = false;
 
-            if (CDMTimerModule::Instance()->Run())
+            if (GetTimerModule() && GetTimerModule()->Run())
             {
                 bBusy = true;
             }
@@ -78,7 +97,7 @@ public:
                 bBusy = true;
             }
 
-            if (!bBusy)
+            if (!m_bStop && !bBusy)
             {
                 SleepMs(1);
             }
@@ -87,23 +106,23 @@ public:
         std::cout << "test stop" << std::endl;
     }
 
-    virtual void Terminate()
+    virtual void Terminate() override
     {
         m_bStop = true;
     }
 
-    virtual void OnCloseEvent()
+    virtual void OnCloseEvent() override
     {
         Stop();
     }
 
-    virtual void OnTimer(uint64_t qwIDEvent, dm::any& oAny)
+    virtual void OnTimer(uint64_t qwIDEvent, dm::any& oAny) override
     {
         switch (qwIDEvent)
         {
         case eTimerID_UUID:
         {
-            std::cout << DMFormatDateTime() << " " << CMain::Instance()->GetOnTimerCount()
+            std::cout << DMFormatDateTime() << " " << GetOnTimerCount()
                 << " " << dm::any_cast<std::string>(oAny) << std::endl;
         }
         break;
@@ -130,38 +149,42 @@ public:
     }
 
 private:
-    CMain()
-        : m_bStop(false), m_qwOnTimerCount(0)
-    {
-        HDMConsoleMgr::Instance()->SetHandlerHook(this);
-    }
-
-    virtual ~CMain()
-    {
-    }
-
-private:
-    bool __Run()
-    {
-        return false;
-    }
+    bool __Run() { return false; }
 
 private:
     volatile bool m_bStop;
-
     CPlayer m_oPlayers[eMAX_PLAYER];
-
     uint64_t m_qwOnTimerCount;
 };
 
+// CPlayer通过持有的CMain指针来回调，而不是通过不安全的全局单例
 void CPlayer::OnTimer(uint64_t qwIDEvent)
 {
-    CMain::Instance()->AddOnTimerCount();
+    if (m_pMain)
+    {
+        m_pMain->AddOnTimerCount();
+    }
 }
 
 int main(int argc, char* argv[])
 {
-    CMain::Instance()->Start(CMain::Instance());
-    CMain::Instance()->WaitFor();
+    // 1. 定时器模块在main函数栈上创建，确保其生命周期足够长
+    DMTimerPtr timerModule(dmtimerGetModule());
+    if (!timerModule) {
+        std::cerr << "FATAL: Failed to create timer module!" << std::endl;
+        return 1;
+    }
+
+    // 2. CMain也在main函数栈上创建，并将定时器模块注入
+    CMain mainApp(timerModule.get());
+
+    // 3. 启动线程
+    mainApp.Start(&mainApp);
+    mainApp.WaitFor();
+
+    // 4. 程序退出
+    // 此时，mainApp先被销毁，其析构函数安全执行。
+    // 然后，timerModule被销毁。
+    // 销毁顺序正确，程序不会再崩溃。
     return 0;
 }
