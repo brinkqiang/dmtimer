@@ -19,16 +19,15 @@ public:
     CMain* m_pMain;
 };
 
-// CMain不再是单例
 class CMain : public IDMConsoleSink,
     public IDMThread,
     public CDMThreadCtrl,
-    public CDMTimerNode
+    public ITimerSink
 {
 public:
     // 构造函数现在接收一个模块指针，并注入给基类
-    CMain(IDMTimer* pModule)
-        : CDMTimerNode(pModule),
+    CMain()
+        : m_oTimerModule(dmtimerGetModule()),
           m_bStop(false), m_qwOnTimerCount(0)
     {
         HDMConsoleMgr::Instance()->SetHandlerHook(this);
@@ -69,7 +68,7 @@ public:
 
         for (int i = 0; i < eMAX_PLAYER; ++i)
         {
-            m_oPlayers[i].SetTimerModule(GetTimerModule());
+            m_oPlayers[i].SetTimerModule(m_oTimerModule.get());
             m_oPlayers[i].m_pMain = this; // 将this指针(CMain实例)交给Player
             for (int j = 1; j <= eMAX_PLAYER_EVENT; ++j)
             {
@@ -79,15 +78,15 @@ public:
 
         dm::any oAny(std::string("hello world"));
 
-        SetTimer(eTimerID_UUID, eTimerTime_UUID, oAny, false);
-        SetTimer(eTimerID_STOP, eTimerTime_STOP);
+        m_oTimerModule->SetTimer(this, eTimerID_UUID, eTimerTime_UUID, eTimerTime_UUID, oAny, false);
+        m_oTimerModule->SetTimer(this, eTimerID_STOP, eTimerTime_STOP, eTimerTime_STOP, oAny, false);
 
         bool bBusy = false;
         while (!m_bStop)
         {
             bBusy = false;
 
-            if (GetTimerModule() && GetTimerModule()->Run())
+            if (m_oTimerModule->Run())
             {
                 bBusy = true;
             }
@@ -102,7 +101,6 @@ public:
                 SleepMs(1);
             }
         }
-
         std::cout << "test stop" << std::endl;
     }
 
@@ -114,6 +112,10 @@ public:
     virtual void OnCloseEvent() override
     {
         Stop();
+    }
+
+    virtual void OnTimer(uint64_t qwIDEvent) override
+    {
     }
 
     virtual void OnTimer(uint64_t qwIDEvent, dm::any& oAny) override
@@ -152,9 +154,11 @@ private:
     bool __Run() { return false; }
 
 private:
+    DMTimerPtr m_oTimerModule;
     volatile bool m_bStop;
     CPlayer m_oPlayers[eMAX_PLAYER];
     uint64_t m_qwOnTimerCount;
+
 };
 
 // CPlayer通过持有的CMain指针来回调，而不是通过不安全的全局单例
@@ -168,23 +172,9 @@ void CPlayer::OnTimer(uint64_t qwIDEvent)
 
 int main(int argc, char* argv[])
 {
-    // 1. 定时器模块在main函数栈上创建，确保其生命周期足够长
-    DMTimerPtr timerModule(dmtimerGetModule());
-    if (!timerModule) {
-        std::cerr << "FATAL: Failed to create timer module!" << std::endl;
-        return 1;
-    }
-
-    // 2. CMain也在main函数栈上创建，并将定时器模块注入
-    CMain mainApp(timerModule.get());
-
-    // 3. 启动线程
+    CMain mainApp;
     mainApp.Start(&mainApp);
     mainApp.WaitFor();
 
-    // 4. 程序退出
-    // 此时，mainApp先被销毁，其析构函数安全执行。
-    // 然后，timerModule被销毁。
-    // 销毁顺序正确，程序不会再崩溃。
     return 0;
 }
