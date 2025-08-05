@@ -4,6 +4,7 @@
 #include "dmconsole.h"
 #include "dmtypes.h"
 #include "dmutil.h"
+#include "dmsingleton.h"
 #include <iostream>
 
 // Forward declare CMain so CPlayer can hold a pointer to it
@@ -22,7 +23,8 @@ public:
 class CMain : public IDMConsoleSink,
     public IDMThread,
     public CDMThreadCtrl,
-    public ITimerSink
+    public ITimerSink,
+    public CDMSafeSingleton<CMain>
 {
 public:
     // 构造函数现在接收一个模块指针，并注入给基类
@@ -172,9 +174,8 @@ void CPlayer::OnTimer(uint64_t qwIDEvent)
 
 int main(int argc, char* argv[])
 {
-    CMain mainApp;
-    mainApp.Start(&mainApp);
-    mainApp.WaitFor();
+    CMain::Instance()->Start(CMain::Instance());
+    CMain::Instance()->WaitFor();
 
     return 0;
 }

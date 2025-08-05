@@ -4,6 +4,8 @@
 #include "dmconsole.h"
 #include "dmtypes.h"
 #include "dmutil.h"
+#include "dmsingleton.h"
+
 #include <iostream>
 
 class CMain; 
@@ -20,7 +22,8 @@ public:
 class CMain : public IDMConsoleSink,
     public IDMThread,
     public CDMThreadCtrl,
-    public ITimerSink
+    public ITimerSink,
+    public CDMSafeSingleton<CMain>
 {
 
 
@@ -128,9 +131,7 @@ void CPlayer::OnTimer(uint64_t qwIDEvent)
 
 int main(int argc, char* argv[])
 {
-    CMain mainApp;
-    mainApp.Start(&mainApp);
-    mainApp.WaitFor();
-
+    CMain::Instance()->Start(CMain::Instance());
+    CMain::Instance()->WaitFor();
     return 0;
 }

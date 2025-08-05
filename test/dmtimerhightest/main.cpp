@@ -7,12 +7,15 @@
 #include "dmconsole.h"
 #include "dmtypes.h"
 #include "dmutil.h"
+#include "dmsingleton.h"
+
 #include <iostream>
 
 class CMain : public IDMConsoleSink,
     public IDMThread,
     public CDMThreadCtrl,
-    public ITimerSink
+    public ITimerSink,
+    public CDMSafeSingleton<CMain>
 {
 public:
     CMain()
@@ -116,9 +119,7 @@ private:
 
 int main(int argc, char* argv[])
 {
-    CMain mainApp;
-    mainApp.Start(&mainApp);
-    mainApp.WaitFor();
-
+    CMain::Instance()->Start(CMain::Instance());
+    CMain::Instance()->WaitFor();
     return 0;
 }

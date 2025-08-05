@@ -4,6 +4,7 @@
 #include "dmconsole.h"
 #include "dmtypes.h"
 #include "dmutil.h"
+#include "dmsingleton.h"
 #include <iostream>
 
 // [改造] 前向声明 CMain，以便 CPlayer 持有其指针
@@ -23,7 +24,8 @@ public:
 class CMain : public IDMConsoleSink,
     public IDMThread,
     public CDMThreadCtrl,
-    public ITimerSink
+    public ITimerSink,
+    public CDMSafeSingleton<CMain>
 {
 
 
@@ -151,10 +153,8 @@ void CPlayer::OnTimer(uint64_t qwIDEvent)
 
 int main(int argc, char* argv[])
 {
-    // [改造] 在栈上创建 CMain，确保生命周期可控
-    CMain mainApp;
-    mainApp.Start(&mainApp);
-    mainApp.WaitFor();
+    CMain::Instance()->Start(CMain::Instance());
+    CMain::Instance()->WaitFor();
 
     return 0;
 }

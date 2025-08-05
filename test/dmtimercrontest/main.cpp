@@ -7,13 +7,17 @@
 #include "dmconsole.h"
 #include "dmtypes.h"
 #include "dmutil.h"
+#include "dmsingleton.h"
+
 #include <iostream>
 
 // [改造] CMain不再是单例，并继承 ITimerSink
 class CMain : public IDMConsoleSink,
     public IDMThread,
     public CDMThreadCtrl,
-    public ITimerSink
+    public ITimerSink,
+    public CDMSafeSingleton<CMain>
+
 {
 public:
     // [改造] 构造函数创建并持有 timer module
@@ -140,10 +144,8 @@ private:
 
 int main(int argc, char* argv[])
 {
-    // [改造] 在栈上创建 CMain，确保生命周期可控
-    CMain mainApp;
-    mainApp.Start(&mainApp);
-    mainApp.WaitFor();
+    CMain::Instance()->Start(CMain::Instance());
+    CMain::Instance()->WaitFor();
 
     return 0;
 }
