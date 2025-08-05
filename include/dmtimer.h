@@ -4,10 +4,10 @@
 #include "dmos.h"
 #include "dmmoduleptr.h"
 #include "dmany.h"
+#include "dmtimersink.h"
 #include <functional>
 #include <string>
 
-class ITimerSink;
 typedef std::function<void(uint64_t qwIDEvent)> DMFunction;
 
 class IDMTimer

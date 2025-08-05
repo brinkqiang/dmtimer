@@ -10,10 +10,29 @@
 #endif
 
 // Helper to get tick count
-static inline uint32_t GetTickCount32()
-{
-    auto now = std::chrono::steady_clock::now();
-    return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+static inline uint32_t GetTickCount32() {
+
+#if defined(DMTIMER_USE_HIGH_RESOLUTION)
+  #if defined(_WIN32) && !defined(__MINGW32__)
+    static std::once_flag initializedFlag;
+    std::call_once(initializedFlag, []() { 
+          timeBeginPeriod(1);
+          std::atexit([](){ 
+              timeEndPeriod(1);
+          });
+      });
+  #endif
+#endif
+
+	auto now = std::chrono::high_resolution_clock::now();
+	return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+#if defined(_WIN32) && !defined(__MINGW32__)
+    return ::GetTickCount();
+#else
+    struct timespec ts = { 0 };
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
+#endif
 }
 
 extern "C" DMEXPORT_DLL IDMTimer* DMAPI dmtimerGetModule()
