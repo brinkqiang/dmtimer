@@ -225,8 +225,7 @@ int DMTimerImpl::Run(void)
         {
             CDMTimerElement* timer = __GetTimerInfoByEntry(work_list.next);
             
-            list_del_init(&timer->m_stEntry);
-
+            RemoveTimerElementFromWheel(timer);
             if (timer->m_bErased)
             {
                 ReleaseElement(timer);
