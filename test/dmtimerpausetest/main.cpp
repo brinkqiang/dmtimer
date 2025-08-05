@@ -13,10 +13,8 @@ class CMain;
 class CPlayer : public CDMTimerNode
 {
 public:
-    CPlayer() : m_pMain(nullptr) {}
+    CPlayer() {}
     virtual void OnTimer(uint64_t qwIDEvent) override;
-    
-    CMain* m_pMain;
 };
 
 class CMain : public IDMConsoleSink,
@@ -123,10 +121,7 @@ private:
 
 void CPlayer::OnTimer(uint64_t qwIDEvent)
 {
-    if (m_pMain)
-    {
-        m_pMain->AddOnTimerCount();
-    }
+    CMain::Instance()->AddOnTimerCount();
 }
 
 int main(int argc, char* argv[])

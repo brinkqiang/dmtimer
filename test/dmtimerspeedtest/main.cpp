@@ -14,10 +14,8 @@ class CMain;
 class CPlayer : public CDMTimerNode
 {
 public:
-    CPlayer() : m_pMain(nullptr) {}
+    CPlayer(){}
     virtual void OnTimer(uint64_t qwIDEvent) override;
-    
-    CMain* m_pMain;
 };
 
 // [改造] CMain 不再是单例，并继承 ITimerSink 以便自身能接收定时器事件
@@ -69,7 +67,6 @@ public:
         {
             // [改造] 注入依赖
             m_oPlayers[i].SetTimerModule(m_oTimerModule.get());
-            m_oPlayers[i].m_pMain = this;
             for (int j = 1; j <= eMAX_PLAYER_EVENT; ++j)
             {
                 m_oPlayers[i].SetTimer(j, 500);
@@ -144,11 +141,7 @@ private:
 
 void CPlayer::OnTimer(uint64_t qwIDEvent)
 {
-    // [改造] 通过指针回调，而非单例
-    if (m_pMain)
-    {
-        m_pMain->AddOnTimerCount();
-    }
+    CMain::Instance()->AddOnTimerCount();
 }
 
 int main(int argc, char* argv[])
