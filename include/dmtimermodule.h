@@ -93,6 +93,8 @@ static inline uint32_t GetTickCount32() {
   #endif
 #endif
 
+	auto now = std::chrono::high_resolution_clock::now();
+	return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
 #if defined(_WIN32) && !defined(__MINGW32__)
     return ::GetTickCount();
 #else
