@@ -6,10 +6,8 @@
 #include "dmutil.h"
 #include <iostream>
 
-// [改造] 前向声明 CMain，以便 CPlayer 持有其指针
 class CMain; 
 
-// [改造] CPlayer 通过指针与 CMain 通信
 class CPlayer : public CDMTimerNode
 {
 public:
@@ -19,7 +17,6 @@ public:
     CMain* m_pMain;
 };
 
-// [改造] CMain 不再是单例，并继承 ITimerSink
 class CMain : public IDMConsoleSink,
     public IDMThread,
     public CDMThreadCtrl,
@@ -28,7 +25,6 @@ class CMain : public IDMConsoleSink,
 
 
 public:
-    // [改造] 构造函数创建并持有 timer module
     CMain()
         : m_oTimerModule(dmtimerGetModule()),
           m_bStop(false), 
@@ -62,7 +58,6 @@ public:
 
         dm::any oAny(std::string("hello world"));
 
-        // [改造] CMain 作为 ITimerSink 直接调用模块的 SetTimer
         m_oTimerModule->SetTimer(this, eTimerID_UUID, eTimerTime_UUID, eTimerTime_UUID, oAny, false);
         m_oTimerModule->SetTimer(this, eTimerID_STOP, eTimerTime_STOP, eTimerTime_STOP, oAny, false);
 
@@ -71,7 +66,6 @@ public:
         {
             bBusy = false;
             
-            // [改造] 调用自有模块的 Run
             if (m_oTimerModule->Run())
             {
                 bBusy = true;
@@ -93,13 +87,12 @@ public:
     virtual void Terminate() override { m_bStop = true; }
     virtual void OnCloseEvent() override { Stop(); }
 
-    virtual void OnTimer(uint64_t qwIDEvent) override {} // 实现 ITimerSink 的虚函数
+    virtual void OnTimer(uint64_t qwIDEvent) override {}
     virtual void OnTimer(uint64_t qwIDEvent, dm::any& oAny) override
     {
         switch (qwIDEvent)
         {
         case eTimerID_UUID:
-            // [改造] 不再使用 CMain::Instance()
             std::cout << DMFormatDateTime() << " " << GetOnTimerCount() << " " << dm::any_cast<std::string>(oAny) << std::endl;
             break;
         case eTimerID_STOP:
@@ -127,7 +120,6 @@ private:
 
 void CPlayer::OnTimer(uint64_t qwIDEvent)
 {
-    // [改造] 通过指针回调，而非单例
     if (m_pMain)
     {
         m_pMain->AddOnTimerCount();
@@ -136,7 +128,6 @@ void CPlayer::OnTimer(uint64_t qwIDEvent)
 
 int main(int argc, char* argv[])
 {
-    // [改造] 在栈上创建 CMain，确保生命周期可控
     CMain mainApp;
     mainApp.Start(&mainApp);
     mainApp.WaitFor();
