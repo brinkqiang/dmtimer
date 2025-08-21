@@ -55,14 +55,14 @@ public:
 public:
     virtual void ThrdProc() override
     {
-        // [改造] 调用自有模块的 SetSpeed
+        // 调用自有模块的 SetSpeed
         m_oTimerModule->SetSpeed(20000);
 
         std::cout << "test start" << std::endl;
 
         for (int i = 0; i < eMAX_PLAYER; ++i)
         {
-            // [改造] 注入依赖
+            // 注入依赖
             m_oPlayers[i].SetTimerModule(m_oTimerModule.get());
             for (int j = 1; j <= eMAX_PLAYER_EVENT; ++j)
             {
@@ -72,7 +72,7 @@ public:
 
         dm::any oAny(std::string("hello world"));
 
-        // [改造] CMain 作为 ITimerSink 直接调用模块的 SetTimer
+        // CMain 作为 ITimerSink 直接调用模块的 SetTimer
         m_oTimerModule->SetTimer(this, eTimerID_UUID, eTimerTime_UUID, eTimerTime_UUID, oAny, false);
         m_oTimerModule->SetTimer(this, eTimerID_STOP, eTimerTime_STOP, eTimerTime_STOP, oAny, false);
 
@@ -81,7 +81,7 @@ public:
         {
             bBusy = false;
             
-            // [改造] 调用自有模块的 Run
+            // 调用自有模块的 Run
             if (m_oTimerModule->Run())
             {
                 bBusy = true;

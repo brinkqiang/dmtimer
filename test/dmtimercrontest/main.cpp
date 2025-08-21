@@ -55,7 +55,7 @@ public:
         std::cout << "test start" << std::endl;
 
         // [改造] 直接调用模块的SetTimer，并传入this作为Sink
-        m_oTimerModule->SetTimer(this, eTimerID_STOP, eTimerTime_STOP, eTimerTime_STOP, dm::any(), false);
+        m_oTimerModule->SetTimer(this, eTimerID_STOP, eTimerTime_STOP);
 
         // [改造] Cron定时器，同样传入this作为Sink，Lambda中直接使用this
         m_oTimerModule->SetTimerCron(this, eTimerID_CRON, "0/10 * * ? * MON-FRI", [this](uint64_t qwIDEvent)
