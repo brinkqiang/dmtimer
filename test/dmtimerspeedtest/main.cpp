@@ -7,10 +7,7 @@
 #include "dmsingleton.h"
 #include <iostream>
 
-// [改造] 前向声明 CMain，以便 CPlayer 持有其指针
-class CMain; 
-
-// [改造] CPlayer 通过指针与 CMain 通信
+// CPlayer 继承 CDMTimerNode 方式实现[风格1]
 class CPlayer : public CDMTimerNode
 {
 public:
@@ -18,7 +15,7 @@ public:
     virtual void OnTimer(uint64_t qwIDEvent) override;
 };
 
-// [改造] CMain 不再是单例，并继承 ITimerSink 以便自身能接收定时器事件
+// CMain 继承 ITimerSink 方式实现[风格2]
 class CMain : public IDMConsoleSink,
     public IDMThread,
     public CDMThreadCtrl,
@@ -28,7 +25,7 @@ class CMain : public IDMConsoleSink,
 
 
 public:
-    // [改造] 构造函数负责创建并持有 timer module
+    // 构造函数负责创建并持有 timer module
     CMain()
         : m_oTimerModule(dmtimerGetModule()),
           m_bStop(false), 
