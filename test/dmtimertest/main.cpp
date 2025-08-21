@@ -153,6 +153,7 @@ private:
     bool __Run() { return false; }
 
 private:
+    // [关键] 将 timer module 声明在最前面，确保它在 CPlayer 数组之后被销毁
     DMTimerPtr m_oTimerModule;
     volatile bool m_bStop;
     CPlayer m_oPlayers[eMAX_PLAYER];
